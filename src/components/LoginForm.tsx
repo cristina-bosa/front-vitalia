@@ -2,7 +2,6 @@
 
 import React from "react";
 import Button from "./Button";
-import Image from "next/image";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = React.useState('' as string)

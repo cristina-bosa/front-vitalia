@@ -1,5 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import "./generics/normalize.scss";
 @import "./components/buttons.scss";
 @import "./components/inputs.scss";
+@import "./components/forms.scss";
+@import "./components/cards.scss";
+@import "./components/multistep.scss";
