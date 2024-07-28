@@ -1,7 +1,7 @@
 'use client'
 
 import React from "react";
-import Button from "./Button";
+import Button from "../ui/Button";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = React.useState('' as string)
@@ -13,7 +13,7 @@ const LoginForm: React.FC = () => {
   }
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-      
+
       <section className="flex flex-col gap-2">
         <label htmlFor="email" className="text-primary uppercase text-xs font-semibold">Correo electrónico</label>
         <input

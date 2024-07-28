@@ -1,8 +1,11 @@
-const RegisterPatient = () => {
+
+import RegisterPatient from '@/pages/patient/auth/RegisterPatient'
+
+const PatientRegister = () => {
   return (
-    <div>
-      <h1>Register patient</h1>
-    </div>
+    <main className="container mx-auto flex flex-col min-h-screen items-center justify-around">
+      <RegisterPatient />
+    </main>
   );
 }
-export default RegisterPatient;
+export default PatientRegister;

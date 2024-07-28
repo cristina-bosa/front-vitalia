@@ -1,8 +1,7 @@
+import PasswordReset from '@/pages/ResetPassword'
 const ResetPassword = () => {
   return (
-    <div>
-      <h1>Reset Password</h1>
-    </div>
+    <PasswordReset />
   );
 }
 export default ResetPassword;
