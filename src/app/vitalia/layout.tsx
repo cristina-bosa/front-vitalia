@@ -13,12 +13,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <Sidebar />
-      <main className="container mx-auto">
+    <section className="layout">
+      <Sidebar />      
+      <main className="container mx-auto h-screen">
         {children}
       </main>
       <Footer/>
-    </>
+    </section>
   );
 }

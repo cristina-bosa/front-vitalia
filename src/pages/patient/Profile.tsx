@@ -18,7 +18,7 @@ const PatientProfile: React.FC = () => {
   return (
     <section className="flex flex-col gap-6 justify-end">
       <PatientCardProfile user={user} />
-      <PatientHistorical />
+      <PatientHistorical />      
       <Button className="self-end	btn--secondary">Darme de baja</Button>
     </section>
   );
