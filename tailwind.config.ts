@@ -23,7 +23,16 @@ const config: Config = {
         dark: "#094067",
         "dark-light": "#808A93",
         "dark-lighter": "#BFC5C9",
-        "error-primary": "#FF4E32",
+        "error-primary": "#FF0000",
+        "success-dark": "#5A8C03",
+        "success-primary": "#8DBF03",
+        "success-lighter": "#E2EFC0",
+        "info-dark": "#1F697D",
+        "info-primary": "#3ED1F9",
+        "info-lighter": "#CFE6FA",
+        "warning-dark": "#805E08",
+        "warning-primary": "#FFA500",
+        "warning-lighter": "#FFE0B2",
 
       },
       fontFamily: {
