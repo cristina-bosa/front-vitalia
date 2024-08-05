@@ -1,0 +1,23 @@
+.details{
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  background-color: white;
+  
+  &__title{    
+    font-weight: 700;
+    color: theme('colors.secondary');
+    cursor: pointer;
+    &:hover{
+      color: theme('colors.secondary-dark');
+    }
+  }
+  &__content{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    
+  }
+}
