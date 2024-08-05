@@ -1,8 +1,9 @@
-const PatientHistoricalPage : React.FC = () => {
+const PatientHistoricalPage: React.FC = () => {
   return (
-    <div>
-      <h1>Historical Page</h1>
-    </div>
+    <section>
+      <h1 className="text-3xl font-bold text-dark">Mi histórico</h1>
+
+    </section>
   );
 }
 
