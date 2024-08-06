@@ -1,5 +1,5 @@
 
-import LoginPatient from '@/pages/patient/auth/LoginPatient';
+import LoginPatient from '@/pages/patient/auth/Login';
 import Image from 'next/image';
 const PatientLogin = () => {
   return (

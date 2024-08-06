@@ -81,7 +81,7 @@ const RegisterPatient = () => {
     label: 'Polen'
   }]
 
-  const [currentStep, setCurrentStep] = useState(3);
+  const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
 
   const [formData, setFormData] = useState<FormData>({
