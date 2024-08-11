@@ -1,14 +1,20 @@
 export interface RegisterData {
+  register_type: string;
+  username: string;
+  password: string;
+
   first_name: string;
   last_name: string;
-  identification_number: string;
-  phone: string;
   email: string;
-  password: string;
+
+  identification_number: string;
+  birth_date: string;
   genre: string;
-  birthdate: string;
-  register_data: string;
-  city: string;
+  phone: string;
+  city: number;
+
+  repeat_email: string;
+  repeat_password: string;
 }
 
 export interface RegisterDoctorData extends RegisterData {
@@ -17,6 +23,7 @@ export interface RegisterDoctorData extends RegisterData {
   start_schedule: string;
   end_schedule: string;
   price: number;
+  specialty: number;
 }
 export interface MedialHistoryPatient {
   allergies: string[];

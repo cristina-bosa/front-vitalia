@@ -13,11 +13,11 @@
 
 .select {
   border: .12em solid theme('colors.dark-light');
-  padding: 1em 1em;
+  padding: 1em 1em;  
   border-radius: theme('borderRadius.br');
   max-width: 395px;
   width: 395px;
-
+  
   &--error {
     border-color: theme('colors.error-primary');
     color: theme('colors.error-primary');

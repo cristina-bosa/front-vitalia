@@ -2,45 +2,45 @@
 
 import { useEffect, useState } from "react";
 
-import { z } from 'zod';
-
 import Button from "@/components/ui/Button";
 import InputComponent from "@/components/ui/Input";
 import SelectComponent from "@/components/ui/Select";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-import { RegisterDoctorData } from "@/types";
+import { RegisterDoctorData } from '@/types';
 
 import { stepRegisterDoctor, typeRegister } from "@/constants";
 
-import { fetchGenre } from "@/actions/auth";
+import { fetchRegister } from "@/actions/auth";
+import { fetchGenre, fetchCity, fetchSpecialty } from "@/actions/utils";
+import { RegisterSchema, DoctorRegisterSchema } from "@/schemas";
 
 const DoctorRegister = () => {
 
   const [currentStep, setCurrentStep] = useState(1);
   const [steps, setSteps] = useState(stepRegisterDoctor)
   const [optsGenre, setOptsGenre] = useState([]);
+  const [optsCity, setOptsCity] = useState([]);
+  const [optsSpecialty, setOptsSpecialty] = useState([]);
   const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
-  const [genre, setGenre] = useState('M');
-
-  useEffect(() => {
-    fetchGenre().then((data) => {
-      setOptsGenre(data);
-    });
-  }, [])
+  const [isValid, setIsValid] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [registerDoctorData, setRegisterDoctorData] = useState<RegisterDoctorData>({
+    register_type: typeRegister.DOCTOR,
     first_name: '',
     last_name: '',
+    username: '',
     identification_number: '',
     phone: '',
     email: '',
+    repeat_email: '',
     password: '',
+    repeat_password: '',
     genre: 'M',
-    birthdate: '',
-    register_data: typeRegister.DOCTOR,
-    city: '',
+    birth_date: '',
+    city: 0,
 
     professional_number: '',
     specialty: 0,
@@ -50,11 +50,47 @@ const DoctorRegister = () => {
   });
 
 
+  useEffect(() => {
+    fetchGenre().then((data) => {
+      setOptsGenre(data);
+    });
+    fetchCity().then((data) => {
+      setOptsCity(data);
+    });
+    fetchSpecialty().then((data) => {
+      setOptsSpecialty(data);
+    });
+  }, [])
+
+  useEffect(() => {
+    setRegisterDoctorData((prevData) => ({
+      ...prevData,
+      username: `${prevData.first_name}${prevData.last_name}`.toLowerCase()
+    }));
+  }, [registerDoctorData.first_name, registerDoctorData.last_name]);
+
+
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { id, value } = e.target;
+    setRegisterDoctorData({
+      ...registerDoctorData,
+      [id]: id === 'city' || id === 'specialty' ? parseInt(value) : value
+    })
+
+    if (errors[id]) {
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors }
+        delete newErrors[id]
+        return newErrors
+      })
+    }
+  }
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setRegisterDoctorData({
       ...registerDoctorData,
-      [id]: value
+      [id]: id === 'price' ? parseInt(value) : value
     })
 
     if (errors[id]) {
@@ -67,19 +103,54 @@ const DoctorRegister = () => {
   }
 
   const nextStep = () => {
-    setCurrentStep(currentStep + 1)
+    let validationResult;
+    if (currentStep === 1) {
+      validationResult = RegisterSchema.safeParse(registerDoctorData)
+    } else if (currentStep === 2) {
+      validationResult = DoctorRegisterSchema.safeParse(registerDoctorData)
+    }
 
+    if (validationResult && !validationResult.success) {
+      const formattedErrors = validationResult.error.flatten().fieldErrors;
+      setErrors(formattedErrors);
+    } else {
+      setErrors({});
+      setCurrentStep((prev) => prev + 1);
+    }
   }
 
   const previusStep = () => {
     setCurrentStep(currentStep - 1)
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true)
+    const validationResult = RegisterSchema.and(DoctorRegisterSchema).safeParse(registerDoctorData)
+    if (!validationResult.success) {
+      const formattedErrors = validationResult.error.flatten().fieldErrors;
+      setErrors(formattedErrors);
+      console.log(registerDoctorData)
+      console.log('Validation errors:', formattedErrors);
+      return;
+    } else {
+      setErrors({});
 
-    console.log(registerDoctorData)
+      try {
+        const response = await fetchRegister(registerDoctorData)
+        setIsLoading(false)
+        if (response) {
+          setIsValid(true);
+          setCurrentStep((prev) => prev + 1);
+        } else {
+          setIsValid(false);
+          setCurrentStep((prev) => prev + 1);
+        }
+      } catch (error) {
+        console.error(error)
+      }
 
+    }
 
   }
   return (
@@ -131,13 +202,13 @@ const DoctorRegister = () => {
                 </section>
                 <section className="form-row">
                   <InputComponent
-                    id="number_identification"
+                    id="identification_number"
                     label="Número de identificación"
                     type="text"
                     placeholder="45125809P"
-                    value={registerDoctorData.birthdate}
+                    value={registerDoctorData.identification_number}
                     onChange={handleInputChange}
-                    error={errors.birthdate && errors.birthdate[0]}
+                    error={errors.identification_number && errors.identification_number[0]}
                   />
                   <InputComponent
                     id="phone"
@@ -151,30 +222,36 @@ const DoctorRegister = () => {
                 </section>
                 <section className="form-row">
                   <InputComponent
-                    id="birthdate"
+                    id="birth_date"
                     label="Fecha de nacimiento"
                     type="date"
                     placeholder="11/11/1995"
-                    value={registerDoctorData.birthdate}
+                    value={registerDoctorData.birth_date}
                     onChange={handleInputChange}
-                    error={errors.birthdate && errors.birthdate[0]}
+                    error={errors.birth_date && errors.birth_date[0]}
                   />
-                  <SelectComponent
-                    id="genre"
-                    value={genre}
-                    label="Género"
-                    options={optsGenre}
-                    onChange={(e) => setGenre(e.target.value)}
-                  />
+                  <section className="form-group">
+                    <label htmlFor="genre" className="text-primary uppercase text-xs font-semibold">Género</label>
+                    <select
+                      id="genre"
+                      className={`select`}
+                      value={registerDoctorData.genre}
+                      onChange={handleSelectChange}>
+                      {optsGenre.map((option: { id: string, name: string }, index) => (
+                        <option key={index} value={option.name}>{option.name}</option>
+                      ))}
+                      {errors.genre && errors.genre[0] && <span className="text-red-500 text-xs">{errors.genre && errors.genre[0]}</span>}
+                    </select>
+                  </section>
                 </section>
                 <section className="form-row">
                   <SelectComponent
                     id="city"
                     label="Ciudad"
+                    value={registerDoctorData.city}
                     className="select--full"
-                    value={genre}
-                    options={optsGenre}
-                    onChange={(e) => setGenre(e.target.value)}
+                    options={optsCity}
+                    onChange={handleSelectChange}
                   />
                 </section>
                 <section className="form-row">
@@ -192,7 +269,7 @@ const DoctorRegister = () => {
                     label="Confirme e-mail"
                     type="email"
                     placeholder="cristina.bosa@vitalia.es"
-                    value={registerDoctorData.email}
+                    value={registerDoctorData.repeat_email}
                     onChange={handleInputChange}
                     error={errors.email && errors.email[0]}
                   />
@@ -211,8 +288,8 @@ const DoctorRegister = () => {
                     id="repeat_password"
                     label="Confirme contraseña"
                     type="password"
-                    placeholder="Introduce tu contraseña"
-                    value={registerDoctorData.password}
+                    placeholder="Confirme contraseña"
+                    value={registerDoctorData.repeat_password}
                     onChange={handleInputChange}
                     error={errors.password && errors.password[0]}
                   />
@@ -236,13 +313,19 @@ const DoctorRegister = () => {
                     onChange={handleInputChange}
                     error={errors.professional_number && errors.professional_number[0]}
                   />
-                  <SelectComponent
-                    id="speciality"
-                    options={optsGenre}
-                    label="Especialidad"
-                    value={genre}
-                    onChange={(e) => setGenre(e.target.value)}
-                  />
+                  <section className="form-group">
+
+                    <label htmlFor="specialty" className="text-primary uppercase text-xs font-semibold">Especialidad</label>
+                    <select
+                      id="specialty"
+                      className={`select`}
+                      value={registerDoctorData.specialty}
+                      onChange={handleSelectChange}>
+                      {optsSpecialty.map((option: { id: number, name: string }, index) => (
+                        <option key={index} value={option.id}>{option.name}</option>
+                      ))}
+                    </select>
+                  </section>
                 </section>
                 <section className="form-row">
                   <InputComponent
@@ -276,18 +359,31 @@ const DoctorRegister = () => {
               <section className="flex gap-6 justify-between">
                 <Button className="btn--outline" onClick={previusStep}><ArrowLeft size={20} />Volver</Button>
                 <Button type="submit" className="btn--secondary">Siguiente<ArrowRight size={20} /></Button>
-
               </section>
             </section>
 
           )}
           {currentStep === 3 && (
             <>
-              <h2 className="text-2xl font-bold text-center">Finalizar</h2>
-              <section className="flex flex-col gap-6 my-5">
-                <h3>¡Gracias por registrarte en Vitalia!</h3>
-                <p>Nuestro departamento de admisiones se pondrá en contacto contigo con el menor tiempo posible.</p>
-              </section>
+              {isLoading && (<>Cargando...</>)}
+              {isValid ? (
+                <>
+                  <h2 className="text-2xl font-bold text-center">Finalizar</h2>
+                  <section className="flex flex-col gap-6 my-5">
+                    <h3>¡Gracias por registrarte en Vitalia!</h3>
+                    <p>Nuestro departamento de admisiones se pondrá en contacto contigo con el menor tiempo posible.</p>
+                  </section>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-2xl font-bold text-center">Oh no!</h2>
+                  <section className="flex flex-col gap-6 my-5">
+                    <h3>Hubo un error en el registro</h3>
+                    <p>Inténtelo de nuevo más tarde</p>
+                  </section>
+                </>
+              )}
+
             </>
           )}
 

@@ -5,30 +5,61 @@ export const LoginSchema = z.object({
   password: z.string(),
 });
 
-export const RegisterSchema = z.object({
-  first_name: z.string().min(1, { message: "El nombre es obligatorio" }),
-  last_name: z.string().min(1, { message: "El apellido es obligatorio" }),
-  identification_number: z
-    .string()
-    .min(1, { message: "El número de identificación es obligatorio" }),
-  phone: z.string().min(1, { message: "El número de teléfono es obligatorio" }),
-  password: z.string().min(1, { message: "La contraseña es obligatoria" }),
-  email: z
-    .string()
-    .email({ message: "Formato de email no válido" })
-    .min(1, { message: "El email es obligatorio" }),
-  genre: z.string().min(1, { message: "El género es obligatorio" }),
-  birthdate: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, {
-      message: "Formato de fecha no válido (YYYY-MM-DD)",
-    })
-    .min(1, { message: "La fecha de nacimiento es obligatoria" }),
-  register_data: z
-    .string()
-    .min(1, { message: "Los datos de registro son obligatorios" }),
-  city: z.string().min(1, { message: "La ciudad es obligatoria" }),
-});
+export const RegisterSchema = z
+  .object({
+    first_name: z.string().min(1, { message: "El nombre es obligatorio" }),
+    last_name: z.string().min(1, { message: "El apellido es obligatorio" }),
+    identification_number: z
+      .string()
+      .min(1, { message: "El número de identificación es obligatorio" }),
+    phone: z
+      .string()
+      .min(1, { message: "El número de teléfono es obligatorio" }),
+    birth_date: z
+      .string()
+      .min(1, { message: "La fecha de nacimiento es obligatoria" }),
+    genre: z.string().min(1, { message: "El género es obligatorio" }),
+    city: z.number().min(1, { message: "La ciudad es obligatoria" }),
+    email: z
+      .string()
+      .email({ message: "Formato de email no válido" })
+      .min(1, { message: "El email es obligatorio" }),
+    repeat_email: z
+      .string()
+      .email({ message: "Formato de email no válido" })
+      .min(1, { message: "El email es obligatorio" }),
+    password: z.string().min(1, { message: "La contraseña es obligatoria" }),
+    repeat_password: z
+      .string()
+      .min(1, { message: "La contraseña es obligatoria" }),
+  })
+  .refine((data) => data.email === data.repeat_email, {
+    message: "Los correos electrónicos no coinciden",
+    path: ["repeat_email"],
+  })
+  .refine((data) => data.password === data.repeat_password, {
+    message: "Las contraseñas no coinciden",
+    path: ["repeat_password"],
+  })
+  .refine(
+    (data) => {
+      const today = new Date();
+      const birthDate = new Date(data.birth_date);
+      const age = today.getFullYear() - birthDate.getFullYear();
+      const monthDifference = today.getMonth() - birthDate.getMonth();
+      if (
+        monthDifference < 0 ||
+        (monthDifference === 0 && today.getDate() < birthDate.getDate())
+      ) {
+        return age > 18;
+      }
+      return age >= 18;
+    },
+    {
+      message: "Debes tener al menos 18 años",
+      path: ["birth_date"],
+    }
+  );
 
 export const RegisterPatientSchema = z.object({
   medical_history: z.object({
@@ -39,14 +70,13 @@ export const RegisterPatientSchema = z.object({
   }),
 });
 
-export const RegisterDoctorSchema = z.object({
+export const DoctorRegisterSchema = z.object({
   professional_number: z
     .string()
     .min(1, { message: "El número de colegiado es obligatorio" }),
   specialty: z
     .number()
-    .min(1, { message: "Debe seleccionar una especialidad válida" })
-    .int({ message: "La especialidad debe ser un número entero" }),
+    .min(1, { message: "Debe seleccionar una especialidad válida" }),
   start_schedule: z
     .string()
     .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
@@ -58,8 +88,6 @@ export const RegisterDoctorSchema = z.object({
     .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
       message: "Formato de hora no válido (HH:MM)",
     })
-    .min(1, { message: "La hora de finalización es obligatoria" }),
-  price: z
-    .number()
-    .min(0, { message: "El precio debe ser un número positivo" }),
+    .min(1, { message: "La hora de fin es obligatoria" }),
+  price: z.number().min(1, { message: "El precio es obligatorio" }),
 });
