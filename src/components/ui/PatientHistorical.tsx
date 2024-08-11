@@ -37,7 +37,7 @@ const PatientHistorical: React.FC = () => {
   }
   const handleAddNewDisease = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('hola')
+    
   }
 
 

@@ -40,7 +40,7 @@ const DoctorRegister = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({ firstName, lastName, genre, dateBirth, password, repeatPassword, email, repeatEmail })
+    
   }
 
   const nextStep = () => {

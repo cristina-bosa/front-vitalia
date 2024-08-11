@@ -1,32 +1,42 @@
 'use client'
 
+import { startTransition, useState } from "react";
+
 import { useRouter } from "next/navigation";
-
 import Link from "next/link";
-import { useState } from "react";
 
-import { LoginAuth } from "@/actions/auth";
+import { useSession } from "next-auth/react";
 
 import Button from "@/components/ui/Button";
 import InputComponent from "@/components/ui/Input";
+
+import { signIn } from "next-auth/react";
+
 
 
 const Login = () => {
   const router = useRouter();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-
+  const s = useSession()
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const response = await LoginAuth(email, password);
-      console.log(response)
-      if (response?.status === 200) {
-        router.push('/doctor/dashboard')
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    
+    startTransition(() => {
+      signIn('credentials', {
+        email: email,
+        password: password,
+        redirect: false
+      }).then((data) => {
+        if(data?.error){
+          console.error(data.error)
+          return
+        }
+        router.push('/patient/dashboard')
+      })
+    })
+
+
   }
 
   return (

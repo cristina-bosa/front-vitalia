@@ -1,7 +1,6 @@
-import type { Metadata } from "next";
-
 import Sidebar from "@/components/navbar/Sidebar";
 import Footer from "@/components/Footer";
+
 
 export default function RootLayout({
   children,

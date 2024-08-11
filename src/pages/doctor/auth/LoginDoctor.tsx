@@ -12,7 +12,7 @@ const DoctorLogin = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(firstName, password)
+    
 
   }
   return (

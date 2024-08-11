@@ -1,3 +1,9 @@
+export enum Role {
+  ADMIN = 1,
+  DOCTOR = 2,
+  PATIENT = 3,
+}
+
 export interface PatientProfile {
   first_name: string;
   last_name: string;

@@ -1,8 +1,17 @@
+"use client"
 
 import NotificationCard from "@/components/ui/cards/NotificationCard";
 
+import { useSession } from "next-auth/react";
+
+
 
 const PatientDashboardPage: React.FC = () => {
+
+  const {data: session}  = useSession();
+
+  
+
   const user = {
     first_name: "John",
     last_name: "Doe",
