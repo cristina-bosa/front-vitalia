@@ -38,7 +38,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error(user.message);
         }
 
-        return user;
+        return user as User;
       },
     }),
   ],
@@ -47,17 +47,13 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user }) {
-      return { ...token, ...user };
+      if (user) return { ...token, ...user };
+      return token;
     },
     async session({ session, token }) {
-      session.user = token.user;
+      session.user = token;
       session.access_token = token.access_token;
       return session;
-    },
-    async redirect({ url, baseUrl }) {
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      else if (new URL(url).origin === baseUrl) return url;
-      return baseUrl;
     },
   },
   pages: {
