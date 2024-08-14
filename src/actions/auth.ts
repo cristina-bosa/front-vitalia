@@ -15,7 +15,7 @@ export async function fetchRegister(
     });
 
     if (!response.ok) {
-      const error = await response.json();
+      const error = response.statusText;
       throw new Error(error);
     }
     

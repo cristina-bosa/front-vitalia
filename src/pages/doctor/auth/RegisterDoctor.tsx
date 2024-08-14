@@ -383,7 +383,6 @@ const DoctorRegister = () => {
                   </section>
                 </>
               )}
-
             </>
           )}
 

@@ -2,8 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import Select from "react-select";
-
+import Select from 'react-select';
 import Button from "@/components/ui/Button";
 import InputComponent from "@/components/ui/Input";
 import SelectComponent from "@/components/ui/Select";
@@ -13,9 +12,14 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { stepRegisterPatient, typeRegister, } from "@/constants";
 
 import { fetchRegister } from "@/actions/auth";
-import { fetchGenre, fetchCity, fetchSpecialty } from "@/actions/utils";
+import { fetchGenre, fetchCity, fetchAllergies, fetchMedicalInterventions, fetchRelevantDiseases, fetchMedications } from "@/actions/utils";
 import { RegisterSchema, RegisterPatientSchema } from "@/schemas";
 import { RegisterPatientData } from '@/types';
+
+interface SelectData {
+  value: string,
+  label: string
+}
 
 
 
@@ -25,7 +29,15 @@ const RegisterPatient = () => {
   const [steps, setSteps] = useState(stepRegisterPatient)
   const [optsGenre, setOptsGenre] = useState([]);
   const [optsCity, setOptsCity] = useState([]);
-  const [optsSpecialty, setOptsSpecialty] = useState([]);
+  const [optsAllergies, setOptsAllergies] = useState([]);
+  const [optsMedicalInterventions, setOptsMedicalInterventions] = useState([]);
+  const [optsRelevantDiseases, setOptsRelevantDiseases] = useState([])
+  const [optsMedications, setOptsMedications] = useState([]);
+  const [selectedAllergies, setSelectedAllergies] = useState([]);
+  const [selectedMedicalInterventions, setSelectedMedicalInterventions] = useState([]);
+  const [selectedRelevantDiseases, setSelectedRelevantDiseases] = useState([]);
+  const [selectedMedications, setSelectedMedications] = useState([]);
+
   const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -53,16 +65,25 @@ const RegisterPatient = () => {
   });
 
   useEffect(() => {
-    fetchGenre().then((data) => {
-      setOptsGenre(data);
-    });
-    fetchCity().then((data) => {
-      setOptsCity(data);
-    });
-    fetchSpecialty().then((data) => {
-      setOptsSpecialty(data);
-    });
+    const fetchAll = async () => {
+      setIsLoading(true);
+      const genre = await fetchGenre();
+      const city = await fetchCity();
+      const allergies = await fetchAllergies();
+      const medicalInterventions = await fetchMedicalInterventions();
+      const relevantDiseases = await fetchRelevantDiseases();
+      const medications = await fetchMedications();
+      setOptsGenre(genre);
+      setOptsCity(city);
+      setOptsAllergies(allergies);
+      setOptsMedicalInterventions(medicalInterventions);
+      setOptsRelevantDiseases(relevantDiseases);
+      setOptsMedications(medications);
+      setIsLoading(false);
+    }
+    fetchAll();
   }, [])
+
 
   useEffect(() => {
     setRegisterPatientData((prevData) => ({
@@ -124,9 +145,37 @@ const RegisterPatient = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
+    const validationResult = RegisterPatientSchema.safeParse(registerPatientData)
+    if (validationResult && !validationResult.success) {
+      const formattedErrors = validationResult.error.flatten().fieldErrors;
+      setErrors(formattedErrors);
+      setIsLoading(false);
+    } else {
+      setErrors({});
+      const data = {
+        ...registerPatientData,
+        medical_history: {
+          allergies: selectedAllergies.map((allergy: SelectData) => +allergy.value),
+          relevant_diseases: selectedRelevantDiseases.map((disease: SelectData) => +disease.value),
+          current_medication: selectedMedications.map((medication: SelectData) => +medication.value),
+          medical_intervention: selectedMedicalInterventions.map((intervention: SelectData) => +intervention.value)
+        }
+      }
+      const response = await fetchRegister(data);
+      console.log(response)
+      setIsLoading(false);
+      if (response) {
+        setIsValid(true);
+        setCurrentStep((prev) => prev + 1);
+      } else {
+        setIsValid(false);
+        setCurrentStep((prev) => prev + 1);
+        setErrors(response.errors)
+      }
+    }
 
   }
-
   return (
     <>
       <section>
@@ -206,7 +255,7 @@ const RegisterPatient = () => {
                     error={errors.birth_date && errors.birth_date[0]}
                   />
                   <section className="form-group">
-                    <label htmlFor="genre" className="text-primary uppercase text-xs font-semibold">Género</label>                    
+                    <label htmlFor="genre" className="text-primary uppercase text-xs font-semibold">Género</label>
                     <select
                       id="genre"
                       className={`select`}
@@ -277,35 +326,53 @@ const RegisterPatient = () => {
           {currentStep === 2 && (
             <section className="flex flex-col">
               <h2 className="text-2xl font-bold text-center">Datos médicos</h2>
+              <p>Por favor, completa los siguientes campos para que podamos ofrecerte un mejor servicio.</p>
+
               <section className="flex flex-col gap-6 my-5">
-                <SelectComponent
-                  id="allergies"
-                  options={optsGenre}
-                  label="Alergías"
-                  value={registerPatientData.birth_date}
-                  onChange={handleSelectChange}
-                />
-                <SelectComponent
-                  id="relevant_diseases"
-                  options={optsGenre}
-                  label="Enfermedades relevantes"
-                  value={registerPatientData.birth_date}
-                  onChange={handleSelectChange}
-                />
-                <SelectComponent
-                  id="current_medication"
-                  options={optsGenre}
-                  label="Enfermedad actual"
-                  value={registerPatientData.birth_date}
-                  onChange={handleSelectChange}
-                />
-                <SelectComponent
-                  id="medical_intervention"
-                  options={optsGenre}
-                  label="Cirugías"
-                  value={registerPatientData.birth_date}
-                  onChange={handleSelectChange}
-                />
+                <section className="form-group">
+                  <label htmlFor="allergies" className="text-primary uppercase text-xs font-semibold">Alergias</label>
+                  <Select
+                    instanceId={"allergies"}
+                    isMulti={true}
+                    isLoading={isLoading}
+                    onChange={(allergies) => setSelectedAllergies(Array.from(allergies))}
+                    options={optsAllergies}
+                    isSearchable={false}
+                  />
+                </section>
+                <section className="form-group">
+                  <label id="relevant_diseases" className="text-primary uppercase text-xs font-semibold">Enfermedades relevantes</label>
+                  <Select
+                    id={"relevant_diseases"}
+                    isMulti={true}
+                    isLoading={isLoading}
+                    onChange={(relevantDiseases) => setSelectedRelevantDiseases(Array.from(relevantDiseases))}
+                    options={optsRelevantDiseases}
+                    isSearchable={false}
+                  />
+                </section>
+                <section className="form-group">
+                  <label className="text-primary uppercase text-xs font-semibold">Enfermedad actual</label>
+                  <Select
+                    id={"current_medication"}
+                    isMulti={true}
+                    isLoading={isLoading}
+                    onChange={(medications) => setSelectedMedications(Array.from(medications))}
+                    options={optsMedications}
+                    isSearchable={false}
+                  />
+                </section>
+                <section className="form-group">
+                  <label className="text-primary uppercase text-xs font-semibold">Cirugías</label>
+                  <Select
+                    id={"medical_intervention"}
+                    isMulti={true}
+                    isLoading={isLoading}
+                    onChange={(medicalInterventions) => setSelectedMedicalInterventions(Array.from(medicalInterventions))}
+                    options={optsMedicalInterventions}
+                    isSearchable={false}
+                  />
+                </section>
               </section>
               <section className="flex gap-6 justify-between">
                 <Button className="btn--outline" onClick={previusStep}><ArrowLeft size={20} />Volver</Button>
@@ -315,13 +382,29 @@ const RegisterPatient = () => {
 
           )}
           {currentStep === 3 && (
-            <section className="flex flex-col gap-6 my-5 max-w-7xl">
-              <h2 className="text-2xl font-bold text-center">¡Bienvenido/a a Vitalia!</h2>
-              <p> Hemos enviado un correo de verificación a tu dirección de email. Por favor, revisa tu bandeja de entrada y sigue las instrucciones para validar tu correo electrónico y activar tu cuenta. </p>
-              <p>Si no recibes el correo en unos minutos, revisa tu carpeta de spam o correo no deseado.</p>
-              <p>Gracias por unirte a nuestra plataforma. Estamos aquí para ayudarte a gestionar tu salud de manera más fácil y efectiva.</p>
-              <Link href="login" className="btn btn--primary text-white">Iniciar sesión</Link>
-            </section>
+            <>
+              {isLoading && (<p>Estamos procesando tus datos....</p>)}
+              {isValid ? (
+                <>
+                  <h2 className="text-2xl font-bold text-center">Finalizar</h2>
+                  <section className="flex flex-col gap-6 my-5">
+                    <h3>¡Gracias por registrarte en Vitalia!</h3>
+                    <p>Hemos enviado un correo de verificación a tu dirección de email. Por favor, revisa tu bandeja de entrada y sigue las instrucciones para validar tu correo electrónico y activar tu cuenta.</p>
+                    <p>Si no recibes el correo en unos minutos, revisa tu carpeta de spam o correo no deseado.</p>
+                    <p>Gracias por unirte a nuestra plataforma. Estamos aquí para ayudarte a gestionar tu salud de manera más fácil y efectiva.</p>
+                    <Link href="/" className="btn btn--primary text-white">Iniciar sesión</Link>
+                  </section>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-2xl font-bold text-center">Oh no!</h2>
+                  <section className="flex flex-col gap-6 my-5">
+                    <h3>Oh no!</h3>
+                    <p>Hubo un error en el proceso de tus datos. Por favor, inténtelo de nuevo más tarde.</p>
+                  </section>
+                </>
+              )}
+            </>
           )}
 
         </form>
