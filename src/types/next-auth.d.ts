@@ -12,7 +12,7 @@ declare module "next-auth" {
 }
 declare module "next-auth" {
   interface Session {
-    user: JWT;
+    user: User;
     access_token: string;
   }
 }

@@ -12,8 +12,8 @@ export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const user = await getToken({ req: request });
-
-  const role = user?.groups[0];
+  
+  const role = user?.user.groups[0];
 
   if (role === Role.DOCTOR && pathname.startsWith("/patient")) {
     return NextResponse.redirect(new URL("/doctor/dashboard", request.url));

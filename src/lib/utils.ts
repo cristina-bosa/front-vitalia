@@ -24,16 +24,14 @@ export const authOptions: NextAuthOptions = {
           }),
         });
 
-        const user = await response.json();
-
-        // const profileUser = await fetch(`${baseUrl}/auth/me/`, {
-        //   headers: {
-        //     Authorization: `Bearer ${tokenAccess.access_token}`,
-        //   },
-        // });
-
-        // const user = await profileUser.json();
-
+        const token = await response.json();
+        
+        const profileUser = await fetch(`${baseUrl}/auth/me`,{
+          headers: {
+            Authorization: `Token ${token.access_token}`,
+          },      
+        });
+        const user = await profileUser.json();               
         if (!response.ok) {
           throw new Error(user.message);
         }
@@ -51,7 +49,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      session.user = token;
+      session.user = token.user;
       session.access_token = token.access_token;
       return session;
     },
