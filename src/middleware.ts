@@ -12,7 +12,7 @@ export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const user = await getToken({ req: request });
-  
+
   const role = user?.user.groups[0];
 
   if (role === Role.DOCTOR && pathname.startsWith("/patient")) {

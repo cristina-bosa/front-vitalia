@@ -25,18 +25,19 @@ export const authOptions: NextAuthOptions = {
         });
 
         const token = await response.json();
-        
-        const profileUser = await fetch(`${baseUrl}/auth/me`,{
+
+        const profileUser = await fetch(`${baseUrl}/auth/me`, {
           headers: {
             Authorization: `Token ${token.access_token}`,
-          },      
+          },
         });
-        const user = await profileUser.json();               
+        const user = await profileUser.json();
         if (!response.ok) {
           throw new Error(user.message);
         }
-
-        return user as User;
+        
+        
+        return { ... token, ... user}
       },
     }),
   ],
@@ -44,9 +45,11 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) return { ...token, ...user };
-      return token;
+    async jwt({ token, user }) {      
+      return {
+        ...token, 
+        ...user,     
+      }
     },
     async session({ session, token }) {
       session.user = token.user;

@@ -30,8 +30,8 @@ export async function fetchDataToken(
   endpoint: string,  
   data?: any
 ) {
-  const session = await getServerSession(authOptions);
-  const token = session?.access_token;
+  const session = await getServerSession(authOptions);  
+  const token = session?.access_token;  
   try {
     const response = await fetch(`${baseUrl}/${endpoint}`, {
       method: "GET",

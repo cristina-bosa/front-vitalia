@@ -5,10 +5,20 @@
   border-radius: .5rem;
   @apply bg-slate-100;
 
+  &__header{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
   &__body {
     display: flex;
     flex-direction: column;
     gap: .5rem;
+  }
+  &__footer {
+    display: flex;
+    gap: .5rem;
+    justify-content: flex-end;
   }
 
   &--patient {
