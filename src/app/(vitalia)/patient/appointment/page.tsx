@@ -1,8 +1,8 @@
+import AppointmentPage from "@/pages/patient/Appointment";
+
 const PatientAppointmentPage: React.FC = () => {
   return (
-    <div>
-      <h1>Appointment</h1>
-    </div>
+    <AppointmentPage/>
   );
 }
 export default PatientAppointmentPage;

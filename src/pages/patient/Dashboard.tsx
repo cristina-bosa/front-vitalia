@@ -44,9 +44,6 @@ const DashboardPatient = () => {
   }, [])
 
 
-
-
-
   return (
     <>
       <section className="flex flex-row gap-6 mb-6">
@@ -75,7 +72,7 @@ const DashboardPatient = () => {
         {isLoading && <p>Cargando...</p>}
         <section className="list-doctors">
           {doctors && doctors.map((doctor: any) => (
-            <CardDoctor key={doctor.id} doctor={doctor} icon={<CircleChevronRight className="size-6 text-primary-darker hover:cursor-pointer" />} />
+            <CardDoctor key={doctor.id} doctor={doctor} icon={<CircleChevronRight className="size-6 text-primary-darker hover:cursor-pointer" handleClick={console.log(doctor.id)} />} />
           ))}
         </section>
       </section>
