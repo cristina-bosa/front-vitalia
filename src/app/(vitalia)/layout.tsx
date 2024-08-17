@@ -13,7 +13,6 @@ export default function RootLayout({
       <main className="container mx-auto h-screen">
         {children}
       </main>
-      <Footer />
     </section>
   );
 }
