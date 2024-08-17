@@ -15,7 +15,7 @@ const PatientCardProfile = ({ user }: { user: PatientProfile }) => {
         <p className="text-dark"><span className="font-bold">Teléfono </span>{user.phone}</p>
         <p className="text-dark"><span className="font-bold">Correo electrónico </span>{user.email}</p>
         <p className="text-dark"><span className="font-bold">Género </span>{user.genre}</p>
-        <p className="text-dark"><span className="font-bold">Fecha de nacimiento </span>{user.birthdate}</p>
+        <p className="text-dark"><span className="font-bold">Fecha de nacimiento </span>{user.birth_date}</p>
       </section>
     </section>
   );

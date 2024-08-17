@@ -4,13 +4,58 @@
   padding: 1em 1.5em;
   border-radius: .5rem;
   @apply bg-slate-100;
-  &__body{
+
+  &__header{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  &__body {
     display: flex;
     flex-direction: column;
     gap: .5rem;
   }
+  &__footer {
+    display: flex;
+    gap: .5rem;
+    justify-content: flex-end;
+  }
+
   &--patient {
     flex-direction: row;
 
   }
+}
+
+.card-notification {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1em 1.5em;
+  border-radius: 1em;
+  &__header{
+    display: inherit;
+    gap: 1em;    
+    align-items: center;
+  }
+  &__body{
+    display: flex;
+    gap: 1em;
+    align-items: center;
+  }
+  &--accepted {
+    background-color: theme('colors.success-lighter');
+    color: theme('colors.success-dark');
+  }
+
+  &--pending {
+    background-color: theme('colors.info-lighter');
+    color: theme('colors.info-dark');
+  }
+
+  &--cancelled {
+    background-color: theme('colors.warning-lighter');
+    color: theme('colors.warning-dark');
+  }
+
 }

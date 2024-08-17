@@ -1,151 +1,180 @@
 'use client'
-import { z } from 'zod';
+import { useEffect, useState } from "react";
+import Link from "next/link";
+
+import Select from 'react-select';
 import Button from "@/components/ui/Button";
 import InputComponent from "@/components/ui/Input";
 import SelectComponent from "@/components/ui/Select";
-import { useState } from "react";
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import Image from 'next/image';
 
-interface FormData {
-  firstName: string;
-  lastName: string;
-  dateBirth: string;
-  email: string;
-  repeatEmail: string;
-  password: string;
-  repeatPassword: string;
-  genre: string;
-  allergies: string;
-  relevantDiseases: string;
-  medicalIntervention: string;
-  currentMedication: string;
+import { ArrowLeft, ArrowRight } from "lucide-react";
+
+import { stepRegisterPatient, typeRegister, } from "@/constants";
+
+import { fetchRegister } from "@/actions/auth";
+import { fetchGenre, fetchCity, fetchAllergies, fetchMedicalInterventions, fetchRelevantDiseases, fetchMedications } from "@/actions/utils";
+import { RegisterSchema, RegisterPatientSchema } from "@/schemas";
+import { RegisterPatientData } from '@/types';
+
+interface SelectData {
+  value: string,
+  label: string
 }
 
-const personalDataSchema = z.object({
-  firstName: z.string().min(2, "El nombre es obligatorio"),
-  lastName: z.string().min(2, "El apellido es obligatorio"),
-  dateBirth: z.string().refine(val => !isNaN(Date.parse(val)), "Fecha de nacimiento no válida"),
-  genre: z.string(),
-  email: z.string().email("Correo electrónico no válido"),
-  repeatEmail: z.string().email("Correo electrónico no válido"),
-  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
-  repeatPassword: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
-}).refine(data => data.email === data.repeatEmail, {
-  message: "Los correos electrónicos deben coincidir",
-  path: ["repeatEmail"],
-}).refine(data => data.password === data.repeatPassword, {
-  message: "Las contraseñas deben coincidir",
-  path: ["repeatPassword"],
-});
-
-const medicalDataSchema = z.object({
-  allergies: z.string(),
-  relevantDiseases: z.string(),
-  currentMedication: z.string(),
-  medicalIntervention: z.string(),
-});
 
 
 const RegisterPatient = () => {
-  const steps = [
-    {
-      id: 1,
-      title: 'Datos personales'
-    },
-    {
-      id: 2,
-      title: 'Datos médicos'
-    },
-    {
-      id: 3,
-      title: 'Completado'
-    }
-  ]
-  const optsGenre = [{
-    value: 'M',
-    label: 'Masculino'
-  },
-  {
-    value: 'F',
-    label: 'Femenino'
-  }]
 
-  const optsAllergies = [{
-    value: 'M',
-    label: 'Ninguna'
-  },
-  {
-    value: 'F',
-    label: 'Polen'
-  }]
+  const [currentStep, setCurrentStep] = useState(1);
+  const [steps, setSteps] = useState(stepRegisterPatient)
+  const [optsGenre, setOptsGenre] = useState([]);
+  const [optsCity, setOptsCity] = useState([]);
+  const [optsAllergies, setOptsAllergies] = useState([]);
+  const [optsMedicalInterventions, setOptsMedicalInterventions] = useState([]);
+  const [optsRelevantDiseases, setOptsRelevantDiseases] = useState([])
+  const [optsMedications, setOptsMedications] = useState([]);
+  const [selectedAllergies, setSelectedAllergies] = useState([]);
+  const [selectedMedicalInterventions, setSelectedMedicalInterventions] = useState([]);
+  const [selectedRelevantDiseases, setSelectedRelevantDiseases] = useState([]);
+  const [selectedMedications, setSelectedMedications] = useState([]);
 
-  const [currentStep, setCurrentStep] = useState(3);
   const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
+  const [isValid, setIsValid] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [formData, setFormData] = useState<FormData>({
-    firstName: '',
-    lastName: '',
-    dateBirth: '',
+  const [registerPatientData, setRegisterPatientData] = useState<RegisterPatientData>({
+    register_type: typeRegister.PATIENT,
+    first_name: '',
+    last_name: '',
+    username: '',
+    identification_number: '',
+    phone: '',
     email: '',
-    repeatEmail: '',
+    repeat_email: '',
     password: '',
-    repeatPassword: '',
-    genre: '',
-    allergies: '',
-    relevantDiseases: '',
-    medicalIntervention: '',
-    currentMedication: ''
+    repeat_password: '',
+    genre: 'M',
+    birth_date: '',
+    city: 0,
+    medical_history: {
+      allergies: [],
+      relevant_diseases: [],
+      current_medication: [],
+      medical_intervention: []
+    }
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setFormData({
-      ...formData,
-      [id]: value
-    })
+  useEffect(() => {
+    const fetchAll = async () => {
+      setIsLoading(true);
+      const genre = await fetchGenre();
+      const city = await fetchCity();
+      const allergies = await fetchAllergies();
+      const medicalInterventions = await fetchMedicalInterventions();
+      const relevantDiseases = await fetchRelevantDiseases();
+      const medications = await fetchMedications();
+      setOptsGenre(genre);
+      setOptsCity(city);
+      setOptsAllergies(allergies);
+      setOptsMedicalInterventions(medicalInterventions);
+      setOptsRelevantDiseases(relevantDiseases);
+      setOptsMedications(medications);
+      setIsLoading(false);
+    }
+    fetchAll();
+  }, [])
 
-    if (errors[id]) {
-      setErrors(prevErrors => {
-        const newErros = { ...prevErrors };
-        delete newErros[id];
-        return newErros;
-      })
-    }
-  }
-  const handleNextStep = () => {
-    let validationResult
+
+  useEffect(() => {
+    setRegisterPatientData((prevData) => ({
+      ...prevData,
+      username: `${prevData.first_name}${prevData.last_name}`.toLowerCase()
+    }));
+  }, [registerPatientData.first_name, registerPatientData.last_name]);
+
+  const nextStep = () => {
+    let validationResult;
     if (currentStep === 1) {
-      validationResult = personalDataSchema.safeParse(formData);
-    } else {
-      validationResult = medicalDataSchema.safeParse(formData);
+      validationResult = RegisterSchema.safeParse(registerPatientData)
+    } else if (currentStep === 2) {
+      validationResult = RegisterPatientSchema.safeParse(registerPatientData)
     }
+
     if (validationResult && !validationResult.success) {
       const formattedErrors = validationResult.error.flatten().fieldErrors;
       setErrors(formattedErrors);
     } else {
       setErrors({});
-      setCurrentStep((prev) => currentStep + 1);
+      setCurrentStep((prev) => prev + 1);
+    }
+  }
+  const previusStep = () => {
+    setCurrentStep((prev) => prev - 1);
+  }
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { id, value } = e.target;
+    setRegisterPatientData({
+      ...registerPatientData,
+      [id]: id === 'city' || id === 'allergies' ? parseInt(value) : value
+    })
+
+    if (errors[id]) {
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors }
+        delete newErrors[id]
+        return newErrors
+      })
+    }
+  }
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setRegisterPatientData({
+      ...registerPatientData,
+      [id]: value
+    })
+
+    if (errors[id]) {
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors }
+        delete newErrors[id]
+        return newErrors
+      })
     }
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const personalValidationResult = personalDataSchema.safeParse(formData);
-    const medicalValidationResult = medicalDataSchema.safeParse(formData);
-
-    if (personalValidationResult.success && medicalValidationResult.success) {
-      console.log('Datos personales', personalValidationResult.data);
-      console.log('Datos médicos', medicalValidationResult.data);
-      setCurrentStep(3);
-    } else {
-      const formattedErrors = {
-        ...(personalValidationResult.error?.flatten().fieldErrors || {}),
-        ...(medicalValidationResult.error?.flatten().fieldErrors || {})
-      }
+    setIsLoading(true);
+    const validationResult = RegisterPatientSchema.safeParse(registerPatientData)
+    if (validationResult && !validationResult.success) {
+      const formattedErrors = validationResult.error.flatten().fieldErrors;
       setErrors(formattedErrors);
+      setIsLoading(false);
+    } else {
+      setErrors({});
+      const data = {
+        ...registerPatientData,
+        medical_history: {
+          allergies: selectedAllergies.map((allergy: SelectData) => +allergy.value),
+          relevant_diseases: selectedRelevantDiseases.map((disease: SelectData) => +disease.value),
+          current_medication: selectedMedications.map((medication: SelectData) => +medication.value),
+          medical_intervention: selectedMedicalInterventions.map((intervention: SelectData) => +intervention.value)
+        }
+      }
+      const response = await fetchRegister(data);
+      console.log(response)
+      setIsLoading(false);
+      if (response) {
+        setIsValid(true);
+        setCurrentStep((prev) => prev + 1);
+      } else {
+        setIsValid(false);
+        setCurrentStep((prev) => prev + 1);
+        setErrors(response.errors)
+      }
     }
+
   }
   return (
     <>
@@ -177,60 +206,96 @@ const RegisterPatient = () => {
               <section className="flex flex-col gap-6 my-5">
                 <section className="form-row">
                   <InputComponent
-                    id="firstName"
+                    id="first_name"
                     label="Nombre"
                     type="text"
                     placeholder="Introduce tu nombre"
-                    value={formData.firstName}
+                    value={registerPatientData.first_name}
                     onChange={handleInputChange}
                     error={errors.firstName && errors.firstName[0]}
                   />
                   <InputComponent
-                    id="lastName"
+                    id="last_name"
                     label="Apellido"
                     type="text"
                     placeholder="Introduce tu apellido"
-                    value={formData.lastName}
+                    value={registerPatientData.last_name}
                     onChange={handleInputChange}
                     error={errors.lastName && errors.lastName[0]}
                   />
                 </section>
                 <section className="form-row">
                   <InputComponent
-                    id="dateBirth"
+                    id="identification_number"
+                    label="Número de identificación"
+                    type="text"
+                    placeholder="45125809P"
+                    value={registerPatientData.identification_number}
+                    onChange={handleInputChange}
+                    error={errors.identification_number && errors.identification_number[0]}
+                  />
+                  <InputComponent
+                    id="phone"
+                    label="Teléfono"
+                    type="tel"
+                    placeholder="689808956"
+                    value={registerPatientData.phone}
+                    onChange={handleInputChange}
+                    error={errors.phone && errors.phone[0]}
+                  />
+                </section>
+                <section className="form-row">
+                  <InputComponent
+                    id="birth_date"
                     label="Fecha de nacimiento"
                     type="date"
                     placeholder="11/11/1995"
-                    value={formData.dateBirth}
+                    value={registerPatientData.birth_date}
                     onChange={handleInputChange}
-                    error={errors.dateBirth && errors.dateBirth[0]}
+                    error={errors.birth_date && errors.birth_date[0]}
                   />
+                  <section className="form-group">
+                    <label htmlFor="genre" className="text-primary uppercase text-xs font-semibold">Género</label>
+                    <select
+                      id="genre"
+                      className={`select`}
+                      value={registerPatientData.genre}
+                      onChange={handleSelectChange}>
+                      {optsGenre.map((option: { id: string, name: string }, index) => (
+                        <option key={index} value={option.name}>{option.name}</option>
+                      ))}
+                      {errors.genre && errors.genre[0] && <span className="text-red-500 text-xs">{errors.genre && errors.genre[0]}</span>}
+                    </select>
+                  </section>
+                </section>
+                <section className="form-row">
                   <SelectComponent
-                    id="genre"
-                    value={formData.genre}
-                    label="Género"
-                    options={optsGenre}
-                    onChange={(e) => console.log('hola')}
+                    id="city"
+                    label="Ciudad"
+                    value={registerPatientData.city}
+                    className="select--full"
+                    options={optsCity}
+                    onChange={handleSelectChange}
                   />
                 </section>
                 <section className="form-row">
                   <InputComponent
                     id="email"
-                    label="Email"
+                    label="E-mail"
                     type="email"
-                    placeholder="Introduce tu email"
-                    value={formData.email}
+                    placeholder="cristina.bosa@vitalia.es"
+                    value={registerPatientData.email}
                     onChange={handleInputChange}
                     error={errors.email && errors.email[0]}
                   />
                   <InputComponent
-                    id="repeatEmail"
-                    label="Email"
+                    id="repeat_email"
+                    label="Confirme e-mail"
                     type="email"
-                    placeholder="Repita el email"
-                    value={formData.repeatEmail}
+                    placeholder="cristina.bosa@vitalia.es"
+                    value={registerPatientData.repeat_email}
                     onChange={handleInputChange}
-                    error={errors.repeatEmail && errors.repeatEmail[0]}
+                    error={errors.email && errors.email[0]}
                   />
                 </section>
                 <section className="form-row">
@@ -239,72 +304,107 @@ const RegisterPatient = () => {
                     label="Contraseña"
                     type="password"
                     placeholder="Introduce tu contraseña"
-                    value={formData.password}
+                    value={registerPatientData.password}
                     onChange={handleInputChange}
                     error={errors.password && errors.password[0]}
                   />
                   <InputComponent
-                    id="repeatPassword"
-                    label="Repita la contraseña"
+                    id="repeat_password"
+                    label="Confirme contraseña"
                     type="password"
-                    placeholder="Introduce tu contraseña"
-                    value={formData.repeatPassword}
+                    placeholder="Confirme contraseña"
+                    value={registerPatientData.repeat_password}
                     onChange={handleInputChange}
-                    error={errors.repeatPassword && errors.repeatPassword[0]}
+                    error={errors.password && errors.password[0]}
                   />
                 </section>
               </section>
-              <Button className="btn--primary" onClick={handleNextStep}>Siguiente <ArrowRightIcon className="size-5 text-white" /></Button>
+              <Button className="btn--secondary self-end" onClick={nextStep}>Siguiente <ArrowRight size={20} />
+              </Button>
             </section>
           )}
           {currentStep === 2 && (
             <section className="flex flex-col">
-              <h2 className="text-2xl font-bold text-center">Datos profesionales</h2>
+              <h2 className="text-2xl font-bold text-center">Datos médicos</h2>
+              <p>Por favor, completa los siguientes campos para que podamos ofrecerte un mejor servicio.</p>
+
               <section className="flex flex-col gap-6 my-5">
-
-                <SelectComponent
-                  id="allergies"
-                  options={optsGenre}
-                  label="Alergías"
-                  value={formData.allergies}
-                  onChange={(e) => setFormData({ ...formData, allergies: e.target.value })}
-
-                />
-                <SelectComponent
-                  id="relevantDiseases"
-                  options={optsAllergies}
-                  label="Enfermedades relevantes"
-                  value={formData.relevantDiseases}
-                  onChange={(e) => setFormData({ ...formData, relevantDiseases: e.target.value })}
-
-                />
-                <SelectComponent
-                  id="currentMedication"
-                  options={optsAllergies}
-                  label="Medicación actual"
-                  value={formData.currentMedication}
-                  onChange={(e) => setFormData({ ...formData, currentMedication: e.target.value })}
-                />
-                <SelectComponent
-                  id="medicalIntervention"
-                  options={optsAllergies}
-                  label="Intervenciones quirúrgicas"
-                  value={formData.medicalIntervention}
-                  onChange={(e) => setFormData({ ...formData, medicalIntervention: e.target.value })}
-                />
+                <section className="form-group">
+                  <label htmlFor="allergies" className="text-primary uppercase text-xs font-semibold">Alergias</label>
+                  <Select
+                    instanceId={"allergies"}
+                    isMulti={true}
+                    isLoading={isLoading}
+                    onChange={(allergies) => setSelectedAllergies(Array.from(allergies))}
+                    options={optsAllergies}
+                    isSearchable={false}
+                  />
+                </section>
+                <section className="form-group">
+                  <label id="relevant_diseases" className="text-primary uppercase text-xs font-semibold">Enfermedades relevantes</label>
+                  <Select
+                    id={"relevant_diseases"}
+                    isMulti={true}
+                    isLoading={isLoading}
+                    onChange={(relevantDiseases) => setSelectedRelevantDiseases(Array.from(relevantDiseases))}
+                    options={optsRelevantDiseases}
+                    isSearchable={false}
+                  />
+                </section>
+                <section className="form-group">
+                  <label className="text-primary uppercase text-xs font-semibold">Enfermedad actual</label>
+                  <Select
+                    id={"current_medication"}
+                    isMulti={true}
+                    isLoading={isLoading}
+                    onChange={(medications) => setSelectedMedications(Array.from(medications))}
+                    options={optsMedications}
+                    isSearchable={false}
+                  />
+                </section>
+                <section className="form-group">
+                  <label className="text-primary uppercase text-xs font-semibold">Cirugías</label>
+                  <Select
+                    id={"medical_intervention"}
+                    isMulti={true}
+                    isLoading={isLoading}
+                    onChange={(medicalInterventions) => setSelectedMedicalInterventions(Array.from(medicalInterventions))}
+                    options={optsMedicalInterventions}
+                    isSearchable={false}
+                  />
+                </section>
               </section>
-              <Button type="submit" className="btn--primary" >Siguiente <ArrowRightIcon className="size-5 text-white" /></Button>
+              <section className="flex gap-6 justify-between">
+                <Button className="btn--outline" onClick={previusStep}><ArrowLeft size={20} />Volver</Button>
+                <Button type="submit" className="btn--secondary">Siguiente<ArrowRight size={20} /></Button>
+              </section>
             </section>
 
           )}
           {currentStep === 3 && (
-            <section className="flex flex-col gap-6 my-5 max-w-7xl">
-              <h2 className="text-2xl font-bold text-center">¡Bienvenido/a a Vitalia!</h2>
-              <p> Hemos enviado un correo de verificación a tu dirección de email. Por favor, revisa tu bandeja de entrada y sigue las instrucciones para validar tu correo electrónico y activar tu cuenta. </p>
-              <p>Si no recibes el correo en unos minutos, revisa tu carpeta de spam o correo no deseado.</p>
-              <p>Gracias por unirte a nuestra plataforma. Estamos aquí para ayudarte a gestionar tu salud de manera más fácil y efectiva.</p>
-              <Link href="login" className="btn btn--primary text-white">Iniciar sesión</Link>
-            </section>
+            <>
+              {isLoading && (<p>Estamos procesando tus datos....</p>)}
+              {isValid ? (
+                <>
+                  <h2 className="text-2xl font-bold text-center">Finalizar</h2>
+                  <section className="flex flex-col gap-6 my-5">
+                    <h3>¡Gracias por registrarte en Vitalia!</h3>
+                    <p>Hemos enviado un correo de verificación a tu dirección de email. Por favor, revisa tu bandeja de entrada y sigue las instrucciones para validar tu correo electrónico y activar tu cuenta.</p>
+                    <p>Si no recibes el correo en unos minutos, revisa tu carpeta de spam o correo no deseado.</p>
+                    <p>Gracias por unirte a nuestra plataforma. Estamos aquí para ayudarte a gestionar tu salud de manera más fácil y efectiva.</p>
+                    <Link href="/" className="btn btn--primary text-white">Iniciar sesión</Link>
+                  </section>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-2xl font-bold text-center">Oh no!</h2>
+                  <section className="flex flex-col gap-6 my-5">
+                    <h3>Oh no!</h3>
+                    <p>Hubo un error en el proceso de tus datos. Por favor, inténtelo de nuevo más tarde.</p>
+                  </section>
+                </>
+              )}
+            </>
           )}
 
         </form>

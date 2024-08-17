@@ -2,7 +2,7 @@
 
 interface InputProps {
   id: string,
-  value: string,
+  value: string | number,
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
   type: string,
   label?: string,
@@ -22,7 +22,10 @@ const InputComponent: React.FC<InputProps> = ({ id, value, onChange, type, label
           id={id}
           placeholder={placeholder}
           value={value}
-          onChange={onChange} />
+          onChange={onChange}
+          min={type === 'number' ? 0 : undefined}
+          max={type === 'tel' ? 10 : undefined}
+           />
         {error && <span className="text-red-500 text-xs">{error}</span>}
       </section>
     )

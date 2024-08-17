@@ -9,7 +9,7 @@ const LoginForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(email, password)
+    
   }
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
