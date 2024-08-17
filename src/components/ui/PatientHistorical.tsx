@@ -1,16 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { motion } from "framer-motion"
 
-import { PlusCircleIcon } from '@heroicons/react/24/outline'
+import { PlusCircleIcon } from "lucide-react";
 
 import Button from "@/components/ui/Button";
 import InputComponent from "@/components/ui/Input";
 
+import { MedialHistoryPatient } from "@/types";
 
-const PatientHistorical: React.FC = () => {
+const PatientHistorical = ({ medicalHistory }: { medicalHistory: MedialHistoryPatient }) => {
+  console.log(medicalHistory)
   const [disease, setDisease] = useState<string>('')
   const [medications, setMedications] = useState<string>('')
   const [allergies, setAllergies] = useState<string>('')
@@ -35,9 +37,10 @@ const PatientHistorical: React.FC = () => {
         break;
     }
   }
+
   const handleAddNewDisease = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
   }
 
 
@@ -58,7 +61,9 @@ const PatientHistorical: React.FC = () => {
             <Button className="btn--primary"><PlusCircleIcon className="size-6 text-white" /></Button>
           </form>
           <ul className="list-disc list-inside">
-            <p>Será un bucle que viene de DB con la información del paciente</p>
+            {medicalHistory && medicalHistory.relevant_diseases.map((disease, index) => (
+              <li key={index}>{disease}</li>
+            ))}
           </ul>
         </section>
       </details>
@@ -76,7 +81,9 @@ const PatientHistorical: React.FC = () => {
             <Button className="btn--primary"><PlusCircleIcon className="size-6 text-white" /></Button>
           </form>
           <ul className="list-disc list-inside">
-            <p>Será un bucle que viene de DB con la información del paciente</p>
+            {medicalHistory && medicalHistory.current_medication.map((medication, index) => (
+              <li key={index}>{medication}</li>
+            ))}
           </ul>
         </section>
       </details>
@@ -94,7 +101,9 @@ const PatientHistorical: React.FC = () => {
             <Button className="btn--primary"><PlusCircleIcon className="size-6 text-white" /></Button>
           </form>
           <ul className="list-disc list-inside">
-            <p>Será un bucle que viene de DB con la información del paciente</p>
+            {medicalHistory && medicalHistory.allergies.map((allergy, index) => (
+              <li key={index}>{allergy}</li>
+            ))}
           </ul>
         </section>
       </details>
@@ -112,7 +121,9 @@ const PatientHistorical: React.FC = () => {
             <Button className="btn--primary"><PlusCircleIcon className="size-6 text-white" /></Button>
           </form>
           <ul className="list-disc list-inside">
-            <p>Será un bucle que viene de DB con la información del paciente</p>
+            {medicalHistory && medicalHistory.medical_intervention.map((intervention, index) => (
+              <li key={index}>{intervention}</li>
+            ))}
           </ul>
         </section>
       </details>

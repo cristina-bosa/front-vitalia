@@ -26,10 +26,10 @@ export interface RegisterDoctorData extends RegisterData {
   specialty: number;
 }
 export interface MedialHistoryPatient {
-  allergies: number[];
-  relevant_diseases: number[];
-  current_medication: number[];
-  medical_intervention: number[];
+  allergies: string[];
+  relevant_diseases: string[];
+  current_medication: string[];
+  medical_intervention: string[];
 }
 export interface RegisterPatientData extends RegisterData {
   medical_history: MedialHistoryPatient;
@@ -42,7 +42,7 @@ export interface PatientProfile {
   phone: string;
   email: string;
   genre: string;
-  birthdate: string;
+  birth_date: string;
 }
 
 export interface User {

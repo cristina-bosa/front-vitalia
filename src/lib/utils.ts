@@ -35,9 +35,8 @@ export const authOptions: NextAuthOptions = {
         if (!response.ok) {
           throw new Error(user.message);
         }
-        
-        
-        return { ... token, ... user}
+
+        return { ...token, ...user };
       },
     }),
   ],
@@ -45,14 +44,15 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
   callbacks: {
-    async jwt({ token, user }) {      
+    async jwt({ token, user }) {
       return {
-        ...token, 
-        ...user,     
-      }
+        ...token,
+        ...user,
+      };
     },
     async session({ session, token }) {
       session.user = token.user;
+      session.medical_history = token.medical_history;
       session.access_token = token.access_token;
       return session;
     },
