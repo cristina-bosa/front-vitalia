@@ -8,8 +8,8 @@ import Image from "next/image";
 const Sidebar = () => {
   const pathname = usePathname();
   return (
-    <aside className="fixed top-0 left-0 w-auto h-full" aria-label="Sidenav">
-      <section className="overflow-y-auto py-5 px-3 h-full border-r-2 border-primary">
+    <aside className="fixed top-5 left-5 bottom-5 w-auto" aria-label="Sidenav">
+      <section className="overflow-y-auto py-5 px-3 h-full rounded-full bg-slate-100">
         <section>
           <Image src="/symbol.svg" alt="brand vitalia" width={54} height={54}/>
         </section>

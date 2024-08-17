@@ -50,11 +50,11 @@ const DashboardPatient = () => {
   return (
     <>
       <section className="flex flex-row gap-6 mb-6">
-        <section className="flex flex-1 flex-col gap-4">
+        <section className="flex flex-1 flex-col gap-4 bg-slate-100 rounded-lg p-6">
           <h1 className="text-4xl font-bold text-primary-darker">Hola, {user?.first_name}</h1>
           <p>Hoy es {day} de {month}, {year}</p>
         </section>
-        <section className="flex flex-1 flex-col gap-4">
+        <section className="flex flex-1 flex-col gap-4 bg-slate-100 rounded-lg p-6">
           <h2 className="text-2xl font-bold text-primary-darker">Últimas notificaciones</h2>
           <section className="flex flex-1 flex-row gap-4">
             {/* <NotificationCard statusNotification="pending" notification={notifications} />

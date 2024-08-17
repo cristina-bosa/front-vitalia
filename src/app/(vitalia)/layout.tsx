@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
     <section className="layout">
       <Sidebar />
-      <main className="container mx-auto h-screen">
+      <main className="container mx-auto h-screen mt-6">
         {children}
       </main>
     </section>
