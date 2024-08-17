@@ -71,27 +71,13 @@ const DashboardPatient = () => {
         </section>
       </section>
       <section className="flex flex-col gap-6 mb-6">
-        <h2 className="text-2xl font-bold text-primary-darker">Los mejores médicos</h2>        
+        <h2 className="text-2xl font-bold text-primary-darker">Los mejores médicos</h2>
         {isLoading && <p>Cargando...</p>}
         <section className="list-doctors">
-        {doctors && doctors.map((doctor : any) => (
-          <CardDoctor key={doctor.id} doctor={doctor} icon={<CircleChevronRight className="size-6 text-primary-darker hover:cursor-pointer" />} />
-        ))}
-                {doctors && doctors.map((doctor : any) => (
-          <CardDoctor key={doctor.id} doctor={doctor} icon={<CircleChevronRight className="size-6 text-primary-darker hover:cursor-pointer" />} />
-        ))}
-                {doctors && doctors.map((doctor : any) => (
-          <CardDoctor key={doctor.id} doctor={doctor} icon={<CircleChevronRight className="size-6 text-primary-darker hover:cursor-pointer" />} />
-        ))}
-                {doctors && doctors.map((doctor : any) => (
-          <CardDoctor key={doctor.id} doctor={doctor} icon={<CircleChevronRight className="size-6 text-primary-darker hover:cursor-pointer" />} />
-        ))}
-                {doctors && doctors.map((doctor : any) => (
-          <CardDoctor key={doctor.id} doctor={doctor} icon={<CircleChevronRight className="size-6 text-primary-darker hover:cursor-pointer" />} />
-        ))}
-
+          {doctors && doctors.map((doctor: any) => (
+            <CardDoctor key={doctor.id} doctor={doctor} icon={<CircleChevronRight className="size-6 text-primary-darker hover:cursor-pointer" />} />
+          ))}
         </section>
-        
       </section>
     </>
   )
