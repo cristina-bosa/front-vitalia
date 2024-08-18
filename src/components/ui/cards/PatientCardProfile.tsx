@@ -2,7 +2,8 @@ import Image from "next/image";
 
 import { PatientProfile } from "@/types";
 
-const PatientCardProfile = ({ user }: { user: PatientProfile }) => {
+const PatientCardProfile = ({ user }: { user: PatientProfile }) => { 
+  const years = new Date().getFullYear() - new Date(user.birth_date).getFullYear();
   return (
     <section className="card card--patient">
       <section className="">
@@ -15,7 +16,7 @@ const PatientCardProfile = ({ user }: { user: PatientProfile }) => {
         <p className="text-dark"><span className="font-bold">Teléfono </span>{user.phone}</p>
         <p className="text-dark"><span className="font-bold">Correo electrónico </span>{user.email}</p>
         <p className="text-dark"><span className="font-bold">Género </span>{user.genre}</p>
-        <p className="text-dark"><span className="font-bold">Fecha de nacimiento </span>{user.birth_date}</p>
+        <p className="text-dark"><span className="font-bold">Fecha de nacimiento </span>{user.birth_date} <span className="text-dark-light">({years} años)</span></p>
       </section>
     </section>
   );

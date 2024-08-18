@@ -1,8 +1,10 @@
 import Image from "next/image"
 import Button from "../Button"
+import { Star } from "lucide-react";
 
 const ModalProfileDoctor = ({ doctor, isOpen, handleCloseModal }: { doctor: any, isOpen: boolean, handleCloseModal: () => void }) => {
   if (doctor) {
+    const stars = Array.from({ length: doctor.stars }, (_, index) => index);
     return (
       <section className={`modal ${isOpen ? 'modal--overlay' : ''}`}>
         <section className={`modal--content p-12 ${isOpen ? 'modal--content--open' : 'modal--content--close'}`}>
@@ -20,7 +22,11 @@ const ModalProfileDoctor = ({ doctor, isOpen, handleCloseModal }: { doctor: any,
               </section>
               <section className="flex flex-col gap-3">
                 <span className="text-dark-lighter text-sm">Estrellas</span>
-                <span className="text-primary-darker font-semibold">{doctor.stars}</span>
+                <section className="flex flex-row gap-2">
+                  {stars.map((_, index) => (
+                    <Star key={index} className="text-yellow-500" size={20} />
+                  ))}
+                </section>
               </section>
               <section className="flex flex-col gap-3">
                 <span className="text-dark-lighter text-sm">Coste</span>

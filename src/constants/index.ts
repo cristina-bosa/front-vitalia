@@ -1,9 +1,16 @@
 export const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export const typeRegister = {
-  DOCTOR: "doctor",
-  PATIENT: "patient",
-};
+export enum typeRegister {
+  DOCTOR = "doctor",
+  PATIENT = "patient",
+}
+
+export enum MedicalHistory {
+  ALLERGIES = "allergies",
+  RELEVANT_DISEASES = "relevant_diseases",
+  CURRENT_MEDICATION = "current_medication",
+  MEDICAL_INTERVENTION = "medical_intervention",
+}
 
 export const stepRegisterDoctor = [
   {

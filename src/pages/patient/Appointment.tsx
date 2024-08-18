@@ -70,6 +70,11 @@ const AppointmentPage = () => {
     setIsOpen(false);
   }
 
+  const handleReseat = () => {
+    setSelectedCity(undefined);
+    setSelectedSpecialty(undefined);
+    setFilteredDoctors(doctors);
+  }
   return (
     <>
       <section>
@@ -95,6 +100,7 @@ const AppointmentPage = () => {
           />
         </section>
         <Button className="btn--secondary self-end" onClick={handleSearch}>Buscar</Button>
+        <Button className="btn--outline self-end" onClick={handleReseat}>Resetear</Button>
       </section>
       <section className="list-doctors">
         {isLoading && <p>Cargando...</p>}
@@ -102,9 +108,11 @@ const AppointmentPage = () => {
           <CardDoctor
             key={doctor.id}
             doctor={doctor}
-            icon={<CircleChevronRight className="size-6 text-primary-darker hover:cursor-pointer" />}
             handleClick={handleOpenProfile(doctor.id)} />
         ))}
+      </section>
+      <section>
+        {filteredDoctors.length === 0 && <p className="text-primary-darker">No se encontraron médicos que cumplan con tus criterios de búsqueda.</p>}
       </section>
       <ModalProfileDoctor doctor={selectedDoctor} isOpen={isOpen} handleCloseModal={handleCloseModal} />
     </>
