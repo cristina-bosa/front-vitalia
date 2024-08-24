@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 
 
 const inter = Inter({ subsets: ["latin"] });
-
+ 
 export const metadata: Metadata = {
   title: "Vitalia",
   description: "Bienvenido a Vitalia, tu espacio de salud y bienestar",
