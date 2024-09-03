@@ -1,48 +1,30 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { fetchDoctors, fetchFilterDoctors, fetchOneDoctor } from "@/actions/patients/doctors";
-import { fetchCity, fetchSpecialty } from "@/actions/utils";
+import { fetchFilterDoctors, fetchOneDoctor } from "@/actions/patients/doctors";
+
 
 import CardDoctor from "@/components/ui/cards/CardDoctor";
 import SelectComponent from "@/components/ui/Select";
 import Button from "@/components/ui/Button";
 
-import { CircleChevronRight } from "lucide-react";
 import ModalProfileDoctor from "@/components/ui/modals/ModalProfileDoctor";
 
 
-const AppointmentPage = () => {
+const AppointmentPage = ({ specialtyData, cityData, doctorsData }: { specialtyData: any, cityData: any, doctorsData: any }) => {
 
-  const [specialty, setSpecialty] = useState<any[]>([]);
+  const [specialty, setSpecialty] = useState<any[]>(specialtyData);
   const [selectedSpecialty, setSelectedSpecialty] = useState<number>();
 
-  const [cities, setCities] = useState<any[]>([]);
+  const [cities, setCities] = useState<any[]>(cityData);
   const [selectedCity, setSelectedCity] = useState<number>();
 
-  const [doctors, setDoctors] = useState<any[]>([]);
+  const [doctors, setDoctors] = useState<any[]>(doctorsData);
   const [selectedDoctor, setSelectedDoctor] = useState<any>();
   const [filteredDoctors, setFilteredDoctors] = useState<any[]>([]);
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsLoading(true);
-    fetchSpecialty().then((specialty) => {
-      setSpecialty(specialty);
-    })
-    fetchCity().then((cities) => {
-      setCities(cities);
-    })
-    fetchDoctors().then((doctors) => {
-      setDoctors(doctors);
-      setFilteredDoctors(doctors);
-      setIsLoading(false);
-    })
-  }, [])
 
   const handleSelectChange = (e: any) => {
     const { id, value } = e.target;
@@ -102,17 +84,15 @@ const AppointmentPage = () => {
         <Button className="btn--secondary self-end" onClick={handleSearch}>Buscar</Button>
         <Button className="btn--outline self-end" onClick={handleReseat}>Resetear</Button>
       </section>
-      <section className="list-doctors">
-        {isLoading && <p>Cargando...</p>}
-        {filteredDoctors && filteredDoctors.map((doctor: any) => (
+      <section className="list-doctors">        
+        {doctors && doctors.map((doctor: any) => (
           <CardDoctor
             key={doctor.id}
             doctor={doctor}
             handleClick={handleOpenProfile(doctor.id)} />
         ))}
       </section>
-      <section>
-        {filteredDoctors.length === 0 && <p className="text-primary-darker">No se encontraron médicos que cumplan con tus criterios de búsqueda.</p>}
+      <section>        
       </section>
       <ModalProfileDoctor doctor={selectedDoctor} isOpen={isOpen} handleCloseModal={handleCloseModal} />
     </>

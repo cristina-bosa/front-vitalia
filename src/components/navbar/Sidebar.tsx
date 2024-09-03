@@ -69,6 +69,14 @@ const Sidebar = () => {
           </li>
           <li>
             <button
+              onClick={() => {
+                
+                signOut({
+                  redirect: true,
+                  callbackUrl: "/",
+                })
+                
+              }}
               className="flex items-center p-2 text-base font-normal text-primary-darker rounded-lg hover:bg-primary hover:text-light"
             >
               <span>Cerrar sesión</span>
