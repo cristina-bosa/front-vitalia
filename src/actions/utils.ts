@@ -1,4 +1,13 @@
-import { baseUrl } from "@/constants";
+/**
+ * @file Utils
+ * @description Functions to fetch data from the API 
+ * @author Cristina Bosa
+ * @created 2024/09/03
+ * @updated 2024/09/03
+ * @version 1.0
+ */
+
+
 import { fetchData } from "./fetch";
 
 export async function fetchGenre() {

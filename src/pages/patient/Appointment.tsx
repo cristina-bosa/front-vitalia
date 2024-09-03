@@ -4,13 +4,12 @@ import { useState } from "react";
 
 import { fetchFilterDoctors, fetchOneDoctor } from "@/actions/patients/doctors";
 
-
 import CardDoctor from "@/components/ui/cards/CardDoctor";
 import SelectComponent from "@/components/ui/Select";
 import Button from "@/components/ui/Button";
 
 import ModalProfileDoctor from "@/components/ui/modals/ModalProfileDoctor";
-
+import { Doctor } from "@/types";
 
 const AppointmentPage = ({ specialtyData, cityData, doctorsData }: { specialtyData: any, cityData: any, doctorsData: any }) => {
 
@@ -20,7 +19,7 @@ const AppointmentPage = ({ specialtyData, cityData, doctorsData }: { specialtyDa
   const [cities, setCities] = useState<any[]>(cityData);
   const [selectedCity, setSelectedCity] = useState<number>();
 
-  const [doctors, setDoctors] = useState<any[]>(doctorsData);
+  const [doctors, setDoctors] = useState<Doctor[]>(doctorsData);
   const [selectedDoctor, setSelectedDoctor] = useState<any>();
   const [filteredDoctors, setFilteredDoctors] = useState<any[]>([]);
 
@@ -84,15 +83,18 @@ const AppointmentPage = ({ specialtyData, cityData, doctorsData }: { specialtyDa
         <Button className="btn--secondary self-end" onClick={handleSearch}>Buscar</Button>
         <Button className="btn--outline self-end" onClick={handleReseat}>Resetear</Button>
       </section>
-      <section className="list-doctors">        
-        {doctors && doctors.map((doctor: any) => (
+      <section className="list-doctors">
+        {doctors.length < 0 && (
+          <p>No hay doctores disponibles</p>
+        )}
+        {doctors && doctors.map((doctor: Doctor, index: number) => (
           <CardDoctor
             key={doctor.id}
             doctor={doctor}
             handleClick={handleOpenProfile(doctor.id)} />
         ))}
       </section>
-      <section>        
+      <section>
       </section>
       <ModalProfileDoctor doctor={selectedDoctor} isOpen={isOpen} handleCloseModal={handleCloseModal} />
     </>

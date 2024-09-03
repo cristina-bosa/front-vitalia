@@ -1,16 +1,13 @@
+/**
+ * @file Constants
+ * @description Constants used in the application
+ * @author Cristina Bosa
+ * @created 2024/09/03
+ * @updated 2024/09/03
+ * @version 1.0
+ */
+
 export const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-export enum typeRegister {
-  DOCTOR = "doctor",
-  PATIENT = "patient",
-}
-
-export enum MedicalHistory {
-  ALLERGIES = "allergies",
-  RELEVANT_DISEASES = "relevant_diseases",
-  CURRENT_MEDICATION = "current_medication",
-  MEDICAL_INTERVENTION = "medical_intervention",
-}
 
 export const stepRegisterDoctor = [
   {
@@ -25,7 +22,7 @@ export const stepRegisterDoctor = [
     id: 3,
     title: "Completado",
   },
-];
+] as const;
 
 export const stepRegisterPatient = [
   {
@@ -40,4 +37,4 @@ export const stepRegisterPatient = [
     id: 3,
     title: "Completado",
   },
-];
+] as const;

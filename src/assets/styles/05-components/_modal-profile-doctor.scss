@@ -26,9 +26,35 @@
     border-top-left-radius: 1.5em;
     border-bottom-left-radius: 1.5em;
     &__header{
-      img{
-        width: 35%;        
+      position: relative;
+      &__close{
+        position: absolute;
+        top: 1em;
+        right: 1em;
+        cursor: pointer;
+        img{
+          width: 50%;        
+        }
       }
+      &__content{
+        display: flex;
+        flex-direction: column;        
+        gap: 1em;
+        padding: 1.5em;
+        img{
+          width: 50%;        
+        }
+      }
+      img{
+        width: 50%;
+      }
+    }
+    &__body{
+      display: flex;
+      flex-direction: column;
+      gap: 1.5em;
+      margin-top: 1.5em;
+      padding: 0 1.5em;
     }
     &--open{
       right: 0;

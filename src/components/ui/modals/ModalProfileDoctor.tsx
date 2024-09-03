@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Button from "../Button"
-import { Star } from "lucide-react";
+import { Star, XIcon } from "lucide-react";
 
 const ModalProfileDoctor = ({ doctor, isOpen, handleCloseModal }: { doctor: any, isOpen: boolean, handleCloseModal: () => void }) => {
   if (doctor) {
@@ -9,8 +9,9 @@ const ModalProfileDoctor = ({ doctor, isOpen, handleCloseModal }: { doctor: any,
       <section className={`modal ${isOpen ? 'modal--overlay' : ''}`}>
         <section className={`modal--content p-12 ${isOpen ? 'modal--content--open' : 'modal--content--close'}`}>
           <section className="modal--content__header flex flex-row gap-6">
+            <span className="modal--content__header__close"><XIcon onClick={handleCloseModal}/></span>
             <Image src="/assets/images/doctor.png" alt="Doctor" width={150} height={500} className="rounded-md" />
-            <section className="flex flex-col gap-6">
+            <section className="modal--content__header__content">
               <h2 className="text-2xl font-bold text-primary">{doctor.first_name} {doctor.last_name}</h2>
               <section className="flex flex-col gap-3">
                 <span className="text-dark-lighter text-sm">Especialidad</span>
@@ -34,8 +35,8 @@ const ModalProfileDoctor = ({ doctor, isOpen, handleCloseModal }: { doctor: any,
               </section>
             </section>
           </section>
-          <section className="flex flex-col mt-6">
-            seleccionar el día
+          <section className="modal--content__body">
+            <h3 className="text-xl font-bold text-primary">Seleccione el día</h3>
             <section>
               mostrar las horas disponibles
             </section>
@@ -44,7 +45,6 @@ const ModalProfileDoctor = ({ doctor, isOpen, handleCloseModal }: { doctor: any,
           </section>
           <section>
 
-            cosas del médico parte 2
             <Button className="btn--outline" onClick={handleCloseModal}>Cerrar modal</Button>
           </section>
         </section>

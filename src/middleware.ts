@@ -2,11 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { getToken } from "next-auth/jwt";
 
-enum Role {
-  ADMIN = 1,
-  DOCTOR = 2,
-  PATIENT = 3,
-}
+import { Roles } from "@/types/enum";
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -15,21 +11,12 @@ export default async function middleware(request: NextRequest) {
 
   const role = user?.user.groups[0];
 
-  if (role === Role.DOCTOR && pathname.startsWith("/patient")) {
+  if (role === Roles.DOCTOR && pathname.startsWith("/patient")) {
     return NextResponse.redirect(new URL("/doctor/dashboard", request.url));
   }
-  if (role === Role.ADMIN && pathname.startsWith("/patient")) {
+  if (role === Roles.ADMIN && pathname.startsWith("/patient")) {
     return NextResponse.redirect(new URL("/admin/dashboard", request.url));
   }
 
   return NextResponse.next();
 }
-export const config = {
-  matcher: [
-    "/",
-    "/patient/:path*",
-    "/doctor/:path*",
-    "/admin/:path*",
-    "/api/auth/:path*",
-  ],
-};

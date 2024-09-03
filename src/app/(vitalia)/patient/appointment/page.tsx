@@ -8,7 +8,7 @@ const PatientAppointmentPage: React.FC = async () => {
   const doctors = await fetchDoctors();
 
   return (
-    <AppointmentPage specialtyData={specialty} cityData={city} doctorsData= {doctors}/>
+    <AppointmentPage specialtyData={specialty} cityData={city} doctorsData={doctors} />
   );
 }
 export default PatientAppointmentPage;

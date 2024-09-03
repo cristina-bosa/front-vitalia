@@ -1,3 +1,12 @@
+/**
+ * @file Medical history
+ * @description Functions to fetch data about medical history from the API
+ * @author Cristina Bosa
+ * @created 2024/09/03
+ * @updated 2024/09/03
+ * @version 1.0
+ */
+
 import { fetchDataTokenPost } from "../fetch";
 
 export const addMedicalHistoryAllergies = async (allergies: number) => {

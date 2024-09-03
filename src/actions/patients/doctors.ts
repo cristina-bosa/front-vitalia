@@ -1,3 +1,12 @@
+/**
+ * @file Doctors
+ * @description Functions to fetch data about doctors from the API
+ * @author Cristina Bosa
+ * @created 2024/09/03
+ * @updated 2024/09/03
+ * @version 1.0
+ */
+
 import { fetchDataToken } from "../fetch";
 
 export const fetchDoctors = async () => {
