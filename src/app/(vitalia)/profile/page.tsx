@@ -1,13 +1,15 @@
 
+import { fetchProfile } from "@/actions/patients/profile";
 import PatientProfile from "@/pages/patient/Profile";
 
-const PatientProfilePage: React.FC = () => {
+const PatientProfilePage: React.FC = async () => {
+  const data = await fetchProfile();
   return (
     <>
       <section>
         <h1 className="text-3xl font-bold text-dark">Mi perfil</h1>
       </section>
-      <PatientProfile />
+      <PatientProfile profile ={data} />
     </>
   );
 }

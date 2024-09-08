@@ -1,20 +1,27 @@
 @use '00-settings/colors';
 @use '00-settings/variables';
 
-@use '05-components/modal-profile-doctor';
-@use '05-components/card-doctor';
+@use '01-tools/mixins';
 
-@tailwind base;
+@use '02-generic/normalice';
+
+@use '03-elements/button';
+@use '03-elements/headers';
+
+@use '04-objects/layout';
+@use '04-objects/dashboard';
+
+@use '05-components/modal-profile-doctor';
+@use '05-components/sidebar';
+@use '05-components/cards';
+
+@use '06-utilities/typo';
+
 @tailwind components;
 @tailwind utilities;
 
-@import "./generics/normalize.scss";
 @import "./components/buttons.scss";
 @import "./components/inputs.scss";
 @import "./components/forms.scss";
-@import "./components/cards.scss";
 @import "./components/multistep.scss";
 @import "./components/details.scss";
-@import "./components/layout.scss";
-@import "./components/navbar.scss";
-@import "./components/dashboard-patient.scss";

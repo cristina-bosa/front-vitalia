@@ -32,7 +32,7 @@ const Login = () => {
           console.error(data.error)
           return
         }
-        router.push('/patient/dashboard')
+        router.push('/dashboard')
       })
     })
 

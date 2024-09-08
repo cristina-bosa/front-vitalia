@@ -1,0 +1,19 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mix;
+
+.dashboard{
+  @include mix.flex-position(row, top);  
+  &__body{
+    @include mix.flex-position(row, space-between, left);    
+  }
+  &__quick__access{
+    @include mix.flex-position(column, space-between, left);
+    margin-top: 1.5rem;
+  }
+}
+
+.list-doctors{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 1.5rem;
+}

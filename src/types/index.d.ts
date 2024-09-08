@@ -3,7 +3,7 @@
  * @description Types and interfaces used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/03
+ * @updated 2024/09/08
  * @version 1.0
  */
 export interface RegisterData {
@@ -19,7 +19,7 @@ export interface RegisterData {
   birth_date: string;
   genre: string;
   phone: string;
-  city: number;
+  city: string
 
   repeat_email: string;
   repeat_password: string;
@@ -43,7 +43,7 @@ export interface RegisterPatientData extends RegisterData {
   medical_history: MedialHistoryPatient;
 }
 
-export interface PatientProfile {
+export interface Profile {
   first_name: string;
   last_name: string;
   identification_number: string;
@@ -51,6 +51,16 @@ export interface PatientProfile {
   email: string;
   genre: string;
   birth_date: string;
+  groups: number[];
+}
+
+
+export interface UpdateProfile {
+  email?:string;
+  password?:string;
+  phone?:string;
+  genre?:string;
+  city?:string
 }
 
 export interface User {
@@ -71,6 +81,6 @@ export interface Doctor {
   last_name: string;
   specialty: string;
   price: number;
-  city: string;
+  city: string
   stars: number;
 }

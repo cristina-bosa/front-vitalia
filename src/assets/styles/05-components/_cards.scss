@@ -1,0 +1,49 @@
+@use '../00-settings/variables' as variables;
+@use '../01-tools/mixins' as mixins;
+
+.card {
+  @include mixins.flex-position(column, left, left, .5em);
+  @include mixins.card(variables.$light);
+
+  &__header {
+    @include mixins.flex-position(column, left, left, 1.5em);
+  }
+
+  &__body {
+    @include mixins.flex-position(column, left, left, 1em);
+  }
+
+  &__footer {
+    @include mixins.flex-position(_, space-between, center, 1.5em);
+  }
+
+  &__notifications {
+    @include mixins.flex-position(row, left, left, 1em);
+
+  }
+
+  &__notification {
+    @include mixins.flex-position(column, left, left, 1em);
+
+    &[data-status="success"] {
+      @include mixins.card(variables.$success-lightest);
+    }
+
+    &[data-status="info"] {
+      @include mixins.card(variables.$info-lightest);
+    }
+
+    &[data-status="warning"] {
+      @include mixins.card(variables.$warning-lightest);
+    }
+    &[data-status="error"] {
+      @include mixins.card(variables.$error-lightest);
+    }
+  }
+  &__quick-access{
+    &:hover{
+      cursor: pointer;
+    }
+  }
+
+}
