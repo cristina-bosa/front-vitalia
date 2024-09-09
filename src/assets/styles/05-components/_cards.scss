@@ -40,10 +40,13 @@
       @include mixins.card(variables.$error-lightest);
     }
   }
+
   &__quick-access{
     &:hover{
       cursor: pointer;
     }
+  }
+  &__doctor{
   }
 
 }

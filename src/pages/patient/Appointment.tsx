@@ -58,11 +58,12 @@ const AppointmentPage = ({ specialtyData, cityData, doctorsData }: { specialtyDa
   }
   return (
     <>
-      <section>
-        <h1 className="text-4xl font-bold text-primary-darker">Solicitar cita médica</h1>
+      <section className="appointment">
+      <section className="appointment__title">
+        <h1>Solicitar cita médica</h1>
       </section>
-      <section className="flex flex-row gap-6 my-6">
-        <section className="flex flex-row gap-6">
+      <section className="appointment__search">
+        <section className="appointment__search__body">
           <SelectComponent
             id="specialty"
             label="Especialidad"
@@ -83,7 +84,7 @@ const AppointmentPage = ({ specialtyData, cityData, doctorsData }: { specialtyDa
         <Button className="btn--secondary self-end" onClick={handleSearch}>Buscar</Button>
         <Button className="btn--outline self-end" onClick={handleReseat}>Resetear</Button>
       </section>
-      <section className="list-doctors">
+      <section className="list">
         {doctors.length < 0 && (
           <p>No hay doctores disponibles</p>
         )}
@@ -95,7 +96,8 @@ const AppointmentPage = ({ specialtyData, cityData, doctorsData }: { specialtyDa
         ))}
       </section>
       <section>
-      </section>
+    </section>
+  </section>
       <ModalProfileDoctor doctor={selectedDoctor} isOpen={isOpen} handleCloseModal={handleCloseModal} />
     </>
   );

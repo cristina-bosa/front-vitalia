@@ -1,3 +1,4 @@
+@use '../01-tools/mixins' as mixins;
 .layout {
   display: grid;
   grid-template-areas: "aside main";
@@ -12,4 +13,8 @@
   margin: 0 auto;
   padding-top: 4em;
   height: 100%;
+}
+
+.list{
+  @include mixins.grid(4);
 }
