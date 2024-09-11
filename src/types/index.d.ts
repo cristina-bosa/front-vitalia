@@ -3,7 +3,7 @@
  * @description Types and interfaces used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/08
+ * @updated 2024/09/11
  * @version 1.0
  */
 export interface RegisterData {
@@ -74,7 +74,6 @@ export interface User {
   type_user: string;
 }
 
-
 export interface Doctor {  
   id: number;
   first_name: string;
@@ -83,4 +82,18 @@ export interface Doctor {
   price: number;
   city: string
   stars: number;
+}
+
+export interface AllDoctors {
+  city: string;
+  end_schedule: string;
+  first_name: string;
+  id: number;
+  last_name: string;
+  price: string;
+  professional_number: string;
+  specialty: string;
+  stars: string;
+  start_schedule: string;
+  user: string;
 }

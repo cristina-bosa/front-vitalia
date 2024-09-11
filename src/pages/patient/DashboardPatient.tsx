@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -18,26 +18,20 @@ import {
 } from "@/actions/patients/doctors";
 
 import { useUser } from "@/context/useUser";
-import { Profile } from "@/types";
+import {AllDoctors, Doctor, Profile} from "@/types";
 
-const DashboardPatient = () => {
+interface DashboardPatientProps {
+    doctorsData: AllDoctors[];
+}
+const DashboardPatient: React.FC<DashboardPatientProps> = ({doctorsData}) => {
   const { profile } = useUser() as { profile: Profile };
 
-  const [doctors, setDoctors] = useState([]);  
+  const [doctors, setDoctors] = useState(doctorsData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedDoctor, setSelectedDoctor] = useState<any>();
 
-  useEffect(() => {
-    setIsLoading(true);
-    fetchTopFourDoctors().then((doctors) => {
-      setDoctors(doctors);
-      setIsLoading(false);
-    });
-  }, []);
-
   const handleOpenProfile = (id: number) => async () => {
-    console.log(id);
     setIsOpen(true);
     const doctor = await fetchOneDoctor(id);
     setSelectedDoctor(doctor);
@@ -57,7 +51,13 @@ const DashboardPatient = () => {
       </section>
       <section>
       <span className="text-color-dark-light">Médicos cercanos</span>
-          
+          {doctors.map((doctor:any) => (
+            <CardDoctor
+              key={doctor.id}
+              doctor={doctor}
+              handleClick={handleOpenProfile(doctor)}
+            />
+          ))}
       </section>
       <ModalProfileDoctor
         doctor={selectedDoctor}

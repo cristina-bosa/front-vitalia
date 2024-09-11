@@ -11,7 +11,7 @@ interface CardDoctorProps {
 const CardDoctor: React.FC<CardDoctorProps> = ({ doctor, handleClick }) => {
   const stars = Array.from({ length: doctor.stars }, (_, index) => index);
   return (
-    <article className="card card-doctor">
+    <article key={doctor.id} className="card card-doctor">
       <header className="card-doctor__header">
         <Image src="/assets/images/doctor.png" alt="Doctor" width={80} height={80} className="rounded-md" />
         <h3 className="text-xl font-bold text-primary">{doctor.first_name} {doctor.last_name}</h3>
