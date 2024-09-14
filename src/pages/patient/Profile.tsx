@@ -5,7 +5,8 @@ import PatientCardProfile from "@/components/ui/cards/PatientCardProfile";
 import WelcomeComponent from "@/components/ui/cards/WelcomeComponent";
 import PatientHistorical from "@/components/ui/PatientHistorical";
 
-import { PatientProfile, MedialHistoryPatient } from "@/types";
+import {MedialHistoryPatient, PatientProfile} from "@/types";
+
 interface PatientProps{
   profile: {
     user: PatientProfile;

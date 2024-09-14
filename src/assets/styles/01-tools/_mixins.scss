@@ -44,6 +44,15 @@
 
 @mixin card($bg-color: #fff) {
   background-color: $bg-color;
-  @include padding(1.5em);
+  @include padding(1.5em, 1.5em, 1.5em, 1.5em);
   @include border-radius();
+}
+
+$font-name-list: xs, sm, base, lg, xl, 2xl, 3xl, 4xl;
+$font-size-list: 0.75, 0.875, 1, 1.125, 1.25, 1.5, 1.875, 2.25;
+
+@each $name, $size in zip($font-name-list, $font-size-list) {
+  .text-#{$name} {
+    font-size: #{$size}rem;
+  }
 }

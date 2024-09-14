@@ -1,4 +1,4 @@
-import { EyeIcon } from "lucide-react";
+import {EyeIcon} from "lucide-react";
 
 const HistoricalPage = ({ historicalInfo }: { historicalInfo: any }) => {
   console.log(historicalInfo);  

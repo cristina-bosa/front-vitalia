@@ -1,9 +1,11 @@
+import {DateTime} from "next-auth/providers/kakao";
+
 /**
  * @file Index types
  * @description Types and interfaces used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/11
+ * @updated 2024/09/14
  * @version 1.0
  */
 export interface RegisterData {
@@ -82,6 +84,8 @@ export interface Doctor {
   price: number;
   city: string
   stars: number;
+  start_schedule: string;
+    end_schedule: string;
 }
 
 export interface AllDoctors {
@@ -96,4 +100,18 @@ export interface AllDoctors {
   stars: string;
   start_schedule: string;
   user: string;
+}
+
+export interface FormCreateAppointmentPatient {
+  patient_appointment: DateTime;
+  day_appointment: DateTime;
+  reason_consultation: string;
+  date_appointment: DateTime;
+  doctor_id: number;
+}
+
+export interface PostCreateAppointmentPatient {
+  doctor_id: number;
+  reason_consultation: string;
+  patient_appointment: DateTime;
 }

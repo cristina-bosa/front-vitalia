@@ -1,15 +1,15 @@
 'use client'
 
-import { useState } from "react";
+import {useState} from "react";
 
-import { fetchFilterDoctors, fetchOneDoctor } from "@/actions/patients/doctors";
+import {fetchFilterDoctors, fetchOneDoctor} from "@/actions/patients/doctors";
 
 import CardDoctor from "@/components/ui/cards/CardDoctor";
 import SelectComponent from "@/components/ui/Select";
 import Button from "@/components/ui/Button";
 
 import ModalProfileDoctor from "@/components/ui/modals/ModalProfileDoctor";
-import { Doctor } from "@/types";
+import {Doctor} from "@/types";
 
 const AppointmentPage = ({ specialtyData, cityData, doctorsData }: { specialtyData: any, cityData: any, doctorsData: any }) => {
 
@@ -84,7 +84,7 @@ const AppointmentPage = ({ specialtyData, cityData, doctorsData }: { specialtyDa
         <Button className="btn--secondary self-end" onClick={handleSearch}>Buscar</Button>
         <Button className="btn--outline self-end" onClick={handleReseat}>Resetear</Button>
       </section>
-      <section className="list">
+      <section className="list-doctors">
         {doctors.length < 0 && (
           <p>No hay doctores disponibles</p>
         )}

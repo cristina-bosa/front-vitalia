@@ -60,9 +60,10 @@ export async function fetchDataToken(endpoint: string, data?: any) {
   }
 }
 
-export async function fetchDataTokenPost(endpoint: string, data?: any) {
+export async function fetchDataTokenPost(endpoint: string, data: any) {
   const session = await getServerSession(authOptions);
   const token = session?.access_token;
+
   try {
     const response = await fetch(`${baseUrl}/${endpoint}`, {
       method: "POST",
@@ -72,13 +73,19 @@ export async function fetchDataTokenPost(endpoint: string, data?: any) {
       },
       body: JSON.stringify(data),
     });
-
+    const responseJson = await response.json();
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error);
+      const error = responseJson
+      console.log(error);
+      return {
+        status: error.status,
+        error: error,
+      }
     }
-
-    return await response.json();
+    return {
+        status: response.status,
+        data: responseJson,
+    };
   } catch (error) {
     console.error(error);
     throw new Error("Error al fetch");

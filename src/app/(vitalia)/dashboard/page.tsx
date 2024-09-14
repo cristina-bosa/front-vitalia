@@ -11,6 +11,7 @@ const DashboardPage = async () => {
   const session = await getServerSession(authOptions);
   const userRole = session?.user.groups[0];
   const doctors = await fetchDoctors()
+  console.log(doctors)
 
   switch (userRole) {
     case Roles.PATIENT:

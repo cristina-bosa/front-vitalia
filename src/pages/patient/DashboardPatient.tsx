@@ -1,24 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {useState} from "react";
 
-import { useRouter } from "next/navigation";
-
-import Card from "@/components/ui/cards/Card";
 import CardDoctor from "@/components/ui/cards/CardDoctor";
 import ModalProfileDoctor from "@/components/ui/modals/ModalProfileDoctor";
 import WelcomeComponent from "@/components/ui/cards/WelcomeComponent";
 import NotificationComponent from "@/components/ui/cards/NotificationComponent";
 import QuickAccessComponent from "@/components/ui/cards/QuickAccessComponent";
+import {fetchOneDoctor,} from "@/actions/patients/doctors";
 
-import { CircleArrowRight } from "lucide-react";
-import {
-  fetchOneDoctor,
-  fetchTopFourDoctors,
-} from "@/actions/patients/doctors";
-
-import { useUser } from "@/context/useUser";
-import {AllDoctors, Doctor, Profile} from "@/types";
+import {useUser} from "@/context/useUser";
+import {AllDoctors, Profile} from "@/types";
 
 interface DashboardPatientProps {
     doctorsData: AllDoctors[];
@@ -34,6 +26,7 @@ const DashboardPatient: React.FC<DashboardPatientProps> = ({doctorsData}) => {
   const handleOpenProfile = (id: number) => async () => {
     setIsOpen(true);
     const doctor = await fetchOneDoctor(id);
+    console.log(doctor)
     setSelectedDoctor(doctor);
   };
   const handleCloseModal = () => {
@@ -42,7 +35,7 @@ const DashboardPatient: React.FC<DashboardPatientProps> = ({doctorsData}) => {
 
   return (
     <>
-      <section className="dashboard">
+      <section className="dashboard__header">
         <WelcomeComponent user={profile} />
       </section>
       <section className="dashboard__body">
@@ -51,13 +44,15 @@ const DashboardPatient: React.FC<DashboardPatientProps> = ({doctorsData}) => {
       </section>
       <section>
       <span className="text-color-dark-light">Médicos cercanos</span>
+          <section className="list-doctors">
           {doctors.map((doctor:any) => (
             <CardDoctor
               key={doctor.id}
               doctor={doctor}
-              handleClick={handleOpenProfile(doctor)}
+              handleClick={handleOpenProfile(doctor.id)}
             />
           ))}
+          </section>
       </section>
       <ModalProfileDoctor
         doctor={selectedDoctor}
