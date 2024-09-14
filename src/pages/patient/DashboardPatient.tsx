@@ -7,13 +7,13 @@ import ModalProfileDoctor from "@/components/ui/modals/ModalProfileDoctor";
 import WelcomeComponent from "@/components/ui/cards/WelcomeComponent";
 import NotificationComponent from "@/components/ui/cards/NotificationComponent";
 import QuickAccessComponent from "@/components/ui/cards/QuickAccessComponent";
-import {fetchOneDoctor,} from "@/actions/patients/doctors";
+import {fetchAvailableHours, fetchOneDoctor,} from "@/actions/patients/doctors";
 
 import {useUser} from "@/context/useUser";
 import {AllDoctors, Profile} from "@/types";
 
 interface DashboardPatientProps {
-    doctorsData: AllDoctors[];
+    doctorsData:  AllDoctors[]
 }
 const DashboardPatient: React.FC<DashboardPatientProps> = ({doctorsData}) => {
   const { profile } = useUser() as { profile: Profile };
@@ -22,12 +22,12 @@ const DashboardPatient: React.FC<DashboardPatientProps> = ({doctorsData}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedDoctor, setSelectedDoctor] = useState<any>();
+  const [availableHours, setAvailableHours] = useState<any>();
 
   const handleOpenProfile = (id: number) => async () => {
+    const responseDoctor = await fetchOneDoctor(id);
+    setSelectedDoctor(responseDoctor.data);
     setIsOpen(true);
-    const doctor = await fetchOneDoctor(id);
-    console.log(doctor)
-    setSelectedDoctor(doctor);
   };
   const handleCloseModal = () => {
     setIsOpen(false);
@@ -45,7 +45,7 @@ const DashboardPatient: React.FC<DashboardPatientProps> = ({doctorsData}) => {
       <section>
       <span className="text-color-dark-light">Médicos cercanos</span>
           <section className="list-doctors">
-          {doctors.map((doctor:any) => (
+          {doctors?.map((doctor:any) => (
             <CardDoctor
               key={doctor.id}
               doctor={doctor}
@@ -55,7 +55,7 @@ const DashboardPatient: React.FC<DashboardPatientProps> = ({doctorsData}) => {
           </section>
       </section>
       <ModalProfileDoctor
-        doctor={selectedDoctor}
+        doctorData={selectedDoctor}
         isOpen={isOpen}
         handleCloseModal={handleCloseModal}
       />

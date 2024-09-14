@@ -3,7 +3,7 @@
  * @description Functions to fetch data from the API
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/03
+ * @updated 2024/09/14
  * @version 1.0
  */
 
@@ -25,10 +25,16 @@ export async function fetchData(endpoint: string, data?: any) {
 
     if (!response.ok) {
       const error = response.statusText;
-      throw new Error(error);
+      return {
+        status: response.status,
+        error: error,
+      }
     }
 
-    return await response.json();
+    return {
+      status: response.status,
+      data: await response.json(),
+    };
   } catch (error) {
     console.error(error);
     throw new Error("Error al fetch");
@@ -50,10 +56,16 @@ export async function fetchDataToken(endpoint: string, data?: any) {
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error);
+      return {
+        status: response.status,
+        error: error,
+      }
     }
 
-    return await response.json();
+    return {
+      status: response.status,
+      data: await response.json(),
+    };
   } catch (error) {
     console.error(error);
     throw new Error("Error al fetch");
@@ -73,18 +85,17 @@ export async function fetchDataTokenPost(endpoint: string, data: any) {
       },
       body: JSON.stringify(data),
     });
-    const responseJson = await response.json();
+
     if (!response.ok) {
-      const error = responseJson
-      console.log(error);
+      const error = await response.json();
       return {
-        status: error.status,
+        status: response.status,
         error: error,
       }
     }
     return {
         status: response.status,
-        data: responseJson,
+        data: await response.json(),
     };
   } catch (error) {
     console.error(error);

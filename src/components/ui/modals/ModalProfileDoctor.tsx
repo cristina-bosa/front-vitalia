@@ -1,13 +1,24 @@
-import Image from "next/image"
-import Button from "@/components/ui/Button"
+import React, {FormEvent, useEffect, useState} from "react";
 import { Star, XIcon } from "lucide-react";
-import {FormEvent, useState} from "react";
-import {fetchCreateAppointment} from "@/actions/patients/medical-appointment";
+import Image from "next/image"
 import toast from 'react-hot-toast';
-import {FormCreateAppointmentPatient} from "@/types";
+
+import Button from "@/components/ui/Button"
 import InputComponent from "@/components/ui/Input";
 
-const ModalProfileDoctor = ({ doctor, isOpen, handleCloseModal }: { doctor: any, isOpen: boolean, handleCloseModal: () => void }) => {
+import {fetchCreateAppointment} from "@/actions/patients/medical-appointment";
+
+import {FormCreateAppointmentPatient} from "@/types";
+import {HTTPStatus} from "@/types/enum";
+import {fetchAvailableHours} from "@/actions/patients/doctors";
+
+interface ModalProfileDoctorProps {
+    doctorData: any;
+    isOpen: boolean;
+    handleCloseModal: () => void;
+}
+const ModalProfileDoctor :React.FC<ModalProfileDoctorProps> = ({ doctorData, isOpen, handleCloseModal}) => {
+    const [doctor, setDoctor] = useState<any>();
     const [formData, setFormData] = useState<FormCreateAppointmentPatient>({
       patient_appointment: '',
       day_appointment: '',
@@ -15,20 +26,42 @@ const ModalProfileDoctor = ({ doctor, isOpen, handleCloseModal }: { doctor: any,
       reason_consultation: '',
       doctor_id: 0
     })
+    const [availableHours, setAvailableHours] = useState<string[]>([]);
     const actualDay = new Date().toISOString().substring(0, 10);
+
+    useEffect(() => {
+      setDoctor(doctorData)
+    }, [doctorData])
+
+    const handleAvailableHours =  async (date: string) => {
+      try{
+        const response = await fetchAvailableHours(doctor.id, date)
+        if(response.status === HTTPStatus.OK){
+          setAvailableHours(response.data)
+        }
+      }catch(error){
+        console.error(error)
+      }
+    }
     const handleCreateAppointment = async (event: FormEvent<HTMLFormElement>) =>{
       event.preventDefault();
       try{
         const response = await fetchCreateAppointment({
           patient_appointment: formData.day_appointment+" "+formData.date_appointment,
-          doctor_id: doctor.id,
+          doctor_id: doctorData.id,
           reason_consultation: formData.reason_consultation
         })
-        if(response.status === 201){
-            toast.success('Cita creada correctamente');
+        switch (response.status){
+          case HTTPStatus.CREATED:
+            toast.success('Se ha reservado la cita correctamente');
             handleCloseModal();
-        }else{
-            toast.error('No se ha podido crear la cita');
+            break;
+          case HTTPStatus.NOT_ACCEPTABLE:
+            toast.error('El doctor no tiene disponibilidad para ese día');
+            break;
+          case HTTPStatus.BAD_REQUEST:
+            toast.error('Error al reservar la cita');
+            break;
         }
       }catch(error){
         console.error(error)
@@ -42,8 +75,7 @@ const ModalProfileDoctor = ({ doctor, isOpen, handleCloseModal }: { doctor: any,
         })
       }
     }
-    if(doctor) {
-    const stars = Array.from({ length: doctor.stars }, (_, index) => index);
+    const stars = Array.from({ length: doctorData?.stars }, (_, index) => index);
       return (
           <section className={`modal ${isOpen ? 'modal--overlay' : ''}`}>
             <section className={`modal--content p-12 ${isOpen ? 'modal--content--open' : 'modal--content--close'}`}>
@@ -51,14 +83,14 @@ const ModalProfileDoctor = ({ doctor, isOpen, handleCloseModal }: { doctor: any,
                 <span className="modal--content__header__close"><XIcon onClick={handleCloseModal}/></span>
                 <Image src="/assets/images/doctor.png" alt="Doctor" width={150} height={500} className="rounded-md"/>
                 <section className="modal--content__header__content">
-                  <h2 className="text-2xl font-bold text-color-primary">{doctor.first_name} {doctor.last_name}</h2>
+                  <h2 className="text-2xl font-bold text-color-primary">{doctorData?.first_name} {doctorData?.last_name}</h2>
                   <section className="flex flex-col gap-3">
                     <span className="text-dark-lighter text-sm">Especialidad</span>
-                    <span className="text-primary-darker font-semibold">{doctor.specialty}</span>
+                    <span className="text-primary-darker font-semibold">{doctorData?.specialty}</span>
                   </section>
                   <section className="flex flex-col gap-3">
                     <span className="text-dark-lighter text-sm">Ciudad</span>
-                    <span className="text-primary-darker font-semibold">{doctor.city}</span>
+                    <span className="text-primary-darker font-semibold">{doctorData?.city}</span>
                   </section>
                   <section className="flex flex-col gap-3">
                     <span className="text-dark-lighter text-sm">Estrellas</span>
@@ -70,11 +102,11 @@ const ModalProfileDoctor = ({ doctor, isOpen, handleCloseModal }: { doctor: any,
                   </section>
                   <section className="flex flex-col gap-3">
                     <span className="text-dark-lighter text-sm">Coste</span>
-                    <span className="bg-info-lighter px-2 py-2 text-info-dark rounded-lg text-xl">{doctor.price}€</span>
+                    <span className="bg-info-lighter px-2 py-2 text-info-dark rounded-lg text-xl">{doctorData?.price}€</span>
                   </section>
                   <section className="flex flex-col gap-3">
                     <span className="text-dark-lighter text-sm">Horario laboral</span>
-                    <span className="text-primary-darker font-semibold">{doctor.start_schedule.substring(0,5)} - {doctor.end_schedule.substring(0,5)}</span>
+                    <span className="text-primary-darker font-semibold">{doctorData?.start_schedule.substring(0,5)} - {doctorData?.end_schedule.substring(0,5)}</span>
                   </section>
                 </section>
               </section>
@@ -87,7 +119,10 @@ const ModalProfileDoctor = ({ doctor, isOpen, handleCloseModal }: { doctor: any,
                       type="date"
                       placeholder={actualDay}
                       value={formData.day_appointment}
-                      onChange={(e) => setFormData({...formData, day_appointment: e.target.value})}
+                      onChange={(e) => {
+                        handleAvailableHours(e.target.value)
+                        setFormData({...formData, day_appointment: e.target.value})
+                      }}
                   />
                     <InputComponent
                         id="reason"
@@ -99,8 +134,8 @@ const ModalProfileDoctor = ({ doctor, isOpen, handleCloseModal }: { doctor: any,
                     />
                   <input className="input"
                          type="time"
-                         min={doctor.start_schedule.substring(0,5)}
-                         max={doctor.end_schedule.substring(0,5)}
+                         min={doctorData?.start_schedule.substring(0,5)}
+                         max={doctorData?.end_schedule.substring(0,5)}
                          value={formData.date_appointment}
                          onChange={(e) => setFormData({...formData, date_appointment: e.target.value})}
                          />
@@ -108,13 +143,11 @@ const ModalProfileDoctor = ({ doctor, isOpen, handleCloseModal }: { doctor: any,
                 </form>
               </section>
               <section>
-
                 <Button className="btn--outline" onClick={handleCloseModal}>Cerrar modal</Button>
               </section>
             </section>
           </section>
       )
-    }
 }
 
 export default ModalProfileDoctor
