@@ -5,7 +5,7 @@ import {DateTime} from "next-auth/providers/kakao";
  * @description Types and interfaces used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/14
+ * @updated 2024/09/15
  * @version 1.0
  */
 export interface RegisterData {
@@ -106,7 +106,6 @@ export interface FormCreateAppointmentPatient {
   patient_appointment: DateTime;
   day_appointment: DateTime;
   reason_consultation: string;
-  date_appointment: DateTime;
   doctor_id: number;
 }
 

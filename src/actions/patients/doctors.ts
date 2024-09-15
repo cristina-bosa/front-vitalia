@@ -7,7 +7,7 @@
  * @version 1.0
  */
 
-import { fetchDataToken } from "../fetch";
+import {fetchDataToken, fetchDataTokenPost} from "../fetch";
 
 export const fetchDoctors = async () => {
   return fetchDataToken(`doctors`);
@@ -26,5 +26,5 @@ export const fetchOneDoctor = async (id: number) => {
 };
 
 export const fetchAvailableHours = async (id:number, date:string) =>{
-  return fetchDataToken(`doctors/${id}/available-hours`, {patient_appointment: date});
+  return fetchDataTokenPost(`doctors/${id}/available-hours/`, {patient_appointment: date});
 }

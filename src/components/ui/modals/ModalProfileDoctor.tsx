@@ -11,6 +11,7 @@ import {fetchCreateAppointment} from "@/actions/patients/medical-appointment";
 import {FormCreateAppointmentPatient} from "@/types";
 import {HTTPStatus} from "@/types/enum";
 import {fetchAvailableHours} from "@/actions/patients/doctors";
+import {getHour} from "@/utils/utils";
 
 interface ModalProfileDoctorProps {
     doctorData: any;
@@ -19,25 +20,35 @@ interface ModalProfileDoctorProps {
 }
 const ModalProfileDoctor :React.FC<ModalProfileDoctorProps> = ({ doctorData, isOpen, handleCloseModal}) => {
     const [doctor, setDoctor] = useState<any>();
-    const [formData, setFormData] = useState<FormCreateAppointmentPatient>({
-      patient_appointment: '',
-      day_appointment: '',
-      date_appointment: '',
-      reason_consultation: '',
-      doctor_id: 0
-    })
     const [availableHours, setAvailableHours] = useState<string[]>([]);
-    const actualDay = new Date().toISOString().substring(0, 10);
+    const [selectedHour, setSelectedHour] = useState<string>('');
+    const [error, setError] = useState<string>('');
+    const [formData, setFormData] = useState<FormCreateAppointmentPatient>({
+    patient_appointment: '',
+    day_appointment: '',
+    reason_consultation: '',
+    doctor_id: 0
+  })
 
+    const actualDay = new Date().toISOString().substring(0, 10);
     useEffect(() => {
       setDoctor(doctorData)
     }, [doctorData])
 
     const handleAvailableHours =  async (date: string) => {
+      const appointmentDate = date+" "+getHour()
       try{
-        const response = await fetchAvailableHours(doctor.id, date)
-        if(response.status === HTTPStatus.OK){
-          setAvailableHours(response.data)
+        const response = await fetchAvailableHours(doctor.id, appointmentDate)
+        if(response){
+        switch (response.status){
+          case HTTPStatus.OK:
+            setAvailableHours(response.data)
+            break;
+          case HTTPStatus.NOT_FOUND:
+            toast.error('No hay horas disponibles para ese día');
+            setError('No hay horas disponibles para ese día')
+            break;
+          }
         }
       }catch(error){
         console.error(error)
@@ -47,21 +58,23 @@ const ModalProfileDoctor :React.FC<ModalProfileDoctorProps> = ({ doctorData, isO
       event.preventDefault();
       try{
         const response = await fetchCreateAppointment({
-          patient_appointment: formData.day_appointment+" "+formData.date_appointment,
+          patient_appointment: formData.day_appointment+" "+(selectedHour+":00"),
           doctor_id: doctorData.id,
           reason_consultation: formData.reason_consultation
         })
-        switch (response.status){
-          case HTTPStatus.CREATED:
-            toast.success('Se ha reservado la cita correctamente');
-            handleCloseModal();
-            break;
-          case HTTPStatus.NOT_ACCEPTABLE:
-            toast.error('El doctor no tiene disponibilidad para ese día');
-            break;
-          case HTTPStatus.BAD_REQUEST:
-            toast.error('Error al reservar la cita');
-            break;
+        if(response) {
+          switch (response.status) {
+            case HTTPStatus.CREATED:
+              toast.success('Se ha reservado la cita correctamente');
+              handleCloseModal();
+              break;
+            case HTTPStatus.NOT_ACCEPTABLE:
+              toast.error('El doctor no tiene disponibilidad para ese día');
+              break;
+            case HTTPStatus.BAD_REQUEST:
+              toast.error('Error al reservar la cita');
+              break;
+          }
         }
       }catch(error){
         console.error(error)
@@ -69,7 +82,6 @@ const ModalProfileDoctor :React.FC<ModalProfileDoctorProps> = ({ doctorData, isO
         setFormData({
           patient_appointment: '',
           day_appointment: '',
-          date_appointment: '',
           reason_consultation: '',
           doctor_id: 0
         })
@@ -124,6 +136,13 @@ const ModalProfileDoctor :React.FC<ModalProfileDoctorProps> = ({ doctorData, isO
                         setFormData({...formData, day_appointment: e.target.value})
                       }}
                   />
+                  <section className="flex flex-row gap-3">
+                  {availableHours.map((hour, index) => {
+                    return (
+                       <span className="btn" key={index} onClick={() => setSelectedHour(hour)}>{hour}</span>
+                    )
+                  })}
+                  </section>
                     <InputComponent
                         id="reason"
                         label="Motivo de la consulta"
@@ -132,13 +151,6 @@ const ModalProfileDoctor :React.FC<ModalProfileDoctorProps> = ({ doctorData, isO
                         value={formData.reason_consultation}
                         onChange={(e) => setFormData({...formData, reason_consultation: e.target.value})}
                     />
-                  <input className="input"
-                         type="time"
-                         min={doctorData?.start_schedule.substring(0,5)}
-                         max={doctorData?.end_schedule.substring(0,5)}
-                         value={formData.date_appointment}
-                         onChange={(e) => setFormData({...formData, date_appointment: e.target.value})}
-                         />
                   <Button className="btn--secondary self-end">Solicitar cita</Button>
                 </form>
               </section>

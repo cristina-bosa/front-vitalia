@@ -41,7 +41,7 @@ export async function fetchData(endpoint: string, data?: any) {
   }
 }
 
-export async function fetchDataToken(endpoint: string, data?: any) {
+export async function fetchDataToken(endpoint: string) {
   const session = await getServerSession(authOptions);
   const token = session?.access_token;
   try {
@@ -51,9 +51,7 @@ export async function fetchDataToken(endpoint: string, data?: any) {
         "Content-Type": "application/json",
         Authorization: `Token ${token}`,
       },
-      body: JSON.stringify(data),
     });
-
     if (!response.ok) {
       const error = await response.json();
       return {
@@ -99,6 +97,5 @@ export async function fetchDataTokenPost(endpoint: string, data: any) {
     };
   } catch (error) {
     console.error(error);
-    throw new Error("Error al fetch");
   }
 }
