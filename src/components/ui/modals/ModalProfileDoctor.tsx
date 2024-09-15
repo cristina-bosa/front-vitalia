@@ -1,18 +1,18 @@
 import React, {FormEvent, useEffect, useState} from "react";
 import { Star, XIcon } from "lucide-react";
-import Image from "next/image"
+
 import toast from 'react-hot-toast';
 
 import Button from "@/components/ui/Button"
 import InputComponent from "@/components/ui/Input";
 
 import {fetchCreateAppointment} from "@/actions/patients/medical-appointment";
+import {fetchAvailableHours} from "@/actions/patients/doctors";
 
 import {FormCreateAppointmentPatient} from "@/types";
 import {HTTPStatus} from "@/types/enum";
-import {fetchAvailableHours} from "@/actions/patients/doctors";
 import {getHour} from "@/utils/utils";
-
+import {CreateAppointmentSchema} from "@/schemas";
 interface ModalProfileDoctorProps {
     doctorData: any;
     isOpen: boolean;
@@ -21,7 +21,7 @@ interface ModalProfileDoctorProps {
 const ModalProfileDoctor :React.FC<ModalProfileDoctorProps> = ({ doctorData, isOpen, handleCloseModal}) => {
     const [doctor, setDoctor] = useState<any>();
     const [availableHours, setAvailableHours] = useState<string[]>([]);
-    const [selectedHour, setSelectedHour] = useState<string>('');
+    const [selectedHour, setSelectedHour] = useState<string | null>('');
     const [error, setError] = useState<string>('');
     const [formData, setFormData] = useState<FormCreateAppointmentPatient>({
     patient_appointment: '',
@@ -90,41 +90,43 @@ const ModalProfileDoctor :React.FC<ModalProfileDoctorProps> = ({ doctorData, isO
     const stars = Array.from({ length: doctorData?.stars }, (_, index) => index);
       return (
           <section className={`modal ${isOpen ? 'modal--overlay' : ''}`}>
-            <section className={`modal--content p-12 ${isOpen ? 'modal--content--open' : 'modal--content--close'}`}>
-              <section className="modal--content__header flex flex-row gap-6">
+            <section className={`modal--content ${isOpen ? 'modal--content--open' : 'modal--content--close'}`}>
+              <section className="modal--content__header">
                 <span className="modal--content__header__close"><XIcon onClick={handleCloseModal}/></span>
-                <Image src="/assets/images/doctor.png" alt="Doctor" width={150} height={500} className="rounded-md"/>
                 <section className="modal--content__header__content">
-                  <h2 className="text-2xl font-bold text-color-primary">{doctorData?.first_name} {doctorData?.last_name}</h2>
-                  <section className="flex flex-col gap-3">
-                    <span className="text-dark-lighter text-sm">Especialidad</span>
-                    <span className="text-primary-darker font-semibold">{doctorData?.specialty}</span>
+                  <h2
+                    className="text-2xl font-bold text-color-primary">{doctorData?.first_name} {doctorData?.last_name}</h2>
+                  <section className="modal--content__header__content__data">
+                    <span className="text-color-dark-light text-sm">Especialidad</span>
+                    <span className="text-color-primary-darker font-semibold">{doctorData?.specialty}</span>
                   </section>
-                  <section className="flex flex-col gap-3">
-                    <span className="text-dark-lighter text-sm">Ciudad</span>
-                    <span className="text-primary-darker font-semibold">{doctorData?.city}</span>
+                  <section className="modal--content__header__content__data">
+                    <span className="text-color-dark-light text-sm">Ciudad</span>
+                    <span className="text-color-primary-darker font-semibold">{doctorData?.city}</span>
                   </section>
-                  <section className="flex flex-col gap-3">
-                    <span className="text-dark-lighter text-sm">Estrellas</span>
+                  <section className="modal--content__header__content__data">
+                    <span className="text-color-dark-light text-sm">Valoración</span>
                     <section className="flex flex-row gap-2">
                       {stars.map((_, index) => (
-                          <Star key={index} className="text-yellow-500" size={20}/>
+                        <Star key={index} className="text-color-warning" size={20}/>
                       ))}
                     </section>
                   </section>
-                  <section className="flex flex-col gap-3">
-                    <span className="text-dark-lighter text-sm">Coste</span>
-                    <span className="bg-info-lighter px-2 py-2 text-info-dark rounded-lg text-xl">{doctorData?.price}€</span>
+                  <section className="modal--content__header__content__data">
+                    <span className="text-color-dark-light text-sm">Coste</span>
+                    <span
+                      className="badge badge--default">{doctorData?.price}€</span>
                   </section>
-                  <section className="flex flex-col gap-3">
-                    <span className="text-dark-lighter text-sm">Horario laboral</span>
-                    <span className="text-primary-darker font-semibold">{doctorData?.start_schedule.substring(0,5)} - {doctorData?.end_schedule.substring(0,5)}</span>
+                  <section className="modal--content__header__content__data">
+                    <span className="text-color-dark-light text-sm">Horario laboral</span>
+                    <span
+                      className="text-primary-darker font-semibold">{doctorData?.start_schedule.substring(0, 5)} - {doctorData?.end_schedule.substring(0, 5)}</span>
                   </section>
                 </section>
               </section>
               <section className="modal--content__body">
-                <h3 className="text-xl font-bold text-primary">Seleccione el día</h3>
-                <form onSubmit={handleCreateAppointment}>
+                <h3 className="text-xl font-bold text-color-primary">Datos de la reserva</h3>
+                <form className="forms" onSubmit={handleCreateAppointment}>
                   <InputComponent
                       id="date"
                       label="Seleccione el día"
@@ -136,26 +138,27 @@ const ModalProfileDoctor :React.FC<ModalProfileDoctorProps> = ({ doctorData, isO
                         setFormData({...formData, day_appointment: e.target.value})
                       }}
                   />
-                  <section className="flex flex-row gap-3">
+                  <section className="modal--content__header__content__hours">
                   {availableHours.map((hour, index) => {
                     return (
-                       <span className="btn" key={index} onClick={() => setSelectedHour(hour)}>{hour}</span>
+                      <span
+                        className={`badge ${selectedHour === hour ? 'badge--selected' : 'badge--default'}`}
+                        key={index}
+                        onClick={() => setSelectedHour(selectedHour === hour ? null : hour)}
+                      >{hour}</span>
                     )
                   })}
                   </section>
-                    <InputComponent
-                        id="reason"
-                        label="Motivo de la consulta"
+                  <InputComponent
+                    id="reason"
+                    label="Motivo de la consulta"
                         type="text"
                         placeholder="Motivo de la consulta"
                         value={formData.reason_consultation}
                         onChange={(e) => setFormData({...formData, reason_consultation: e.target.value})}
                     />
-                  <Button className="btn--secondary self-end">Solicitar cita</Button>
+                  <Button className="btn btn--primary">Solicitar cita</Button>
                 </form>
-              </section>
-              <section>
-                <Button className="btn--outline" onClick={handleCloseModal}>Cerrar modal</Button>
               </section>
             </section>
           </section>

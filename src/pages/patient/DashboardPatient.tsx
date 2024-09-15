@@ -7,7 +7,7 @@ import ModalProfileDoctor from "@/components/ui/modals/ModalProfileDoctor";
 import WelcomeComponent from "@/components/ui/cards/WelcomeComponent";
 import NotificationComponent from "@/components/ui/cards/NotificationComponent";
 import QuickAccessComponent from "@/components/ui/cards/QuickAccessComponent";
-import {fetchAvailableHours, fetchOneDoctor,} from "@/actions/patients/doctors";
+import {fetchOneDoctor} from "@/actions/patients/doctors";
 
 import {useUser} from "@/context/useUser";
 import {AllDoctors, Profile} from "@/types";
@@ -17,7 +17,6 @@ interface DashboardPatientProps {
 }
 const DashboardPatient: React.FC<DashboardPatientProps> = ({doctorsData}) => {
   const { profile } = useUser() as { profile: Profile };
-
   const [doctors, setDoctors] = useState(doctorsData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);

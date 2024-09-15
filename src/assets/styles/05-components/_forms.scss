@@ -1,3 +1,9 @@
+@use '../00-settings/variables' as variables;
+@use '../01-tools/mixins' as mixins;
+
+.forms{
+  @include mixins.flex-position(column, _, _, .5em);
+}
 .form-group {
   display: flex;
   flex-direction: column;

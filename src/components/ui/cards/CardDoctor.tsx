@@ -16,21 +16,21 @@ const CardDoctor: React.FC<CardDoctorProps> = ({ doctor, handleClick }) => {
         <Image className="card__doctor__header__image" src="/assets/images/doctor.png" alt="Doctor" width={80} height={80} />
       </header>
       <section className="card__doctor__body">
-        <h3 className="text-xl font-bold text-color-primary">{doctor.first_name} {doctor.last_name.substring(0, 4)}...</h3>
-        <p className="text-dark-light">{doctor.specialty}</p>
-        <p className="text-dark-light">{doctor.city}</p>
-        <section className="flex flex-row gap-2">
+        <h3 className="text-xl text-color-primary">{doctor.first_name} {doctor.last_name.substring(0, 4)}...</h3>
+        <p className="text-color-dark-light">{doctor.specialty}</p>
+        <p className="text-color-dark-light">{doctor.city}</p>
+        <section className="card__doctor__body--stars">
           {stars.map((_, index) => (
-            <Star key={index} className="text-yellow-500" size={20} />
+            <Star key={index} className="text-color-warning" size={20} />
           ))}
         </section>
-          <section>
-              <span>Horario laboral</span>
-              <p>{doctor.end_schedule.substring(0,5)}-{doctor.start_schedule.substring(0,5)}</p>
-          </section>
+        <section className={"card__doctor__body--schedule"}>
+            <span className="text-xs text-color-dark-light">Horario laboral</span>
+            <p className={"text-color-primary-dar"}>{doctor.end_schedule.substring(0,5)}-{doctor.start_schedule.substring(0,5)}</p>
+        </section>
       <section className="card__doctor__footer">
-        <span className="bg-info-lighter px-2 py-2  text-info-dark font-semibold rounded-lg">{doctor.price}€</span>
-        <span onClick={handleClick}><CircleArrowRight className="text-secondary hover:cursor-pointer" size={24} /></span>
+        <span className="badge badge--default">{doctor.price}€</span>
+        <span onClick={handleClick}><CircleArrowRight className="text-color-secondary" size={24} /></span>
       </section>
       </section>
     </article>

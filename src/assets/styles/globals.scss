@@ -15,14 +15,14 @@
 @use '05-components/modal-profile-doctor';
 @use '05-components/sidebar';
 @use '05-components/cards';
+@use '05-components/buttons';
+@use '05-components/badge';
+@use '05-components/inputs';
+@use '05-components/multistep';
+@use '05-components/forms';
 
 @use '06-utilities/typo';
 
-@tailwind components;
-@tailwind utilities;
-
-@import "./components/buttons.scss";
-@import "./components/inputs.scss";
-@import "./components/forms.scss";
-@import "./components/multistep.scss";
-@import "./components/details.scss";
+body{
+  overflow-x: hidden;
+}

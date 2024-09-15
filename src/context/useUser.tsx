@@ -3,6 +3,7 @@
 import { fetchProfile } from "@/actions/patients/profile";
 import { Profile } from "@/types";
 import { createContext, useContext, useEffect, useState } from "react";
+import {HTTPStatus} from "@/types/enum";
 
 const UserContext = createContext<unknown>(undefined);
 
@@ -16,11 +17,15 @@ export const UserProvider = ({ children }: UseProviderProps) => {
   useEffect(() => {
     const loadProfile = async () => {
       const response = await fetchProfile();
-      setProfile(response.user);
+      if(response.status === HTTPStatus.OK){
+      setProfile(response.data.user);
+      }
     };
     const loadMedicalHistory = async () => {
       const response = await fetchProfile();
-      setMedicalHistory(response.medical_history);
+      if(response.status === HTTPStatus.OK){
+      setMedicalHistory(response.data.medical_history);
+      }
     };
     loadProfile();
     loadMedicalHistory();

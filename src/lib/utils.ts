@@ -31,6 +31,7 @@ export const authOptions: NextAuthOptions = {
             Authorization: `Token ${token.access_token}`,
           },
         });
+
         const user = await profileUser.json();
         if (!response.ok) {
           throw new Error(user.message);

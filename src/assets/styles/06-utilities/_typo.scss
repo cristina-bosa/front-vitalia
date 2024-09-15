@@ -43,6 +43,9 @@
       &-light {
         color: var.$dark-light !important;
       }
-    }    
+    }
+    &-warning{
+        color: var.$warning-primary !important;
+    }
   }
 }

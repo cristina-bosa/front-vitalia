@@ -47,19 +47,31 @@
     }
   }
   &__doctor{
-    @include mixins.flex-position(row, space-around , left, .5em);
+    @include mixins.flex-position(row, _ , left, .5em);
     &__header{
       &__image{
-        height: 100%;
+        height: 50%;
         width: auto;
         @include mixins.border-radius()
       }
     }
     &__body{
       @include mixins.flex-position(column, left, left, .5em);
+      width: 100%;
+      &--stars{
+        @include mixins.flex-position(row, left, center, .5em);
+      }
+      &--schedule{
+        @include mixins.flex-position(column, left, left, .5em);
+      }
     }
     &__footer{
       @include mixins.flex-position(row, space-between, center, 1.5em);
+      span:nth-child(2){
+        &:hover{
+          cursor: pointer;
+      }
+      }
     }
   }
 
