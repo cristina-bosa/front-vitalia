@@ -2,11 +2,10 @@
 @use '../01-tools/mixins' as mixins;
 
 .input {
-  border: .12em solid theme('colors.dark-light');
-  padding: 1em 1em;
-  border-radius: theme('borderRadius.br');
-  max-width: 395px;
-  width: 395px;
+  border: .12em solid var.$primary-darker;
+  @include mixins.padding();
+  @include mixins.border-radius();
+
 
   &--error {
     border-color: theme('colors.error-primary');

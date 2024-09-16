@@ -5,13 +5,10 @@ import PatientCardProfile from "@/components/ui/cards/PatientCardProfile";
 import WelcomeComponent from "@/components/ui/cards/WelcomeComponent";
 import PatientHistorical from "@/components/ui/PatientHistorical";
 
-import {MedialHistoryPatient, PatientProfile} from "@/types";
+import {MedialHistoryPatient} from "@/types";
 
 interface PatientProps{
-  profile: {
-    user: PatientProfile;
-    medical_history: MedialHistoryPatient;
-  };
+  profile: any;
 
 }
 const PatientProfilePage: React.FC <PatientProps> = ({profile}) => {
