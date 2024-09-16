@@ -1,6 +1,6 @@
 import Sidebar from "@/components/navbar/Sidebar";
-import Footer from "@/components/Footer";
-
+import { UserProvider } from "@/context/useUser";
+import {Toaster} from "react-hot-toast";
 
 export default function RootLayout({
   children,
@@ -8,11 +8,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <section className="layout">
-      <Sidebar />
-      <main className="container mx-auto h-screen">
-        {children}
-      </main>
-    </section>
+    <UserProvider>
+      <section className="layout">
+        <Sidebar />
+        <main className="container">{children}</main>
+          <Toaster
+            position="top-right"
+          />
+      </section>
+    </UserProvider>
   );
 }

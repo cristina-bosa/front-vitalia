@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Link from "next/link";
 
 import Select from 'react-select';
@@ -7,14 +7,21 @@ import Button from "@/components/ui/Button";
 import InputComponent from "@/components/ui/Input";
 import SelectComponent from "@/components/ui/Select";
 
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import {ArrowLeft, ArrowRight} from "lucide-react";
 
-import { stepRegisterPatient, typeRegister, } from "@/constants";
+import {stepRegisterPatient, typeRegister,} from "@/constants";
 
-import { fetchRegister } from "@/actions/auth";
-import { fetchGenre, fetchCity, fetchAllergies, fetchMedicalInterventions, fetchRelevantDiseases, fetchMedications } from "@/actions/utils";
-import { RegisterSchema, RegisterPatientSchema } from "@/schemas";
-import { RegisterPatientData } from '@/types';
+import {fetchRegister} from "@/actions/auth";
+import {
+  fetchAllergies,
+  fetchCity,
+  fetchGenre,
+  fetchMedicalInterventions,
+  fetchMedications,
+  fetchRelevantDiseases
+} from "@/actions/utils";
+import {RegisterPatientSchema, RegisterSchema} from "@/schemas";
+import {RegisterPatientData} from '@/types';
 
 interface SelectData {
   value: string,

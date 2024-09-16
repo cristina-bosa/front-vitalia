@@ -1,0 +1,58 @@
+@mixin flex-position($direction: row, $justify: center, $align: center, $gap: 1.5em) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+}
+
+@mixin grid($columns: 12, $gap: 1.5em) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+}
+
+@mixin mq($breakpoint) {
+  @if $breakpoint ==phone {
+    @media (max-width: 599px) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint ==tablet {
+    @media (min-width: 600px) and (max-width: 1024px) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint ==desktop {
+    @media (min-width: 1025px) {
+      @content;
+    }
+  }
+}
+
+@mixin border-radius($radius: .5em) {
+  border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+}
+
+@mixin padding($top: .5em, $right: 1em, $bottom: .5em, $left: 1em) {
+  padding: $top $right $bottom $left;
+}
+
+@mixin card($bg-color: #fff) {
+  background-color: $bg-color;
+  @include padding(1.5em, 1.5em, 1.5em, 1.5em);
+  @include border-radius();
+}
+
+$font-name-list: xs, sm, base, lg, xl, 2xl, 3xl, 4xl;
+$font-size-list: 0.75, 0.875, 1, 1.125, 1.25, 1.5, 1.875, 2.25;
+
+@each $name, $size in zip($font-name-list, $font-size-list) {
+  .text-#{$name} {
+    font-size: #{$size}rem;
+  }
+}

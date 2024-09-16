@@ -1,17 +1,14 @@
 'use client'
 
-import { startTransition, useState } from "react";
+import {startTransition, useState} from "react";
 
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
 import Link from "next/link";
 
-import { useSession } from "next-auth/react";
+import {signIn, useSession} from "next-auth/react";
 
 import Button from "@/components/ui/Button";
 import InputComponent from "@/components/ui/Input";
-
-import { signIn } from "next-auth/react";
-
 
 
 const Login = () => {
@@ -32,7 +29,7 @@ const Login = () => {
           console.error(data.error)
           return
         }
-        router.push('/patient/dashboard')
+        router.push('/dashboard')
       })
     })
 

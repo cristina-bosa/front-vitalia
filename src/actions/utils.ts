@@ -1,22 +1,25 @@
-import { baseUrl } from "@/constants";
+/**
+ * @file Utils
+ * @description Functions to fetch data from the API 
+ * @author Cristina Bosa
+ * @created 2024/09/03
+ * @updated 2024/09/03
+ * @version 1.0
+ */
+
+
 import { fetchData } from "./fetch";
 
 export async function fetchGenre() {
-  const response = await fetch(`${baseUrl}/auth/choices/genre`);
-  const data = await response.json();
-  return data;
+  return fetchData(`auth/choices/genre`);  
 }
 
 export async function fetchCity() {
-  const response = await fetch(`${baseUrl}/auth/city`);
-  const data = await response.json();
-  return data;
+  return fetchData(`auth/city`);
 }
 
 export async function fetchSpecialty() {
-  const response = await fetch(`${baseUrl}/auth/specialty`);
-  const data = await response.json();
-  return data;
+  return fetchData(`auth/specialty`); 
 }
 
 export const fetchAllergies = async () => {

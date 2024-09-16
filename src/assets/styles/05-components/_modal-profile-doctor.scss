@@ -1,0 +1,65 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mixins;
+.modal {
+  display: none;
+  &--overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    transition: background-color .3s ease-in-out;
+  }
+
+  &--content {
+    @include mixins.padding(1.5em, 1.5em, 1.5em, 1.5em);
+    overflow-y: auto;
+    position: absolute;
+    background-color: var.$light;
+    top: 0;
+    right: -100%;
+    @include mixins.flex-position(column, _, _, .5em);
+    border-top-left-radius: 1.5em;
+    border-bottom-left-radius: 1.5em;
+    &__header{
+      @include mixins.flex-position(center, _, end, .5em);
+      &__close{
+        position: absolute;
+        top: 1em;
+        right: 1em;
+        cursor: pointer;
+      }
+      &__content{
+        @include  mixins.flex-position(column, center, _, 1.5em);
+        &__data{
+          @include mixins.flex-position(column, _, _, .5em);
+        }
+        &__hours{
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+          gap: 1.5em;
+
+        }
+      }
+    }
+    &__body{
+      @include mixins.flex-position(column, center, _, 1.5em);
+      margin-top: 1.5em;
+      @include mixins.card()
+
+    }
+    &--open{
+      right: 0;
+      transition: right .5s ease-in-out;
+    }
+    &--close{
+      right: -35%;
+      transition: right .3s ease-in-out;
+    }
+  } 
+}

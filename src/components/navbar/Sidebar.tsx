@@ -1,52 +1,58 @@
-"use client"
+"use client";
 
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, HeartPulse, CalendarCheck, User} from "lucide-react";
+import { LogOutIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { signOut, useSession } from "next-auth/react";
+
+import { routes } from "@/constants";
+
+import Button from "@/components/ui/Button";
 
 const Sidebar = () => {
+  const { data: session } = useSession();
   const pathname = usePathname();
+
+  const user = session?.user;
+  const userRole = user?.groups[0];
+
+  const route = routes.filter((route) => route.roles.includes(userRole));
+
   return (
-    <aside className="fixed top-0 left-0 w-auto h-full" aria-label="Sidenav">
-      <section className="overflow-y-auto py-5 px-3 h-full border-r-2 border-primary">
-        <section>
-          <Image src="/symbol.svg" alt="brand vitalia" width={54} height={54}/>
+    <aside className="sidebar">
+      <section className="sidebar__top">
+        <Image src="/symbol.svg" alt="brand vitalia" width={54} height={54} />
+        <section className="sidebar__top-nav">
+          {route?.map((nav) => (
+            <Link
+              key={nav.label}
+              href={nav.path}
+              className={`sidebar__link ${
+                pathname === nav.path ? "sidebar__link--active" : ""
+              }`}
+            >
+              <Image src={nav.icon} alt={nav.label} width={24} height={24} />
+              {nav.label}
+            </Link>
+          ))}
         </section>
-        <ul className="space-y-2 mt-4">
-          <li>
-            <Link 
-              href="/patient/dashboard"
-              className={`flex items-center p-2 text-base font-normal ${pathname === '/patient/dashboard' ? 'text-primary-darker bg-primary-lighter' : 'text-primary-darker'} rounded-lg hover:bg-primary hover:text-light`}
-            >
-              <LayoutDashboard size={32}/>
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/patient/historical"
-              className={`flex items-center p-2 text-base font-normal ${pathname === '/patient/historical' ? 'text-primary-darker bg-primary-lighter' : 'text-primary-darker'} rounded-lg hover:bg-primary hover:text-light`}
-            >
-              <HeartPulse size={32} />
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/patient/appointment"
-              className={`flex items-center p-2 text-base font-normal ${pathname === '/patient/appointment' ? 'text-primary-darker bg-primary-lighter' : 'text-primary-darker'} rounded-lg hover:bg-primary hover:text-light`}
-            >
-              <CalendarCheck size={32} />
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/patient/profile"
-              className={`flex items-center p-2 text-base font-normal ${pathname === '/patient/profile' ? 'text-primary-darker bg-primary-lighter' : 'text-primary-darker'} rounded-lg hover:bg-primary hover:text-light`}
-            >
-              <User size={32} />
-            </Link>
-          </li>
-        </ul>
+      </section>
+      <section className="sidebar__bottom">
+        <p className="sidebar__bottom-link">
+          {user?.first_name} {user?.last_name}
+        </p>
+        <Button
+          onClick={() => {
+            signOut({
+              redirect: true,
+              callbackUrl: "/",
+            });
+          }}
+        >
+          <LogOutIcon size={24} />
+          Cerrar sesión
+        </Button>
       </section>
     </aside>
   );

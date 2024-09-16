@@ -1,0 +1,19 @@
+@use '../00-settings/variables' as variables;
+@use '../01-tools/mixins' as mixins;
+
+.badge{
+  @include mixins.padding(.5em, .5em, .5em, .5em);
+  @include mixins.border-radius();
+  @include mixins.flex-position(row, center, center, .5em);
+  &:hover{
+    cursor: pointer;
+  }
+  &--selected{
+    background-color: variables.$secondary;
+    color: variables.$light;
+  }
+  &--default{
+    background-color: variables.$primary-light;
+    color: variables.$dark;
+  }
+}

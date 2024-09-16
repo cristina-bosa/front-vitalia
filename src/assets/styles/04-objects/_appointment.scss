@@ -1,0 +1,12 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mixins;
+
+.appointment{
+  @include mixins.flex-position(column, left, left, 1.5em);
+  &__search{
+    @include mixins.flex-position(row);
+    &__body{
+        @include mixins.flex-position(row, left, left, 1.5em);
+    }
+  }
+}

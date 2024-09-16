@@ -1,0 +1,51 @@
+@use '../00-settings/variables' as var;
+
+.text {
+  &-color {
+    &-primary {
+      color: var.$primary !important;
+
+      &-lightest {
+        color: var.$primary-lightest !important;
+      }
+
+      &-light {
+        color: var.$primary-light !important;
+      }
+
+      &-dark {
+        color: var.$primary-dark !important;
+      }
+
+      &-darker {
+        color: var.$primary-darker !important;
+      }
+    }
+
+    &-secondary {
+      color: var.$secondary !important;
+
+      &-dark {
+        color: var.$secondary-dark !important;
+      }
+
+      &-darker {
+        color: var.$secondary-darker !important;
+      }
+    }
+
+    &-light {
+      color: var.$light !important;
+    }
+
+    &-dark {
+      color: var.$dark !important;
+      &-light {
+        color: var.$dark-light !important;
+      }
+    }
+    &-warning{
+        color: var.$warning-primary !important;
+    }
+  }
+}

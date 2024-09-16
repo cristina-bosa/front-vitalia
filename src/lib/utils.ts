@@ -26,11 +26,12 @@ export const authOptions: NextAuthOptions = {
 
         const token = await response.json();
 
-        const profileUser = await fetch(`${baseUrl}/auth/me`, {
+        const profileUser = await fetch(`${baseUrl}/auth/user/profile`, {
           headers: {
             Authorization: `Token ${token.access_token}`,
           },
         });
+
         const user = await profileUser.json();
         if (!response.ok) {
           throw new Error(user.message);
