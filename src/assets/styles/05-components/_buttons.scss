@@ -4,35 +4,44 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  @include mixins.padding(1.5em, 1.5em, 1.5em, 1.5em);
+  @include mixins.padding();
   border-radius: .5em;
   max-width: fit-content;
   max-height: 56px;
   gap: .5em;
-  background-color: theme('colors.primary');
+  background-color: var.$primary;
   &:hover {
-    background-color: theme('colors.primary-dark');
+    background-color: var.$primary-darker;
     transition: background-color .3s ease-in-out;
+    cursor: pointer;
   }
   &--secondary{
-    background-color: theme('colors.secondary');
+    background-color: var.$secondary;
     &:hover {
-      background-color: theme('colors.secondary-dark');
+      background-color: var.$secondary-darker;
     }
   }
   &--primary{
-    background-color: theme('colors.primary');
-    &:hover {
-      background-color: theme('colors.primary-dark');
+    background-color: var.$primary;
+    &--soft{
+        color: var.$primary-darker;
+        background-color: var.$primary-light;
+        &:hover {
+            background-color: darken(var.$primary-light, 10%);
+        }
     }
-  }  
+    &:hover {
+      background-color: var.$primary-darker;
+    }
+  }
+
   &--outline{
     background-color: transparent;
-    border: .12em solid theme('colors.primary');
-    color: theme('colors.primary');
+    border: .12em solid var.$primary;
+    color: var.$primary;
     &:hover {
-      background-color: theme('colors.primary');
-      color: theme('colors.white');
+      background-color: var.$primary;
+      color: var.$light;
     }
   }
 }

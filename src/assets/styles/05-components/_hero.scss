@@ -1,0 +1,7 @@
+@use '../00-settings/variables' as variables;
+@use '../01-tools/mixins' as mixins;
+
+.hero{
+  @include mixins.flex-position(column, _, _, .5em);
+
+}

@@ -3,6 +3,7 @@ import { NextAuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { baseUrl } from "@/constants";
+import profile from "@/pages/patient/Profile";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -31,7 +32,6 @@ export const authOptions: NextAuthOptions = {
             Authorization: `Token ${token.access_token}`,
           },
         });
-
         const user = await profileUser.json();
         if (!response.ok) {
           throw new Error(user.message);

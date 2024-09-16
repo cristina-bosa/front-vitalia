@@ -4,15 +4,15 @@
   grid-template-areas: "aside main";
   grid-template-columns: 300px 1fr;
   height: 100vh;
-  gap: 1.5em;
 }
 
 .container{
   grid-area: main;
-  max-width: 1200px;
+  max-width: 1536px;
+  width: 100%;
   margin: 0 auto;
-  padding-top: 4em;
   height: 100%;
+  padding-top: 1.5em;
 }
 
 .list{

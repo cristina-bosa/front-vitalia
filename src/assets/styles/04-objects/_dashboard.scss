@@ -13,6 +13,31 @@
   &__quick__access{
     @include mix.flex-position(column, space-between, left);
     margin-top: 1.5rem;
+  }
+  &--admin{
+    @include mix.flex-position(column, space-between, left);
+    &__header{
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    &__body{
+      @include mix.flex-position(row, space-between, _, 1.5em);
+      &__patient{
+        @include mix.card(var.$light);
+        width: 100%;
+        h3{
+          margin-bottom: 1.5rem;
+        }
+
+      }
+      &__doctors{
+        @include mix.card(var.$light);
+        width: 100%;
+        h3{
+          margin-bottom: 1.5rem;
+        }
+      }
+    }
 
   }
 }

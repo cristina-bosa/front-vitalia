@@ -3,7 +3,7 @@
  * @description Constants used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/08
+ * @updated 2024/09/16
  * @version 1.0
  */
 
@@ -52,6 +52,18 @@ export const routes = [
     roles: [Roles.PATIENT, Roles.DOCTOR, Roles.ADMIN],
   },
   {
+    label:"Solicitud de acceso",
+    path:"/requests-access",
+    icon:"/assets/svg/nav-requests.svg",
+    roles:[Roles.ADMIN]
+  },
+  {
+    label:"Usuarios",
+    path:"/all-users",
+    icon:"/assets/svg/nav-users.svg",
+    roles:[Roles.ADMIN]
+  },
+  {
     label: "Solicitar cita médica",
     path: "/appointments",
     icon: "/assets/svg/nav-appointment.svg",
@@ -70,3 +82,8 @@ export const routes = [
     roles: [Roles.PATIENT, Roles.DOCTOR, Roles.ADMIN],
   },
 ];
+
+export const BadgeStatus = {
+  "Pendiente": "badge--pending",
+  "Aceptado": "badge--accepted",
+}

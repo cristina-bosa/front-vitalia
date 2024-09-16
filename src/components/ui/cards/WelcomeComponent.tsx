@@ -1,7 +1,8 @@
 import { Profile } from "@/types";
+import React from "react";
 
 interface WelcomeComponentProps {
-  user: Profile;
+  user: any;
 }
 
 const WelcomeComponent: React.FC<WelcomeComponentProps> = ({ user }) => {

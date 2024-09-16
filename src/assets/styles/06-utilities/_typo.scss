@@ -40,12 +40,34 @@
 
     &-dark {
       color: var.$dark !important;
+
       &-light {
         color: var.$dark-light !important;
       }
     }
-    &-warning{
-        color: var.$warning-primary !important;
+
+    &-warning {
+      color: var.$warning-primary !important;
+    }
+
+    &-error {
+      color: var.$error !important;
+      &-darker{
+        color: var.$error-darker !important;
+      }
+      &-lightest {
+        color: var.$error-lightest !important;
+      }
+    }
+
+    &-success {
+      color: var.$success-primary !important;
+        &-darker{
+            color: var.$success-darker !important;
+        }
+      &-lightest{
+        color: var.$success-lightest !important;
+      }
     }
   }
 }

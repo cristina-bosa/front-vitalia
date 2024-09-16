@@ -1,0 +1,24 @@
+@use '../00-settings/variables' as variables;
+@use '../01-tools/mixins' as mixins;
+.request{
+  @include mixins.flex-position(column, _, _, 1.5em);
+  &__header{
+    @include mixins.flex-position(column, _, _, .5em);
+  }
+  &__not-found{
+    @include mixins.flex-position(column, center, center, 1em);
+    h2{
+      text-align: center;
+      max-width: 45ch;
+    }
+  }
+  &__content{
+    @include mixins.flex-position(column, _, _, 1em);
+    width: 100%;
+    max-width: 100%;
+    &--full{
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+}

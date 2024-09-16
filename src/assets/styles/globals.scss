@@ -7,10 +7,14 @@
 
 @use '03-elements/button';
 @use '03-elements/headers';
+@use '03-elements/table';
 
 @use '04-objects/layout';
 @use '04-objects/dashboard';
 @use '04-objects/appointment';
+@use '04-objects/tables';
+@use '04-objects/request-access';
+@use '04-objects/users';
 
 @use '05-components/modal-profile-doctor';
 @use '05-components/sidebar';
@@ -20,6 +24,7 @@
 @use '05-components/inputs';
 @use '05-components/multistep';
 @use '05-components/forms';
+@use '05-components/hero';
 
 @use '06-utilities/typo';
 
