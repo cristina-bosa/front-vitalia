@@ -1,0 +1,36 @@
+@use '../00-settings/variables' as variables;
+@use '../01-tools/mixins' as mixins;
+
+.table{
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    &__header{
+        color: variables.$dark-lighter;
+        &--item{
+            @include mixins.padding(.5em,.5em, .5em, .5em);
+            text-align: left;
+        }
+    }
+    &__body{
+        &--item{
+        @include mixins.padding(.5em,.5em, .5em, .5em);
+            color: variables.$dark;
+
+        }
+    }
+    tbody{
+        tr{
+            border-bottom: 1px solid variables.$primary-darker;
+            &:nth-child(even){
+                background-color: variables.$light;
+            }
+            &:hover{
+                cursor: pointer;
+                background-color: variables.$light;
+                font-weight: bold;
+            }
+        }
+    }
+
+}

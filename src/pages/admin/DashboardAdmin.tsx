@@ -1,137 +1,76 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-
-import { useEffect, useState } from "react";
-
-import { useRouter } from "next/navigation";
-
-import NotificationCard from "@/components/ui/cards/NotificationCard";
-import Card from "@/components/ui/cards/Card";
-import CardDoctor from "@/components/ui/cards/CardDoctor";
-import ModalProfileDoctor from "@/components/ui/modals/ModalProfileDoctor";
-
-import { CircleArrowRight } from "lucide-react";
-import {
-  fetchOneDoctor,
-  fetchTopFourDoctors,
-} from "@/actions/patients/doctors";
-import Image from "next/image";
 import WelcomeComponent from "@/components/ui/cards/WelcomeComponent";
+import React, {useState} from "react";
+import {useUser} from "@/context/useUser";
+import {BadgeStatus} from "@/constants";
 
-const DashboardAdmin = () => {
-  const { data: session } = useSession();
-  const user = session?.user;
-  const router = useRouter();
-  const date = new Date();
-  const day = date.getDate();
-  const month = date.toLocaleString("default", { month: "long" });
-  const year = date.getFullYear();
+interface DashboardAdminProps {
+  lastDoctors: any;
+  lastPatients: any;
+}
+const DashboardAdmin : React.FC<DashboardAdminProps> = ({lastDoctors, lastPatients}) => {
+  const user = useUser()
+  const [doctors, setDoctors] = useState<[]>(lastDoctors);
+  const [patients, setPatients] = useState<[]>(lastPatients);
 
-  const [doctors, setDoctors] = useState([]);
-  const [notifications, setNotifications] = useState([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedDoctor, setSelectedDoctor] = useState<any>();
-
-  useEffect(() => {
-    setIsLoading(true);
-    fetchTopFourDoctors().then((doctors) => {
-      setDoctors(doctors);
-      setIsLoading(false);
-    });
-  }, []);
-
-  const handleAppointment = () => {
-    router.push("/patient/appointment");
-  };
-
-  const handleHistorical = () => {
-    router.push("/patient/historical");
-  };
-
-  const handleOpenProfile = (id: number) => async () => {
-    console.log(id);
-    setIsOpen(true);
-    const doctor = await fetchOneDoctor(id);
-    setSelectedDoctor(doctor);
-  };
-  const handleCloseModal = () => {
-    setIsOpen(false);
-  };
 
   return (
-    <>
-      <section className="flex flex-row gap-6 mb-6">
-        {/* <WelcomeComponent user={user} /> */}
-        <section className="flex flex-1 flex-col gap-4 bg-slate-100 rounded-lg p-6">
-          <h2 className="text-2xl font-bold text-primary-darker">
-            Últimas notificaciones
-          </h2>
-          <section className="flex flex-1 flex-row gap-4">
-            {/* <NotificationCard statusNotification="pending" notification={notifications} />
-            <NotificationCard statusNotification="cancelled" notification={notifications} />
-            <NotificationCard statusNotification="accepted" notification={notifications} /> */}
-          </section>
-        </section>
+    <section className={"dashboard"}>
+      <section className={"dashboard--admin__header"}>
+      <WelcomeComponent user={user}/>
       </section>
-      <section className="flex flex-col gap-6 mb-6">
-        <h2 className="text-2xl font-bold text-primary-darker">
-          ¿Qué estás buscando?
-        </h2>
-        <section className="flex flex-row gap-6">
-          <Card
-            title="Solicitar cita"
-            description="Encuentra a los médicos más destacados"
-            icon={
-              <CircleArrowRight
-                onClick={handleAppointment}
-                className="size-6 text-primary-darker hover:cursor-pointer"
-              />
-            }
-          />
-          <Card
-            title="Mi histórico"
-            description="Accede directamente a tu historial clínico de Vitalia"
-            icon={
-              <CircleArrowRight
-                onClick={handleHistorical}
-                className="size-6 text-primary-darker hover:cursor-pointer"
-              />
-            }
-          />
-        </section>
-      </section>
-      <section className="flex flex-col gap-6 mb-6">
-        <h2 className="text-2xl font-bold text-primary-darker">
-          Los mejores médicos cerca de ti
-        </h2>
-        {isLoading && <p>Cargando...</p>}
-        <section className="list-doctors">
-          {doctors &&
-            doctors.map((doctor: any) => (
-              <CardDoctor
-                key={doctor.id}
-                doctor={doctor}
-                handleClick={handleOpenProfile(doctor.id)}
-              />
+      <section className={"dashboard--admin__body"}>
+      <section className={"dashboard--admin__body__patient"}>
+        <h3 className={"text-color-secondary text-2xl"}>Últimos pacientes registrados</h3>
+        <table className={"table"}>
+          <thead className={"table__header"}>
+            <tr>
+              <th className={"table__header--item text-xs"}>Nombre y apellidos</th>
+              <th className={"table__header--item text-xs"}>Correo</th>
+              <th className={"table__header--item text-xs"}>Fecha de alta</th>
+            </tr>
+          </thead>
+          <tbody>
+            {patients?.map((patient: any) => (
+              <tr key={patient.id}>
+                <td className={"table__body--item"}>{patient.first_name} {patient.last_name}</td>
+                <td className={"table__body--item"}>{patient.email}</td>
+                <td className={"table__body--item"}>{patient.date_joined}</td>
+              </tr>
             ))}
-        </section>
-        <section>
-          {doctors && doctors.length === 0 && (
-            <p className="text-primary-darker">
-              No hay médicos disponibles en tu área en este momento. Lamentamos
-              mucho la situación y esperamos poder cubrir tu zona en el futuro.
-            </p>
-          )}
+          </tbody>
+        </table>
+      </section>
+        <section className={"dashboard--admin__body__doctors"}>
+          <h3 className={"text-color-secondary  text-2xl"}>Últimos médicos registrados</h3>
+          <table className={"table"}>
+            <thead className={"table__header"}>
+            <tr>
+              <th className={"table__header--item text-xs"}>Nombre y apellidos</th>
+              <th className={"table__header--item text-xs"}>Correo</th>
+              <th className={"table__header--item text-xs"}>Fecha de alta</th>
+              <th className={"table__header--item text-xs"}>Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+            {doctors?.map((doctors: any) => (
+              <tr key={doctors.id}>
+                <td className={"table__body--item"}>{doctors.first_name} {doctors.last_name}</td>
+                <td className={"table__body--item"}>{doctors.email}</td>
+                <td className={"table__body--item"}>{doctors.date_joined}</td>
+                <td className={"table__body--item"}>
+                  <span
+                    className={`text-xs badge ${BadgeStatus[doctors.status as keyof typeof BadgeStatus] || 'badge--default'}`}>{doctors.status}</span>
+                </td>
+              </tr>
+            ))}
+            </tbody>
+          </table>
         </section>
       </section>
-      <ModalProfileDoctor
-        doctor={selectedDoctor}
-        isOpen={isOpen}
-        handleCloseModal={handleCloseModal}
-      />
-    </>
+    </section>
   );
 };
 

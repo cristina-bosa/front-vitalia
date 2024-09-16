@@ -5,7 +5,7 @@ import {DateTime} from "next-auth/providers/kakao";
  * @description Types and interfaces used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/15
+ * @updated 2024/09/16
  * @version 1.0
  */
 export interface RegisterData {
@@ -113,4 +113,30 @@ export interface PostCreateAppointmentPatient {
   doctor_id: number;
   reason_consultation: string;
   patient_appointment: DateTime;
+}
+
+export interface RequestAccessData {
+  id: number;
+  professional_number: string;
+  specialty: string;
+  status: any;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  date_joined: string;
+}
+
+export interface AllUsersData {
+  id: number
+  is_active: boolean
+  first_name: string
+  identification_number: string
+  date_joined: string
+  last_name: string
+  email: string
+  phone: string
+  birth_date: string
+  genre: string
+  groups: string[]
 }

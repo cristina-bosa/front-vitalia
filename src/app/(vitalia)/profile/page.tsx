@@ -1,17 +1,25 @@
 
 import { fetchProfile } from "@/actions/patients/profile";
 import PatientProfile from "@/pages/patient/Profile";
+import React from "react";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/lib/utils";
+import {Roles} from "@/types/enum";
+import AdminProfile from "@/pages/admin/AdminProfile";
 
-const PatientProfilePage: React.FC = async () => {
+const ProfilePage: React.FC = async () => {
+  const session = await getServerSession(authOptions);
+  const userRole = session?.user.groups[0];
   const data = await fetchProfile();
-  return (
-    <>
-      <section>
-        <h1 className="text-3xl font-bold text-dark">Mi perfil</h1>
-      </section>
-      <PatientProfile profile ={data} />
-    </>
-  );
+  switch (userRole) {
+    case Roles.PATIENT:{
+      return <PatientProfile profile ={data} />;
+    }
+    case Roles.DOCTOR:
+      return <div>Not found</div>;
+    case Roles.ADMIN:
+      return <AdminProfile />;
+  }
 }
 
-export default PatientProfilePage;
+export default ProfilePage;

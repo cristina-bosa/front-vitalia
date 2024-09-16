@@ -5,11 +5,13 @@
   @include mix.flex-position(column, space-between);
   grid-area: aside;
   background-color: var.$primary-darker;
-  padding: 1em;
-  border-radius: 0 3em 0 0;
-  height: calc(100vh - 4em);
-  align-self: flex-end;
-
+  border-radius: 0 3em 3em 0;
+  height: 100%;
+  &__content{
+    @include mix.padding(1.5em, 1.5em, 1.5em, 1.5em);
+    @include mix.flex-position(column, space-between, left, 1.5em);
+    height: 100%;
+  }
   &__top {
     @include mix.flex-position(column, center, left, 1.5em);
 
@@ -35,13 +37,13 @@
     @include mix.flex-position(row, left, center, 1em);    
 
     &:hover {
-      background-color: var.$light;
-      color: var.$primary-darker;
+      background-color: var.$primary;
+      color: var.$light;
     }
 
     &--active {
-      background-color: var.$light;
-      color: var.$primary-darker;
+      background-color: var.$primary;
+      color: var.$light;
     }
   }
 }

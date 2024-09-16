@@ -16,4 +16,12 @@
     background-color: variables.$primary-light;
     color: variables.$dark;
   }
+  &--pending{
+    background-color: variables.$warning-lightest;
+    color: variables.$dark;
+  }
+  &--accept{
+    background-color: variables.$success-lightest;
+    color: variables.$light;
+  }
 }
