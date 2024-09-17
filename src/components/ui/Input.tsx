@@ -1,3 +1,4 @@
+import React from "react";
 
 
 interface InputProps {
@@ -15,7 +16,8 @@ const InputComponent: React.FC<InputProps> = ({ id, value, onChange, type, label
   if (label) {
     return (
       <section className="form-group">
-        <label htmlFor={id} className={error ? "text-red-500 uppercase text-xs font-semibold" : "text-primary uppercase text-xs font-semibold"}>{label}</label>
+        <label htmlFor={id} className={error ? "text-red-500 text-uppercase text-xs font-semibold" : "text-primary" +
+          "text-uppercase text-xs font-semibold"}>{label}</label>
         <input
           className={error ? 'input input--error' : 'input'}
           type={type}
@@ -26,7 +28,7 @@ const InputComponent: React.FC<InputProps> = ({ id, value, onChange, type, label
           min={type === 'number' ? 0 : undefined}
           max={type === 'tel' ? 10 : undefined}
            />
-        {error && <span className="text-red-500 text-xs">{error}</span>}
+        {error && <span className="text-color-error text-xs">{error}</span>}
       </section>
     )
   }

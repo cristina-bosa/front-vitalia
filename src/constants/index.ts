@@ -41,6 +41,7 @@ export const stepRegisterPatient = [
   },
 ] as const;
 
+
 /**
  * Routes for the application based on the user role
  */

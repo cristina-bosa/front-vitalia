@@ -38,7 +38,7 @@
   -moz-border-radius: $radius;
 }
 
-@mixin padding($top: .5em, $right: 1em, $bottom: .5em, $left: 1em) {
+@mixin padding($top: 1em, $right: 1.5em, $bottom: 1em, $left: 1.5em) {
   padding: $top $right $bottom $left;
 }
 

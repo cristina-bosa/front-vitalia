@@ -2,15 +2,15 @@
  * @desription Schemas for validation forms
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/15
+ * @updated 2024/09/17
  * @version 1.0
  */
 
 import * as z from "zod";
 
 export const LoginSchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
+  email: z.string().email({ message: "Formato de email no válido" }),
+  password: z.string().min(1, { message: "La contraseña es obligatoria" }),
 });
 
 export const RegisterSchema = z

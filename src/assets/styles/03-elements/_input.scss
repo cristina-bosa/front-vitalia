@@ -1,0 +1,27 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mixins;
+
+input{
+  border: none;
+  @include mixins.padding();
+  @include mixins.border-radius();
+  color: var.$dark;
+  &:focus{
+    outline: none;
+  }
+
+}
+
+label{
+  text-transform: uppercase;
+  font-size: 0.8em;
+  color: var.$primary-darker;
+  font-weight: bold;
+}
+
+select{
+  border: none;
+  @include mixins.padding();
+  @include mixins.border-radius();
+  color: var.$dark;
+}

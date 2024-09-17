@@ -5,7 +5,7 @@ import {DateTime} from "next-auth/providers/kakao";
  * @description Types and interfaces used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/16
+ * @updated 2024/09/17
  * @version 1.0
  */
 export interface RegisterData {
@@ -21,7 +21,7 @@ export interface RegisterData {
   birth_date: string;
   genre: string;
   phone: string;
-  city: string
+  city: number;
 
   repeat_email: string;
   repeat_password: string;
@@ -29,7 +29,6 @@ export interface RegisterData {
 
 export interface RegisterDoctorData extends RegisterData {
   professional_number: string;
-  specialty: number;
   start_schedule: string;
   end_schedule: string;
   price: number;
@@ -42,7 +41,12 @@ export interface MedialHistoryPatient {
   medical_intervention: string[];
 }
 export interface RegisterPatientData extends RegisterData {
-  medical_history: MedialHistoryPatient;
+  medical_history: {
+    allergies: number[];
+    relevant_diseases: number[];
+    current_medication: number[];
+    medical_intervention: number[];
+  };
 }
 
 export interface Profile {
