@@ -3,7 +3,7 @@
  * @description Constants used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/16
+ * @updated 2024/09/17
  * @version 1.0
  */
 
@@ -80,7 +80,7 @@ export const routes = [
     label: "Mi perfil",
     path: "/profile",
     icon: "/assets/svg/nav-profile.svg",
-    roles: [Roles.PATIENT, Roles.DOCTOR, Roles.ADMIN],
+    roles: [Roles.PATIENT, Roles.DOCTOR],
   },
 ];
 

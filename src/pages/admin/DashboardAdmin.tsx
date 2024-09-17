@@ -11,15 +11,14 @@ interface DashboardAdminProps {
   lastPatients: any;
 }
 const DashboardAdmin : React.FC<DashboardAdminProps> = ({lastDoctors, lastPatients}) => {
-  const user = useUser()
+  const {profile} = useUser()
   const [doctors, setDoctors] = useState<[]>(lastDoctors);
   const [patients, setPatients] = useState<[]>(lastPatients);
-
 
   return (
     <section className={"dashboard"}>
       <section className={"dashboard--admin__header"}>
-      <WelcomeComponent user={user}/>
+      <WelcomeComponent user={profile}/>
       </section>
       <section className={"dashboard--admin__body"}>
       <section className={"dashboard--admin__body__patient"}>

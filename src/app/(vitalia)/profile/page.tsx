@@ -5,7 +5,6 @@ import React from "react";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/lib/utils";
 import {Roles} from "@/types/enum";
-import AdminProfile from "@/pages/admin/AdminProfile";
 
 const ProfilePage: React.FC = async () => {
   const session = await getServerSession(authOptions);
@@ -17,8 +16,6 @@ const ProfilePage: React.FC = async () => {
     }
     case Roles.DOCTOR:
       return <div>Not found</div>;
-    case Roles.ADMIN:
-      return <AdminProfile />;
   }
 }
 

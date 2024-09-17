@@ -5,7 +5,7 @@ import { Profile } from "@/types";
 import { createContext, useContext, useEffect, useState } from "react";
 import {HTTPStatus} from "@/types/enum";
 
-const UserContext = createContext<unknown>(undefined);
+const UserContext = createContext<any>(undefined);
 
 interface UseProviderProps {
   children: React.ReactNode;
