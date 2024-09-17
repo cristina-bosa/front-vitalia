@@ -5,6 +5,7 @@ import React from "react";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/lib/utils";
 import {Roles} from "@/types/enum";
+import ProfileDoctor from "@/pages/doctor/ProfileDoctor";
 
 const ProfilePage: React.FC = async () => {
   const session = await getServerSession(authOptions);
@@ -15,7 +16,7 @@ const ProfilePage: React.FC = async () => {
       return <PatientProfile profile ={data} />;
     }
     case Roles.DOCTOR:
-      return <div>Not found</div>;
+      return <ProfileDoctor/>
   }
 }
 

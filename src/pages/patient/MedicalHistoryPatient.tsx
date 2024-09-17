@@ -1,6 +1,6 @@
 import {EyeIcon} from "lucide-react";
 
-const HistoricalPage = ({ historicalInfo }: { historicalInfo: any }) => {
+const MedicalHistoryPatient = ({ historicalInfo }: { historicalInfo: any }) => {
   console.log(historicalInfo);  
   return (
     <section className="bg-slate-100 p-2 rounded-md">
@@ -33,4 +33,4 @@ const HistoricalPage = ({ historicalInfo }: { historicalInfo: any }) => {
   );
 }
 
-export default HistoricalPage
+export default MedicalHistoryPatient

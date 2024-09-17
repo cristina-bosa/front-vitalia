@@ -1,5 +1,3 @@
-import {DateTime} from "next-auth/providers/kakao";
-
 /**
  * @file Index types
  * @description Types and interfaces used in the application
@@ -59,7 +57,6 @@ export interface Profile {
   birth_date: string;
   groups: number[];
 }
-
 
 export interface UpdateProfile {
   email?:string;
@@ -143,4 +140,14 @@ export interface AllUsersData {
   birth_date: string
   genre: string
   groups: string[]
+}
+
+export interface DashboardMedicalAppointments {
+  id: number
+  guid: string
+  status: string
+  patient_appointment: string
+  patient_name: string
+  patient_last_name: string
+  reason_consultation: string
 }
