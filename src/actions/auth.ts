@@ -18,10 +18,16 @@ export async function fetchRegister(
 
     if (!response.ok) {
       const error = response.statusText;
-      throw new Error(error);
+      return{
+        status: response.status,
+        data: error
+      }
     }
 
-    return await response.json();
+    return {
+      status: response.status,
+      data: await response.json(),
+    };
   } catch (error) {
     console.error(error);
     throw new Error("Error al fetch");

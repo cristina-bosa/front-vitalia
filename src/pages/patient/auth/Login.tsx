@@ -1,6 +1,6 @@
 'use client'
 
-import {startTransition, useState} from "react";
+import React, {startTransition, useState} from "react";
 
 import {useRouter} from "next/navigation";
 import Link from "next/link";
@@ -9,51 +9,68 @@ import {signIn, useSession} from "next-auth/react";
 
 import Button from "@/components/ui/Button";
 import InputComponent from "@/components/ui/Input";
+import {LoginSchema} from "@/schemas";
 
 
 const Login = () => {
   const router = useRouter();
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const s = useSession()
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [errors, setErrors] = useState<{ email?: string; password?: string;}>({});
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    startTransition(() => {
-      signIn('credentials', {
-        email: email,
-        password: password,
-        redirect: false
-      }).then((data) => {
-        if(data?.error){
-          console.error(data.error)
-          return
+
+    const validate = LoginSchema.safeParse(formData);
+
+    if (validate.success) {
+      setErrors({});
+      startTransition(() => {
+        signIn('credentials', {
+          email: formData.email,
+          password: formData.password,
+          redirect: false
+        }).then((data) => {
+          if (data?.error) {
+            setErrors({ email: '', password: 'Credenciales incorrectas, inténtalo nuevamente' });
+            return;
+          }
+          router.push('/dashboard');
+        });
+      });
+    } else {
+      const fieldErrors: { email?: string; password?: string } = {};
+      validate.error.errors.forEach(err => {
+        if (err.path[0] === 'email') {
+          fieldErrors.email = 'El email es obligatorio';
         }
-        router.push('/dashboard')
-      })
-    })
-
-
-  }
+        if (err.path[0] === 'password') {
+          fieldErrors.password = 'La contraseña es obligatoria';
+        }
+      });
+      setErrors(fieldErrors);
+    }
+  };
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit} >
-      <h1 className="text-2xl font-bold text-primary">Iniciar sesión</h1>
+    <form className="auth__form" onSubmit={handleSubmit} >
+      <h1 className="text-xl text-color-secondary">Iniciar sesión</h1>
       <InputComponent
         id="email"
-        value={email}
+        value={formData.email}
         placeholder="Introduce su email o nombre de usuario"
-        onChange={e => setEmail(e.target.value)}
+        onChange={event => setFormData({...formData, email: event.target.value})}
         type="text"
-        label="email / nombre de usuario"
+        label="email"
+        error={errors.email}
       />
       <InputComponent
         id="password"
-        value={password}
+        value={formData.password}
         placeholder="Introduce tu contraseña"
-        onChange={e => setPassword(e.target.value)}
+        onChange={event => setFormData({...formData, password: event.target.value})}
         type="password"
         label="contraseña"
+        error={errors.password}
       />
       <Button type="submit" className="btn--secondary">Iniciar sesión</Button>
       <Link href="/auth/doctor/register">¿Eres médico y no tienes cuenta? Registrate aquí</Link>

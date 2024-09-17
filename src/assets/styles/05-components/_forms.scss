@@ -5,15 +5,15 @@
   @include mixins.flex-position(column, _, _, .5em);
 }
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;  
+  @include mixins.flex-position(column, _, _, 1em);
   width: 100%;
 }
 
 .form-row {
-  display: flex;
-  flex-direction: row;  
-  gap: 1.5rem;
+  @include mixins.flex-position(row, _, _, 1em);
   width: 100%;
+}
+.form-column{
+    @include mixins.flex-position(column, _, _, 1em);
+    width: 100%;
 }

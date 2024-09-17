@@ -9,7 +9,7 @@ import SelectComponent from "@/components/ui/Select";
 
 import {ArrowLeft, ArrowRight} from "lucide-react";
 
-import {stepRegisterPatient, typeRegister,} from "@/constants";
+import {stepRegisterPatient} from "@/constants";
 
 import {fetchRegister} from "@/actions/auth";
 import {
@@ -20,8 +20,10 @@ import {
   fetchMedications,
   fetchRelevantDiseases
 } from "@/actions/utils";
+
 import {RegisterPatientSchema, RegisterSchema} from "@/schemas";
 import {RegisterPatientData} from '@/types';
+import {HTTPStatus, typeRegister} from "@/types/enum";
 
 interface SelectData {
   value: string,
@@ -80,22 +82,21 @@ const RegisterPatient = () => {
       const medicalInterventions = await fetchMedicalInterventions();
       const relevantDiseases = await fetchRelevantDiseases();
       const medications = await fetchMedications();
-      setOptsGenre(genre);
-      setOptsCity(city);
-      setOptsAllergies(allergies);
-      setOptsMedicalInterventions(medicalInterventions);
-      setOptsRelevantDiseases(relevantDiseases);
-      setOptsMedications(medications);
+      setOptsGenre(genre.data);
+      setOptsCity(city.data);
+      setOptsAllergies(allergies.data);
+      setOptsMedicalInterventions(medicalInterventions.data);
+      setOptsRelevantDiseases(relevantDiseases.data);
+      setOptsMedications(medications.data);
       setIsLoading(false);
     }
     fetchAll();
   }, [])
 
-
   useEffect(() => {
     setRegisterPatientData((prevData) => ({
       ...prevData,
-      username: `${prevData.first_name}${prevData.last_name}`.toLowerCase()
+      username: `${prevData.first_name}${prevData.last_name}`.toLowerCase().trim()
     }));
   }, [registerPatientData.first_name, registerPatientData.last_name]);
 
@@ -118,7 +119,6 @@ const RegisterPatient = () => {
   const previusStep = () => {
     setCurrentStep((prev) => prev - 1);
   }
-
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { id, value } = e.target;
     setRegisterPatientData({
@@ -149,7 +149,6 @@ const RegisterPatient = () => {
       })
     }
   }
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
@@ -170,18 +169,15 @@ const RegisterPatient = () => {
         }
       }
       const response = await fetchRegister(data);
-      console.log(response)
-      setIsLoading(false);
-      if (response) {
-        setIsValid(true);
+      if (response && response.status === HTTPStatus.CREATED) {
+        setIsValid(true)
         setCurrentStep((prev) => prev + 1);
-      } else {
+      }else{
         setIsValid(false);
         setCurrentStep((prev) => prev + 1);
-        setErrors(response.errors)
+        setErrors(response.data)
       }
     }
-
   }
   return (
     <>
@@ -205,12 +201,12 @@ const RegisterPatient = () => {
           </section>
         </nav>
       </section >
-      <section className="flex flex-col gap-2">
-        <form onSubmit={handleSubmit}>
+      <section className="auth-register">
+        <form className="forms" onSubmit={handleSubmit}>
           {currentStep === 1 && (
-            <section className="flex flex-col">
-              <h2 className="text-2xl font-bold text-center">Datos personales</h2>
-              <section className="flex flex-col gap-6 my-5">
+            <section>
+              <h2 className="text-2xl font-bold text-color-primary">Datos personales</h2>
+              <section className="auth-register__content">
                 <section className="form-row">
                   <InputComponent
                     id="first_name"
@@ -268,6 +264,7 @@ const RegisterPatient = () => {
                       className={`select`}
                       value={registerPatientData.genre}
                       onChange={handleSelectChange}>
+                      <option value={''}>Selecciona tu género</option>
                       {optsGenre.map((option: { id: string, name: string }, index) => (
                         <option key={index} value={option.name}>{option.name}</option>
                       ))}
@@ -331,13 +328,12 @@ const RegisterPatient = () => {
             </section>
           )}
           {currentStep === 2 && (
-            <section className="flex flex-col">
-              <h2 className="text-2xl font-bold text-center">Datos médicos</h2>
+            <section className="auth-register__content">
+              <h2 className="text-2xl font-bold text-color-primary">Datos médicos</h2>
               <p>Por favor, completa los siguientes campos para que podamos ofrecerte un mejor servicio.</p>
-
-              <section className="flex flex-col gap-6 my-5">
+              <section className={"form-column"}>
                 <section className="form-group">
-                  <label htmlFor="allergies" className="text-primary uppercase text-xs font-semibold">Alergias</label>
+                  <label htmlFor="allergies" className="text-primary uppercase text-xs font-semibold">Alergías</label>
                   <Select
                     instanceId={"allergies"}
                     isMulti={true}
@@ -345,10 +341,12 @@ const RegisterPatient = () => {
                     onChange={(allergies) => setSelectedAllergies(Array.from(allergies))}
                     options={optsAllergies}
                     isSearchable={false}
+                    placeholder={"Selecciona tus alergias"}
                   />
                 </section>
                 <section className="form-group">
-                  <label id="relevant_diseases" className="text-primary uppercase text-xs font-semibold">Enfermedades relevantes</label>
+                  <label id="relevant_diseases" className="text-primary uppercase text-xs font-semibold">Enfermedades
+                    relevantes</label>
                   <Select
                     id={"relevant_diseases"}
                     isMulti={true}
@@ -356,10 +354,11 @@ const RegisterPatient = () => {
                     onChange={(relevantDiseases) => setSelectedRelevantDiseases(Array.from(relevantDiseases))}
                     options={optsRelevantDiseases}
                     isSearchable={false}
+                    placeholder={"Selecciona tus enfermedades relevantes"}
                   />
                 </section>
                 <section className="form-group">
-                  <label className="text-primary uppercase text-xs font-semibold">Enfermedad actual</label>
+                  <label className="text-primary uppercase text-xs font-semibold">Medicamentos</label>
                   <Select
                     id={"current_medication"}
                     isMulti={true}
@@ -367,6 +366,7 @@ const RegisterPatient = () => {
                     onChange={(medications) => setSelectedMedications(Array.from(medications))}
                     options={optsMedications}
                     isSearchable={false}
+                    placeholder={"Selecciona tus medicamentos"}
                   />
                 </section>
                 <section className="form-group">
@@ -378,38 +378,33 @@ const RegisterPatient = () => {
                     onChange={(medicalInterventions) => setSelectedMedicalInterventions(Array.from(medicalInterventions))}
                     options={optsMedicalInterventions}
                     isSearchable={false}
+                    placeholder={"Selecciona tus cirugías"}
                   />
                 </section>
               </section>
-              <section className="flex gap-6 justify-between">
-                <Button className="btn--outline" onClick={previusStep}><ArrowLeft size={20} />Volver</Button>
-                <Button type="submit" className="btn--secondary">Siguiente<ArrowRight size={20} /></Button>
+              <section className="auth-register__bottom">
+                <Button className="btn--outline" onClick={previusStep}><ArrowLeft size={20}/>Volver</Button>
+                <Button type="submit" className="btn--secondary">Siguiente<ArrowRight size={20}/></Button>
               </section>
             </section>
 
           )}
           {currentStep === 3 && (
             <>
-              {isLoading && (<p>Estamos procesando tus datos....</p>)}
               {isValid ? (
-                <>
-                  <h2 className="text-2xl font-bold text-center">Finalizar</h2>
-                  <section className="flex flex-col gap-6 my-5">
-                    <h3>¡Gracias por registrarte en Vitalia!</h3>
-                    <p>Hemos enviado un correo de verificación a tu dirección de email. Por favor, revisa tu bandeja de entrada y sigue las instrucciones para validar tu correo electrónico y activar tu cuenta.</p>
-                    <p>Si no recibes el correo en unos minutos, revisa tu carpeta de spam o correo no deseado.</p>
-                    <p>Gracias por unirte a nuestra plataforma. Estamos aquí para ayudarte a gestionar tu salud de manera más fácil y efectiva.</p>
-                    <Link href="/" className="btn btn--primary text-white">Iniciar sesión</Link>
-                  </section>
-                </>
+                <section className={"auth-register__end"}>
+                    <h3 className={"text-color-primary text-2xl"}>¡Gracias por registrarte en Vitalia!</h3>
+                    <p className={"text-color-dark"}>Hemos enviado un correo de verificación a tu dirección de email. Por favor, revisa tu bandeja de entrada y sigue las instrucciones para validar tu correo electrónico y activar tu cuenta.</p>
+                    <p className={"text-color-dark"}>Si no recibes el correo en unos minutos, revisa tu carpeta de spam o correo no deseado.</p>
+                    <p className={"text-color-dark"}>Gracias por unirte a nuestra plataforma. Estamos aquí para ayudarte a gestionar tu salud de manera más fácil y efectiva.</p>
+                    <Link href="/" className="btn btn--primary--soft text-color-primary-darker">Iniciar sesión</Link>
+                </section>
               ) : (
-                <>
-                  <h2 className="text-2xl font-bold text-center">Oh no!</h2>
-                  <section className="flex flex-col gap-6 my-5">
-                    <h3>Oh no!</h3>
-                    <p>Hubo un error en el proceso de tus datos. Por favor, inténtelo de nuevo más tarde.</p>
-                  </section>
-                </>
+                <section className={"auth-register__end"}>
+                    <h3 className={"text-color-error text-2xl"}>Oh no!</h3>
+                    <p className={"text-color-dark"}>Hubo un error en el proceso de tus datos. Por favor, inténtelo de nuevo más tarde.</p>
+                    <Link href="/" className="btn btn--primary--soft text-color-primary-darker">Iniciar sesión</Link>
+                </section>
               )}
             </>
           )}

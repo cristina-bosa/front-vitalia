@@ -8,6 +8,8 @@
 @use '03-elements/button';
 @use '03-elements/headers';
 @use '03-elements/table';
+@use '03-elements/input';
+@use '03-elements/links';
 
 @use '04-objects/layout';
 @use '04-objects/dashboard';
@@ -15,6 +17,7 @@
 @use '04-objects/tables';
 @use '04-objects/request-access';
 @use '04-objects/users';
+@use '04-objects/auth';
 
 @use '05-components/modal-profile-doctor';
 @use '05-components/sidebar';

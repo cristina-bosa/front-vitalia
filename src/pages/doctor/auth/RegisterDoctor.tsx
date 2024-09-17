@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Button from "@/components/ui/Button";
 import InputComponent from "@/components/ui/Input";
@@ -10,11 +10,13 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { RegisterDoctorData } from '@/types';
 
-import { stepRegisterDoctor, typeRegister } from "@/constants";
+import { stepRegisterDoctor } from "@/constants";
+import {typeRegister} from "@/types/enum";
 
 import { fetchRegister } from "@/actions/auth";
 import { fetchGenre, fetchCity, fetchSpecialty } from "@/actions/utils";
 import { RegisterSchema, DoctorRegisterSchema } from "@/schemas";
+import Link from "next/link";
 
 const DoctorRegister = () => {
 
@@ -52,13 +54,13 @@ const DoctorRegister = () => {
 
   useEffect(() => {
     fetchGenre().then((data) => {
-      setOptsGenre(data);
+      setOptsGenre(data.data);
     });
     fetchCity().then((data) => {
-      setOptsCity(data);
+      setOptsCity(data.data);
     });
     fetchSpecialty().then((data) => {
-      setOptsSpecialty(data);
+      setOptsSpecialty(data.data);
     });
   }, [])
 
@@ -175,11 +177,12 @@ const DoctorRegister = () => {
           </section>
         </nav>
       </section >
-      <section className="flex flex-col gap-2 mt-2">
-        <form onSubmit={handleSubmit}>
+      <section className="auth-register">
+        <form className="forms" onSubmit={handleSubmit}>
           {currentStep === 1 && (
-            <section className="flex flex-col">
-              <section className="flex flex-col gap-6 my-5">
+            <section className="">
+              <h2 className="text-2xl font-bold text-color-primary">Datos personales</h2>
+              <section className="auth-register__content">
                 <section className="form-row">
                   <InputComponent
                     id="first_name"
@@ -240,7 +243,8 @@ const DoctorRegister = () => {
                       {optsGenre.map((option: { id: string, name: string }, index) => (
                         <option key={index} value={option.name}>{option.name}</option>
                       ))}
-                      {errors.genre && errors.genre[0] && <span className="text-red-500 text-xs">{errors.genre && errors.genre[0]}</span>}
+                      {errors.genre && errors.genre[0] &&
+                        <span className="text-red-500 text-xs">{errors.genre && errors.genre[0]}</span>}
                     </select>
                   </section>
                 </section>
@@ -295,14 +299,14 @@ const DoctorRegister = () => {
                   />
                 </section>
               </section>
-              <Button className="btn--secondary self-end" onClick={nextStep}>Siguiente <ArrowRight size={20} />
+              <Button className="btn--secondary self-end" onClick={nextStep}>Siguiente <ArrowRight size={20}/>
               </Button>
             </section>
           )}
           {currentStep === 2 && (
-            <section className="flex flex-col">
-              <h2 className="text-2xl font-bold text-center">Datos profesionales</h2>
-              <section className="flex flex-col gap-6 my-5">
+            <section className="auth-register__content">
+              <h2 className="text-2xl font-bold text-color-primary">Datos profesionales</h2>
+              <section className="">
                 <section className="form-row">
                   <InputComponent
                     id="professional_number"
@@ -315,7 +319,8 @@ const DoctorRegister = () => {
                   />
                   <section className="form-group">
 
-                    <label htmlFor="specialty" className="text-primary uppercase text-xs font-semibold">Especialidad</label>
+                    <label htmlFor="specialty"
+                           className="text-primary uppercase text-xs font-semibold">Especialidad</label>
                     <select
                       id="specialty"
                       className={`select`}
@@ -356,32 +361,28 @@ const DoctorRegister = () => {
                   />
                 </section>
               </section>
-              <section className="flex gap-6 justify-between">
-                <Button className="btn--outline" onClick={previusStep}><ArrowLeft size={20} />Volver</Button>
-                <Button type="submit" className="btn--secondary">Siguiente<ArrowRight size={20} /></Button>
+              <section className="auth-register__bottom">
+                <Button className="btn--outline" onClick={previusStep}><ArrowLeft size={20}/>Volver</Button>
+                <Button type="submit" className="btn--secondary">Siguiente<ArrowRight size={20}/></Button>
               </section>
             </section>
 
           )}
           {currentStep === 3 && (
             <>
-              {isLoading && (<>Cargando...</>)}
               {isValid ? (
-                <>
-                  <h2 className="text-2xl font-bold text-center">Finalizar</h2>
-                  <section className="flex flex-col gap-6 my-5">
-                    <h3>¡Gracias por registrarte en Vitalia!</h3>
-                    <p>Nuestro departamento de admisiones se pondrá en contacto contigo con el menor tiempo posible.</p>
+                  <section className={"auth-register__end"}>
+                    <h3 className={"text-color-primary text-2xl"}>¡Gracias por registrarte en Vitalia!</h3>
+                    <p className={"text-color-dark"}>Nuestro departamento de adminisiones se pondrá en contacto contigo con el menor tiempo posible.</p>
+                    <Link href="/" className="btn btn--primary--soft text-color-primary-darker">Iniciar sesión</Link>
                   </section>
-                </>
+
               ) : (
-                <>
-                  <h2 className="text-2xl font-bold text-center">Oh no!</h2>
-                  <section className="flex flex-col gap-6 my-5">
-                    <h3>Hubo un error en el registro</h3>
-                    <p>Inténtelo de nuevo más tarde</p>
-                  </section>
-                </>
+                <section className={"auth-register__end"}>
+                  <h3 className={"text-color-error text-2xl"}>Oh no!</h3>
+                  <p className={"text-color-dark"}>Hubo un error en el proceso de tus datos. Por favor, inténtelo de nuevo más tarde.</p>
+                  <Link href="/" className="btn btn--primary--soft text-color-primary-darker">Iniciar sesión</Link>
+                </section>
               )}
             </>
           )}
