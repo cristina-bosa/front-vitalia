@@ -2,9 +2,11 @@
 import WelcomeComponent from "@/components/ui/cards/WelcomeComponent";
 import {useUser} from "@/context/useUser";
 import React, {useState} from "react";
-import appointment from "@/pages/patient/Appointment";
 import {DashboardMedicalAppointments} from "@/types";
 import DashboardAppointment from "@/components/ui/cards/DashboardAppointment";
+import {useRouter} from "next/navigation";
+import {AppointmentStatus, typeUserURI} from "@/types/enum";
+import Link from "next/link";
 
 interface DashboardDoctorProps {
   acceptAppointments: DashboardMedicalAppointments[];
@@ -12,9 +14,11 @@ interface DashboardDoctorProps {
 }
 
 const DashboardDoctor :React.FC<DashboardDoctorProps> = ({acceptAppointments, pendingAppointments}) => {
+  const router = useRouter()
   const {profile} = useUser()
-  const [accepedAppointments, setAcceptedAppointments] = useState(acceptAppointments)
-  const [pendAppointments, setPendingAppointments] = useState(pendingAppointments)
+  const [accepted, setAccepted] = useState(acceptAppointments)
+  const [pending, setPending] = useState(pendingAppointments)
+
 
   return (
     <section className={"dashboard"}>
@@ -22,9 +26,9 @@ const DashboardDoctor :React.FC<DashboardDoctorProps> = ({acceptAppointments, pe
       <section className={"dashboard--doctor__body"}>
         <section className={"card card__today-apointment"}>
           <h2 className={"text-2xl text-color-secondary"}>Citas para hoy</h2>
-          <span className={"text-m text-color-dark-light"}>Tienes un total de {accepedAppointments.length} citas para hoy</span>
-          Ver todas
-          {accepedAppointments.map((appointment: DashboardMedicalAppointments) => (
+          <span className={"text-m text-color-dark-light"}>Tienes un total de {accepted.length} citas para hoy</span>
+          <Link href={`/schedule/`}>Ver todas</Link>
+          {accepted.map((appointment: DashboardMedicalAppointments) => (
             <DashboardAppointment
               key={appointment.id}
               appointment={appointment}
@@ -35,22 +39,14 @@ const DashboardDoctor :React.FC<DashboardDoctorProps> = ({acceptAppointments, pe
         <section className={"card card__today-reserded"}>
           <h2 className={"text-2xl text-color-secondary"}>Reservas pendientes</h2>
           <section>
-          <span className={"text-m text-color-dark-light"}>Tienes un total de {pendAppointments.length} citas pendientes</span>
-          <Link href={"/"}
-
+          <p className={"text-m text-color-dark-light"}>Tienes un total de {pending.length} citas pendientes</p>
           </section>
-          {pendAppointments.map((appointment: DashboardMedicalAppointments) => (
+          <Link href={`/appointments/${typeUserURI.DOCTOR}/all/${AppointmentStatus.PENDING}`}>Ver todas</Link>
+          {pending.map((appointment: DashboardMedicalAppointments) => (
             <DashboardAppointment
               key={appointment.id}
               appointment={appointment}
-              handleOpenAppointment={() => console.log("open appointment")}
-            />
-          ))}
-          {pendAppointments.map((appointment: DashboardMedicalAppointments) => (
-            <DashboardAppointment
-              key={appointment.id}
-              appointment={appointment}
-              handleOpenAppointment={() => console.log("open appointment")}
+              handleOpenAppointment={() => router.push(`/appointments/${typeUserURI.DOCTOR}/${appointment.id}`)}
             />
           ))}
         </section>

@@ -1,0 +1,13 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mix;
+
+.appointment-doctor{
+  @include mix.flex-position(column, _, _, 1.5em);
+  &__header{
+    @include mix.flex-position(column, _, _, 1.5em);
+  }
+  &__search{
+    @include mix.flex-position(row, _, _, 1.5em);
+    @include mix.border-radius();
+  }
+}

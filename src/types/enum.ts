@@ -3,7 +3,7 @@
  * @description Enumerations used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/17
+ * @updated 2024/09/18
  * @version 1.0
  */
 
@@ -22,6 +22,15 @@ export const enum Roles {
 export const enum typeRegister {
   DOCTOR = "doctor",
   PATIENT = "patient",
+}
+
+/**
+ * Type user URI
+ */
+export const enum typeUserURI{
+  DOCTOR = "doctor",
+  PATIENT = "patient",
+  ALL = "all",
 }
 
 
@@ -64,4 +73,12 @@ export const enum AppointmentStatus {
   IN_PROGRESS = 'in-progress',
   CANCELED = 'canceled',
   FINISHED = 'finished'
+}
+
+export const enum AppointmentStatusSpanish {
+  PENDING = 'Pendiente',
+  CONFIRMED = 'Confirmada',
+  IN_PROGRESS = 'En progreso',
+  CANCELED = 'Cancelada',
+  FINISHED = 'Finalizada'
 }

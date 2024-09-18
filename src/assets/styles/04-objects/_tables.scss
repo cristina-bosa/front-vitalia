@@ -14,9 +14,8 @@
     }
     &__body{
         &--item{
-        @include mixins.padding(.5em,.5em, .5em, .5em);
+        @include mixins.padding(.8em,.5em, .8em, .5em);
             color: variables.$dark;
-
         }
     }
     tbody{

@@ -18,6 +18,7 @@
 @use '04-objects/request-access';
 @use '04-objects/users';
 @use '04-objects/auth';
+@use '04-objects/appointment-doctor';
 
 @use '05-components/modal-profile-doctor';
 @use '05-components/sidebar';
