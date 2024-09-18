@@ -17,20 +17,42 @@ const DashboardDoctor :React.FC<DashboardDoctorProps> = ({acceptAppointments, pe
   const [pendAppointments, setPendingAppointments] = useState(pendingAppointments)
 
   return (
-    <section>
+    <section className={"dashboard"}>
       <WelcomeComponent user={profile}/>
-      <section>
-        <section>
-        <h2>Citas para hoy</h2>
-        </section>
-        <section>
-          <h2>Últimas reservas</h2>
-          {pendAppointments.map((appointment:DashboardMedicalAppointments) => (
-            <DashboardAppointment key={appointment.id} appointment={appointment} />
+      <section className={"dashboard--doctor__body"}>
+        <section className={"card card__today-apointment"}>
+          <h2 className={"text-2xl text-color-secondary"}>Citas para hoy</h2>
+          <span className={"text-m text-color-dark-light"}>Tienes un total de {accepedAppointments.length} citas para hoy</span>
+          Ver todas
+          {accepedAppointments.map((appointment: DashboardMedicalAppointments) => (
+            <DashboardAppointment
+              key={appointment.id}
+              appointment={appointment}
+              handleOpenAppointment={() => console.log("open appointment")}
+            />
           ))}
         </section>
-        <section>
-          <h2>Últimas reseñas</h2>
+        <section className={"card card__today-reserded"}>
+          <h2 className={"text-2xl text-color-secondary"}>Reservas pendientes</h2>
+          <section>
+          <span className={"text-m text-color-dark-light"}>Tienes un total de {pendAppointments.length} citas pendientes</span>
+          <Link href={"/"}
+
+          </section>
+          {pendAppointments.map((appointment: DashboardMedicalAppointments) => (
+            <DashboardAppointment
+              key={appointment.id}
+              appointment={appointment}
+              handleOpenAppointment={() => console.log("open appointment")}
+            />
+          ))}
+          {pendAppointments.map((appointment: DashboardMedicalAppointments) => (
+            <DashboardAppointment
+              key={appointment.id}
+              appointment={appointment}
+              handleOpenAppointment={() => console.log("open appointment")}
+            />
+          ))}
         </section>
       </section>
     </section>
