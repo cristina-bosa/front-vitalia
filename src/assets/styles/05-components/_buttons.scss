@@ -43,5 +43,30 @@
       background-color: var.$primary;
       color: var.$light;
     }
+    &--error{
+        background: transparent;
+        border: .12em solid var.$error;
+        color: var.$error;
+        &:hover {
+            background-color: var.$error-lightest;
+            border: .12em solid var.$error-lightest;
+            color: var.$error-darker;
+        }
+    }
   }
+    &--success{
+        background: var.$success-primary;
+        &--soft{
+        color: var.$success-darker;
+        background-color: var.$success-lightest;
+        &:hover {
+            background-color: darken(var.$success-lightest, 10%);
+        }
+      }
+        &:hover {
+            background-color: var.$success-lightest;
+            border: .12em solid var.$success-lightest;
+            color: var.$success-darker;
+        }
+    }
 }

@@ -1,18 +1,25 @@
 import { fetchMedicalHistory } from "@/actions/patients/medical-appointment";
-import HistoricalPage from "@/pages/patient/Historical";
+import HistoricalPage from "@/pages/patient/MedicalHistoryPatient";
+import React from "react";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/lib/utils";
+import {Roles} from "@/types/enum";
+import MedicalHistoryDoctor from "@/pages/doctor/MedicalHistoryDoctor";
+import MedicalHistoryPatient from "@/pages/patient/MedicalHistoryPatient";
+import {fetchMedicalHistoryDoctors} from "@/actions/doctors/history";
 
-const PatientHistoricalPage: React.FC = async () => {
-  const historicalData = await fetchMedicalHistory();
-  if (historicalData.length === 0) {
-    return (
-      <section className="bg-slate-100 p-2 rounded-md">
-        <h1 className="text-3xl font-bold text-dark">Mi histórico</h1>
-        <p className="text-info-dark">No tienes citas médicas registradas.</p>
-      </section>)
+const MedicalHistoryPage: React.FC = async () => {
+  const session = await getServerSession(authOptions);
+  const userRole = session?.user.groups[0];
+  let historicalData;
+  switch (userRole){
+    case Roles.PATIENT:
+        historicalData = await fetchMedicalHistory();
+      return <MedicalHistoryPatient historicalInfo={ historicalData.data} />
+    case Roles.DOCTOR:
+        historicalData = await fetchMedicalHistoryDoctors();
+      return <MedicalHistoryDoctor historicalInfo = {historicalData.data} />
   }
-  return (
-    <HistoricalPage historicalInfo={historicalData} />
-  );
 }
 
-export default PatientHistoricalPage;
+export default MedicalHistoryPage;

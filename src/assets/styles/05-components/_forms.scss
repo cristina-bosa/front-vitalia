@@ -8,9 +8,14 @@
   @include mixins.flex-position(column, _, _, 1em);
   width: 100%;
 }
+.form-bottom{
+    @include mixins.flex-position(row, center, center, 1em);
+    margin-top: 1.5em;
+}
 
 .form-row {
   @include mixins.flex-position(row, _, _, 1em);
+  margin-top: 1em;
   width: 100%;
 }
 .form-column{

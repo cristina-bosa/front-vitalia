@@ -40,6 +40,17 @@
     }
 
   }
+  &--doctor{
+    &___header{
+      @include mix.flex-position(row, space-between, left);
+      width: 100%;
+      margin-bottom: 1.5em;
+    }
+    &__body{
+      @include mix.flex-position(row, space-between, left);
+      margin-top: 1.5em;
+    }
+  }
 }
 .list{
   @include mix.flex-position(row, space-between, left);

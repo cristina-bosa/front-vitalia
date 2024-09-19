@@ -12,7 +12,7 @@ import {fetchAvailableHours} from "@/actions/patients/doctors";
 import {FormCreateAppointmentPatient} from "@/types";
 import {HTTPStatus} from "@/types/enum";
 import {getHour} from "@/utils/utils";
-import {CreateAppointmentSchema} from "@/schemas";
+
 interface ModalProfileDoctorProps {
     doctorData: any;
     isOpen: boolean;

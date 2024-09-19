@@ -3,14 +3,20 @@
  * @description Constants used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/17
+ * @updated 2024/09/19
  * @version 1.0
  */
 
 import { Roles } from "@/types/enum";
 
+/**
+ * Base URL for the API
+ */
 export const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
+/**
+ * Steps for the registration progress for Doctors
+ */
 export const stepRegisterDoctor = [
   {
     id: 1,
@@ -26,6 +32,9 @@ export const stepRegisterDoctor = [
   },
 ] as const;
 
+/**
+ * Steps for the registration progress for Patients
+ */
 export const stepRegisterPatient = [
   {
     id: 1,
@@ -71,10 +80,16 @@ export const routes = [
     roles: [Roles.PATIENT],
   },
   {
-    label: "Mi historial médico",
+    label: "Mi historial",
     path: "/medical-history",
     icon: "/assets/svg/nav-historical.svg",
-    roles: [Roles.PATIENT],
+    roles: [Roles.PATIENT, Roles.DOCTOR],
+  },
+  {
+    label: "Mi agenda",
+    path: "/schedule",
+    icon: "/assets/svg/nav-schedule.svg",
+    roles: [Roles.DOCTOR],
   },
   {
     label: "Mi perfil",
@@ -84,7 +99,12 @@ export const routes = [
   },
 ];
 
+/**
+ * Badges for the status of the medical appointments
+ */
 export const BadgeStatus = {
   "Pendiente": "badge--pending",
   "Aceptado": "badge--accepted",
+  "Cancelada": "badge--cancelled",
+  "Finalizada": "badge--finished",
 }

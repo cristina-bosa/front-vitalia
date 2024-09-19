@@ -9,7 +9,6 @@ const UsersPage: React.FC = async () => {
 	return (
 		<UsersAdmin users={response.data}/>
 	)
-
 	}
 }
 

@@ -1,0 +1,17 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mixins;
+
+
+.history{
+    @include mixins.flex-position(column, left, left, 1.5em);
+  &__header{
+    @include mixins.flex-position(column, left, left, .5em);
+
+  }
+    &__search{
+        @include mixins.flex-position(row, flex-start, center, .5rem);
+    }
+    &__body{
+
+  }
+}

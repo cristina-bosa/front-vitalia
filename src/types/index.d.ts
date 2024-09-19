@@ -1,11 +1,9 @@
-import {DateTime} from "next-auth/providers/kakao";
-
 /**
  * @file Index types
  * @description Types and interfaces used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/17
+ * @updated 2024/09/19
  * @version 1.0
  */
 export interface RegisterData {
@@ -59,7 +57,6 @@ export interface Profile {
   birth_date: string;
   groups: number[];
 }
-
 
 export interface UpdateProfile {
   email?:string;
@@ -143,4 +140,23 @@ export interface AllUsersData {
   birth_date: string
   genre: string
   groups: string[]
+}
+
+export interface DashboardMedicalAppointments {
+  id: number
+  guid: string
+  status: string
+  patient_appointment: string
+  patient_name: string
+  patient_last_name: string
+  reason_consultation: string
+}
+
+export interface CreateAppointmentData {
+  symptoms: string;
+  treatment: string;
+  reason_consultation: string;
+  medications: string;
+  diagnosis: string;
+  recommendations: string;
 }
