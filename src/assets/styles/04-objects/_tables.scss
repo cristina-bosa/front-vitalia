@@ -1,21 +1,19 @@
 @use '../00-settings/variables' as variables;
 @use '../01-tools/mixins' as mixins;
 
-.table{
+table{
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
-    &__header{
+    thead{
         color: variables.$dark-lighter;
-        &--item{
+        tr{
+            th{
             @include mixins.padding(.5em,.5em, .5em, .5em);
             text-align: left;
-        }
-    }
-    &__body{
-        &--item{
-        @include mixins.padding(.8em,.5em, .8em, .5em);
-            color: variables.$dark;
+                font-size: .8rem;
+                color: variables.$dark-lighter;
+            }
         }
     }
     tbody{
@@ -28,6 +26,10 @@
                 cursor: pointer;
                 background-color: variables.$light;
                 font-weight: bold;
+            }
+            td{
+                @include mixins.padding(.8em,.5em, .8em, .5em);
+                color: variables.$dark;
             }
         }
     }

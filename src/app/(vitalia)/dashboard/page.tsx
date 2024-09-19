@@ -8,7 +8,8 @@ import DashboardPatient from "@/pages/patient/DashboardPatient";
 import {fetchDoctors, fetchTopFourDoctors} from "@/actions/patients/doctors";
 import {fetchLastDoctorRegistration, fetchLastPatientRegistration} from "@/actions/admin/users";
 import {fetchMedicalAppointmentByDate, fetchMedicalAppointmentsByStatus} from "@/actions/doctors/medical-appointment";
-import {getEndOfDay, getTodayWithHour} from "@/utils/utils";
+import {getEndOfDay, getStartOfDay} from "@/utils/utils";
+
 
 const DashboardPage = async () => {
   const session = await getServerSession(authOptions);
@@ -20,7 +21,7 @@ const DashboardPage = async () => {
       return <DashboardPatient doctorsData= {doctors.data}/>;
     }
     case Roles.DOCTOR:
-      const acceptAppointments = await fetchMedicalAppointmentByDate(AppointmentStatus.CONFIRMED, {start_date: getTodayWithHour(), end_date: getEndOfDay()})
+      const acceptAppointments = await fetchMedicalAppointmentByDate(AppointmentStatus.CONFIRMED, {start_date: getStartOfDay(), end_date: getEndOfDay()})
       const pendingAppointments = await fetchMedicalAppointmentsByStatus(AppointmentStatus.PENDING)
       return <DashboardDoctor acceptAppointments={acceptAppointments?.data} pendingAppointments={pendingAppointments.data}/>;
     case Roles.ADMIN:{

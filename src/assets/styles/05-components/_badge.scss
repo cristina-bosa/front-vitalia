@@ -24,4 +24,12 @@
     background-color: variables.$success-lightest;
     color: variables.$light;
   }
+  &--cancelled{
+    background-color: variables.$error-lightest;
+    color: variables.$error-darker;
+  }
+  &--finished{
+    background-color: variables.$success-lightest;
+    color: variables.$success-darker;
+  }
 }

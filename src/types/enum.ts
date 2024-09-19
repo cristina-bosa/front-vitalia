@@ -3,7 +3,7 @@
  * @description Enumerations used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/18
+ * @updated 2024/09/19
  * @version 1.0
  */
 
@@ -81,4 +81,9 @@ export const enum AppointmentStatusSpanish {
   IN_PROGRESS = 'En progreso',
   CANCELED = 'Cancelada',
   FINISHED = 'Finalizada'
+}
+
+export const enum AcceptRejectAppointment {
+  ACCEPT = 'accept',
+  REJECT = 'reject'
 }

@@ -18,7 +18,7 @@ const DashboardDoctor :React.FC<DashboardDoctorProps> = ({acceptAppointments, pe
   const {profile} = useUser()
   const [accepted, setAccepted] = useState(acceptAppointments)
   const [pending, setPending] = useState(pendingAppointments)
-
+  console.log(acceptAppointments)
 
   return (
     <section className={"dashboard"}>
@@ -32,7 +32,7 @@ const DashboardDoctor :React.FC<DashboardDoctorProps> = ({acceptAppointments, pe
             <DashboardAppointment
               key={appointment.id}
               appointment={appointment}
-              handleOpenAppointment={() => console.log("open appointment")}
+              handleOpenAppointment={() => router.push(`/appointments/${typeUserURI.DOCTOR}/${appointment.id}`)}
             />
           ))}
         </section>

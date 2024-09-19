@@ -3,7 +3,7 @@
  * @description Constants used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/17
+ * @updated 2024/09/19
  * @version 1.0
  */
 
@@ -105,4 +105,6 @@ export const routes = [
 export const BadgeStatus = {
   "Pendiente": "badge--pending",
   "Aceptado": "badge--accepted",
+  "Cancelada": "badge--cancelled",
+  "Finalizada": "badge--finished",
 }
