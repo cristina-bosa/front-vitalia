@@ -88,7 +88,6 @@ const AppointmentsDoctor: React.FC<AppointmentsProps> = ({allAppoinments, status
 						<thead className={"table__header"}>
 						<tr>
 							<th className={"table__header--item text-xs"}>Nombre y apellidos</th>
-							<th className={"table__header--item text-xs"}>Motivo</th>
 							<th className={"table__header--item text-xs"}>Fecha</th>
 							<th className={"table__header--item text-xs"}>Acciones</th>
 						</tr>
@@ -97,7 +96,6 @@ const AppointmentsDoctor: React.FC<AppointmentsProps> = ({allAppoinments, status
 								{appointments.map((appointment: any) => (
 								<tr key={appointment.id} onClick={() => router.push(`/appointments/doctor/${appointment.id}`)}>
 									<td className={"table__body--item"} >{appointment.patient_name} {appointment.patient_last_name}</td>
-									<td className={"table__body--item"} >{appointment.reason_consultation.substring(0, 10)}</td>
 									<td className={"table__body--item"} >{appointment.patient_appointment}</td>
 									<td className={"table__body--item "}>
 										<EyeIcon/>

@@ -2,14 +2,17 @@
 import React, {useState} from "react";
 import InputComponent from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import {AppointmentStatus, AppointmentStatusSpanish} from "@/types/enum";
+import { AppointmentStatusSpanish, typeUserURI} from "@/types/enum";
 import {BadgeStatus} from "@/constants";
-import {formateDate} from "@/utils/utils";
+import {useRouter} from "next/navigation";
+import Hero from "@/components/ui/Hero";
+import {ArrowUpRight} from "lucide-react";
 
 interface MedicalHistoryDoctorProps {
 	historicalInfo: any
 }
 const MedicalHistoryDoctor : React.FC<MedicalHistoryDoctorProps> = ({historicalInfo}) =>{
+	const router = useRouter()
 	const [historicalData, setHistoricalData] = useState(historicalInfo)
 	const [search, setSearch] = useState("")
 	const [date, setDate] = useState("")
@@ -45,10 +48,10 @@ const MedicalHistoryDoctor : React.FC<MedicalHistoryDoctorProps> = ({historicalI
 
 	return (
 		<section className={"history"}>
-			<section className={"history__header"}>
-			<h1 className={"text-2xl text-color-primary"}>Mi histórico</h1>
-			<p className={"text-color-dark-light"}>Aquí tienes el histórico de todas tus consultas</p>
-			</section>
+			<Hero
+				title={"Mi histórico"}
+				subtitle={"Estan todas las consultas que has realizado"}
+				/>
 			<section className={"history__search"}>
 				<InputComponent
 					id={"search"}
@@ -66,7 +69,7 @@ const MedicalHistoryDoctor : React.FC<MedicalHistoryDoctorProps> = ({historicalI
 				<Button className={"btn--primary--soft"} onClick={handleFilterByStatus(AppointmentStatusSpanish.CONFIRMED)}>Citas confirmadas</Button>
 				<Button className={"btn--primary--soft"} onClick={handleFilterByStatus(AppointmentStatusSpanish.CANCELED)}>Citas canceladas</Button>
 				<Button className={"btn--primary--soft"} onClick={handleFilterByStatus(AppointmentStatusSpanish.FINISHED)}>Citas finalizadas</Button>
-				<Button className={"btn--primary--soft"} onClick={() => {
+				<Button className={"btn--outline"} onClick={() => {
 					setHistoricalData(historicalInfo)
 					setSearch("")
 					setDate("")
@@ -84,18 +87,21 @@ const MedicalHistoryDoctor : React.FC<MedicalHistoryDoctorProps> = ({historicalI
 				</thead>
 				<tbody>
 					{historicalData.map((historicalData: any) => (
-						<tr key={historicalData.id}>
+						<tr key={historicalData.id}
+								onClick={() => router.push(`appointments/${typeUserURI.DOCTOR}/${historicalData.id}`)}>
 							<td>{historicalData.guid}</td>
 							<td>{historicalData.patient_name} {historicalData.patient_last_name}</td>
 							<td>{historicalData.patient_appointment}</td>
-							<td><span className={`text-xs badge ${BadgeStatus[historicalData.status as keyof typeof BadgeStatus] || 'badge--default'}`}>
+							<td><span
+								className={`text-xs badge ${BadgeStatus[historicalData.status as keyof typeof BadgeStatus] || 'badge--default'}`}>
 								{historicalData.status}
 							</span>
 							</td>
+							<td><ArrowUpRight className={"card__appointment__footer"}/></td>
 						</tr>
 					))}
 				</tbody>
-			</table>
+				</table>
 			</section>
 		</section>
 	)

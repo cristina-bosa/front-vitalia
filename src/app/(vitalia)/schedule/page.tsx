@@ -1,10 +1,10 @@
 import ScheduleDoctor from "@/pages/doctor/ScheduleDoctor";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/lib/utils";
-import {Roles} from "@/types/enum";
-import PatientProfile from "@/pages/patient/Profile";
-import ProfileDoctor from "@/pages/doctor/ProfileDoctor";
+import {AppointmentStatus, Roles} from "@/types/enum";
 import React from "react";
+import {fetchMedicalAppointmentByDate} from "@/actions/doctors/medical-appointment";
+import {getEndOfDay, getStartOfDay} from "@/utils/utils";
 
 const SchedulePage = async () => {
 	const session = await getServerSession(authOptions);
@@ -15,7 +15,8 @@ const SchedulePage = async () => {
 			return <>No data</>
 		}
 		case Roles.DOCTOR:
-			return <ScheduleDoctor/>
+			const acceptAppointments = await fetchMedicalAppointmentByDate(AppointmentStatus.CONFIRMED, {start_date: getStartOfDay(), end_date: getEndOfDay()})
+			return <ScheduleDoctor acceptAppointments={acceptAppointments?.data}/>
 	}
 }
 
