@@ -40,7 +40,7 @@ const DoctorRegister = () => {
     repeat_email: '',
     password: '',
     repeat_password: '',
-    genre: 'M',
+    genre: '',
     birth_date: '',
     city: 0,
 
@@ -70,8 +70,6 @@ const DoctorRegister = () => {
       username: `${prevData.first_name}${prevData.last_name}`.toLowerCase()
     }));
   }, [registerDoctorData.first_name, registerDoctorData.last_name]);
-
-
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { id, value } = e.target;
@@ -139,6 +137,7 @@ const DoctorRegister = () => {
       setErrors({});
 
       try {
+        console.log(registerDoctorData)
         const response = await fetchRegister(registerDoctorData)
         setIsLoading(false)
         if (response) {
@@ -240,6 +239,7 @@ const DoctorRegister = () => {
                       className={`select`}
                       value={registerDoctorData.genre}
                       onChange={handleSelectChange}>
+                      <option value={''}>Selecciona tu género</option>
                       {optsGenre.map((option: { id: string, name: string }, index) => (
                         <option key={index} value={option.name}>{option.name}</option>
                       ))}
@@ -318,7 +318,6 @@ const DoctorRegister = () => {
                     error={errors.professional_number && errors.professional_number[0]}
                   />
                   <section className="form-group">
-
                     <label htmlFor="specialty"
                            className="text-primary uppercase text-xs font-semibold">Especialidad</label>
                     <select
@@ -326,6 +325,7 @@ const DoctorRegister = () => {
                       className={`select`}
                       value={registerDoctorData.specialty}
                       onChange={handleSelectChange}>
+                      <option value={""}>Selecciona una especialidad</option>
                       {optsSpecialty.map((option: { id: number, name: string }, index) => (
                         <option key={index} value={option.id}>{option.name}</option>
                       ))}

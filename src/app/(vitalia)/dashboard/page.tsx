@@ -14,10 +14,10 @@ import {getEndOfDay, getStartOfDay} from "@/utils/utils";
 const DashboardPage = async () => {
   const session = await getServerSession(authOptions);
   const userRole = session?.user.groups[0];
-  const doctors = await fetchDoctors()
 
   switch (userRole) {
     case Roles.PATIENT:{
+      const doctors = await fetchDoctors()
       return <DashboardPatient doctorsData= {doctors.data}/>;
     }
     case Roles.DOCTOR:

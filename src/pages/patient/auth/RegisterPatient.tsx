@@ -62,7 +62,7 @@ const RegisterPatient = () => {
     repeat_email: '',
     password: '',
     repeat_password: '',
-    genre: 'M',
+    genre: '',
     birth_date: '',
     city: 0,
     medical_history: {

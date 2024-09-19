@@ -3,14 +3,14 @@
  * @description Functions to fetch data about doctors from the API
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/14
+ * @updated 2024/09/19
  * @version 1.0
  */
 
 import {fetchDataToken, fetchDataTokenPost} from "../fetch";
 
 export const fetchDoctors = async () => {
-  return fetchDataToken(`doctors`);
+  return fetchDataToken(`doctors/confirmed`);
 };
 
 export const fetchFilterDoctors = async (city?: number, specialty?: number) => {

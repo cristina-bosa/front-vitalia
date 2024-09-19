@@ -15,7 +15,7 @@ const SchedulePage = async () => {
 			return <>No data</>
 		}
 		case Roles.DOCTOR:
-			const acceptAppointments = await fetchMedicalAppointmentByDate(AppointmentStatus.CONFIRMED, {start_date: getStartOfDay(), end_date: getEndOfDay()})
+			const acceptAppointments = await fetchMedicalAppointmentByDate(AppointmentStatus.CONFIRMED, {start_date: getStartOfDay()})
 			return <ScheduleDoctor acceptAppointments={acceptAppointments?.data}/>
 	}
 }

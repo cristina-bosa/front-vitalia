@@ -9,10 +9,11 @@ interface InputProps {
   label?: string,
   placeholder?: string
   error?: string
+  isDisabled?: boolean
 
 }
 
-const InputComponent: React.FC<InputProps> = ({ id, value, onChange, type, label, placeholder, error }) => {
+const InputComponent: React.FC<InputProps> = ({ id, value, onChange, type, label, placeholder, error, isDisabled }) => {
   if (label) {
     return (
       <section className="form-group">
@@ -27,6 +28,7 @@ const InputComponent: React.FC<InputProps> = ({ id, value, onChange, type, label
           onChange={onChange}
           min={type === 'number' ? 0 : undefined}
           max={type === 'tel' ? 10 : undefined}
+          disabled={isDisabled}
            />
         {error && <span className="text-color-error text-xs">{error}</span>}
       </section>

@@ -3,7 +3,7 @@ import { NextAuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { baseUrl } from "@/constants";
-import profile from "@/pages/patient/Profile";
+import profile from "@/pages/patient/ProfilePatient";
 
 export const authOptions: NextAuthOptions = {
   providers: [
