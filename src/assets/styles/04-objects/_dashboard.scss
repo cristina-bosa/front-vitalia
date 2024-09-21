@@ -51,6 +51,9 @@
       margin-top: 1.5em;
     }
   }
+  &--patient{
+    margin-top: 1.5em;
+  }
 }
 .list{
   @include mix.flex-position(row, space-between, left);

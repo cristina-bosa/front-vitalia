@@ -9,10 +9,10 @@ import CardHistoricalAppointmentInformation from "@/components/ui/cards/CardHist
 import {useRouter} from "next/navigation";
 
 
-interface PendingAppointmentProps {
+interface ConfirmedAppointmentPatientProps {
 	pendingAppointment:any
 }
-const PendingAppointment: React.FC <PendingAppointmentProps> = ({pendingAppointment}) => {
+const ConfirmedAppointmentPatient: React.FC <ConfirmedAppointmentPatientProps> = ({pendingAppointment}) => {
 	const router = useRouter()
 	const [appointment, setAppointment] = useState(pendingAppointment)
 
@@ -50,12 +50,12 @@ const PendingAppointment: React.FC <PendingAppointmentProps> = ({pendingAppointm
 			<CardHistoricalAppointmentInformation appointmentInformation={appointment.appointment_information}/>
 			<section className={"appointment__opts"}>
 				<section className={"appointment__opts__buttons"}>
-				<Button type="button" className="btn--outline--error" onClick={handleRejectAppointment}>Cancelar
-					reserva</Button>
-				<Button type="button" className="btn--success--soft" onClick={handleAcceptAppointment}>Aceptar reserva</Button>
+					<Button type="button" className="btn--outline--error" onClick={handleRejectAppointment}>Cancelar
+						reserva</Button>
+					<Button type="button" className="btn--success--soft" onClick={handleAcceptAppointment}>Aceptar reserva</Button>
 				</section>
 			</section>
 		</section>
 	)
 }
-export default PendingAppointment
+export default ConfirmedAppointmentPatient

@@ -1,11 +1,11 @@
-import { authOptions } from "@/lib/utils";
-import {AppointmentStatus, HTTPStatus, Roles} from "@/types/enum";
-import { getServerSession } from "next-auth";
+import {authOptions} from "@/lib/utils";
+import {AppointmentStatus, Roles} from "@/types/enum";
+import {getServerSession} from "next-auth";
 
 import DashboardAdmin from "@/pages/admin/DashboardAdmin";
 import DashboardDoctor from "@/pages/doctor/DashboardDoctor";
 import DashboardPatient from "@/pages/patient/DashboardPatient";
-import {fetchDoctors, fetchTopFourDoctors} from "@/actions/patients/doctors";
+import {fetchTopFourDoctors} from "@/actions/patients/doctors";
 import {fetchLastDoctorRegistration, fetchLastPatientRegistration} from "@/actions/admin/users";
 import {fetchMedicalAppointmentByDate, fetchMedicalAppointmentsByStatus} from "@/actions/doctors/medical-appointment";
 import {getEndOfDay, getStartOfDay} from "@/utils/utils";
@@ -17,7 +17,7 @@ const DashboardPage = async () => {
 
   switch (userRole) {
     case Roles.PATIENT:{
-      const doctors = await fetchDoctors()
+      const doctors = await fetchTopFourDoctors()
       return <DashboardPatient doctorsData= {doctors.data}/>;
     }
     case Roles.DOCTOR:

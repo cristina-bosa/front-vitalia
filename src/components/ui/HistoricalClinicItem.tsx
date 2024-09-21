@@ -1,4 +1,3 @@
-
 import React from "react";
 
 interface HistoricalItemProps {
@@ -17,7 +16,6 @@ const HistoricalClinicItem:React.FC <HistoricalItemProps> = ({name, historicalIt
 				</li>
 			))}
 			</ul>
-
 			</article>
 		</details>
 	)

@@ -3,39 +3,33 @@
  * @description Functions to fetch data about medical history from the API
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/03
+ * @updated 2024/09/21
  * @version 1.0
  */
 
-import { fetchDataTokenPost } from "../fetch";
+import {fetchDataTokenPost} from "../fetch";
 
-export const addMedicalHistoryAllergies = async (allergies: number) => {
-  return fetchDataTokenPost(`patients/medical-history/allergies/add/`, {
-    allergy_id: allergies,
+/**
+ * Fetch add medical history
+ * @param {string} history
+ * @param {any} data
+ * @returns {Promise<any>}
+ */
+export const addMedicalHistory = async (history: string, data: any) => {
+  console.log(data)
+  return fetchDataTokenPost(`patients/medical-history/${history}/add/`, {
+    history_id: data
   });
 };
 
-export const addMedicalHistoryDiseases = async (diseases: number) => {
-  return fetchDataTokenPost(
-    `patients/medical-history/relevant-diseases/add/`,
-    diseases
-  );
-};
+/**
+ * Fetch remove medical history
+ * @param history
+ * @param data
+ */
 
-export const addMedicalHistoryCurrentMedication = async (
-  medication: number
-) => {
-  return fetchDataTokenPost(
-    `patients/medical-history/current-medication/add/`,
-    medication
-  );
-};
-
-export const addMedicalHistoryMedicalIntervention = async (
-  intervention: number
-) => {
-  return fetchDataTokenPost(
-    `patients/medical-history/medical-intervention/add/`,
-    intervention
-  );
+export const removeMedicalHistory = async (history: string, data: any) => {
+  return fetchDataTokenPost(`patients/medical-history/${history}/remove/`, {
+    history_id: data
+  });
 };

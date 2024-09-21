@@ -12,7 +12,7 @@
   &__list__medical{
     @include mix.flex-position(column, _, _, 1.5em);
     flex: 1;
-    margin-top: .5em;
+    margin-top: 1.5em;
   }
   &__appointment-information-item{
     @include mix.flex-position(column, flex-start, flex-start, .5em);

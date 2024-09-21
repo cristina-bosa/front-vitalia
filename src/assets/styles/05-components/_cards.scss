@@ -44,9 +44,9 @@
     @include mixins.flex-position(row, _ , left, .5em);
     &__header{
       &__image{
-        height: 50%;
-        width: auto;
-        @include mixins.border-radius()
+        @include mixins.border-radius();
+        width: 50%;
+        height: auto;
       }
     }
     &__body{
@@ -107,5 +107,24 @@
   }
   &__today-reserded{
     width: 100%;
+  }
+  &__profile{
+    @include mixins.flex-position(column, flex-start, flex-start, 1.5em);
+    flex: 1;
+    &--info{
+        @include mixins.flex-position(column, flex-start4, normal, 1em);
+    }
+  }
+  &__review{
+    @include mixins.flex-position(column, flex-start, normal, 1.5em);
+    &__header{
+        @include mixins.flex-position(row, space-between, normal, 1em);
+    }
+    &__body{
+        @include mixins.flex-position(column, flex-start, flex-start, 1.5em);
+      &--stars{
+        @include mixins.flex-position(row, left, center, .5em);
+      }
+    }
   }
 }

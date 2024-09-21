@@ -9,6 +9,8 @@ import {
 	fetchMedicalAppointmentById,
 	fetchMedicalAppointmentsByStatus
 } from "@/actions/doctors/medical-appointment";
+import {fetchDoctors} from "@/actions/patients/doctors";
+import {fetchCity, fetchSpecialty} from "@/actions/utils";
 
 interface AppointmentsParams {
 	params: {
@@ -18,7 +20,6 @@ interface AppointmentsParams {
 
 const AppointmentPage: React.FC<AppointmentsParams> = async ({ params }) => {
 	const { slug } = params;
-
 	const [userType, idOrAll, status] = slug;
 
 	switch (userType) {
@@ -33,8 +34,10 @@ const AppointmentPage: React.FC<AppointmentsParams> = async ({ params }) => {
 			}
 		case typeUserURI.PATIENT:
 			if(idOrAll === typeUserURI.ALL) {
-				const getAllAppointments = await fetchAllMedicalAppointments();
-				return <AppointmentsPatient allAppoinments = {getAllAppointments.data}/>;
+				const getAllDoctors = await fetchDoctors()
+				const city = await fetchCity()
+				const specialty = await fetchSpecialty()
+				return <AppointmentsPatient allDoctors = {getAllDoctors.data} cities={city.data} specialties={specialty.data}/>;
 			}else{
 				const oneAppointment = await fetchMedicalAppointmentById(idOrAll);
 				return <IndividualAppointmentPatient oneAppointment = {oneAppointment.data}/>

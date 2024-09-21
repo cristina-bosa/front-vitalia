@@ -7,15 +7,14 @@
  * @version 1.0
  */
 
-import { UpdateProfile } from "@/types";
-import { fetchDataToken, fetchDataTokenPost } from "../fetch";
+import {fetchDataToken, fetchDataTokenPost} from "../fetch";
 
 /**
  * Function to update the patient's profile
  * @param data 
  * @returns 
  */
-export const fetchUpdateProfile = async (data: UpdateProfile) => {
+export const fetchUpdateProfile = async (data: any) => {
   return fetchDataTokenPost(`auth/user/update-profile/`, data);
 }
 

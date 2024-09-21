@@ -4,11 +4,10 @@ interface CardHistoricalAppointmentInformation {
 	appointmentInformation:any
 }
 const CardHistoricalAppointmentInformation:React.FC <CardHistoricalAppointmentInformation> = ({appointmentInformation}) => {
-	console.log(appointmentInformation)
 	return (
 		<section className={"historical-clinic__list__medical"}>
-			<section>
-				<h3 className={"text-xl text-color-primary"}>Información sobre la cita</h3>
+			<section className={"card"}>
+				<h3 className={"text-xl text-color-secondary"}>Información sobre la cita</h3>
 				<section className={"historical-clinic__list__medical"}>
 				<section className={"historical-clinic__appointment-information-item"}>
 					<span className={"text-l text-color-primary-dark"}>Motivo de consulta</span>
