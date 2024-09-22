@@ -5,11 +5,12 @@ import React, {startTransition, useState} from "react";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
 
-import {signIn, useSession} from "next-auth/react";
+import {signIn} from "next-auth/react";
 
 import Button from "@/components/ui/Button";
 import InputComponent from "@/components/ui/Input";
 import {LoginSchema} from "@/schemas";
+import {HTTPStatus} from "@/types/enum";
 
 
 const Login = () => {
@@ -30,11 +31,13 @@ const Login = () => {
           password: formData.password,
           redirect: false
         }).then((data) => {
-          if (data?.error) {
-            setErrors({ email: '', password: 'Credenciales incorrectas, inténtalo nuevamente' });
+          if(data?.status === HTTPStatus.UNAUTHORIZED){
+            setErrors({email: 'Credencias incorrectas, inténtalo nuevamente', password: 'Credenciales incorrectas,' +
+                ' inténtalo nuevamente'});
             return;
+          }else{
+            router.push('/dashboard');
           }
-          router.push('/dashboard');
         });
       });
     } else {

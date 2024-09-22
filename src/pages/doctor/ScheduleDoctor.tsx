@@ -10,13 +10,13 @@ interface ScheduleDoctorProps {
 }
 const ScheduleDoctor : React.FC<ScheduleDoctorProps> = ({acceptAppointments}) =>{
 	const router = useRouter()
-	console.log(acceptAppointments)
 	return (
 		<section>
 			<Hero
 				title={"Mi agenda"}
 				subtitle={"En esta sección están todas las consultas que has confirmado anteriormente"}
 			/>
+			{acceptAppointments.length === 0 ? <p>No hay consultas confirmadas</p> : (
 			<table>
 				<thead>
 				<tr>
@@ -37,6 +37,7 @@ const ScheduleDoctor : React.FC<ScheduleDoctorProps> = ({acceptAppointments}) =>
 				))}
 				</tbody>
 			</table>
+			)}
 		</section>
 	)
 }

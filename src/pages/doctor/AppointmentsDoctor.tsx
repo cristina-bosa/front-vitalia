@@ -3,11 +3,12 @@
 import React, {useState} from "react";
 import InputComponent from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import {ArrowUpRight, Eye, EyeIcon} from "lucide-react";
+import {EyeIcon} from "lucide-react";
 import {useRouter} from "next/navigation";
 import {fetchMedicalAppointmentByDate} from "@/actions/doctors/medical-appointment";
 import {getEndOfDay} from "@/utils/utils";
 import {AppointmentStatus, HTTPStatus} from "@/types/enum";
+import Hero from "@/components/ui/Hero";
 
 interface AppointmentsProps {
 	allAppoinments: any;
@@ -30,7 +31,7 @@ const AppointmentsDoctor: React.FC<AppointmentsProps> = ({allAppoinments, status
 			setAppointments(filteredAppointments);
 		}
 	}
-	console.log(getEndOfDay())
+
 	const handleSearchByDate = async (event: React.ChangeEvent<HTMLInputElement>) => {
 		setDate(event.target.value);
 		if(event.target.value === ""){
@@ -51,10 +52,9 @@ const AppointmentsDoctor: React.FC<AppointmentsProps> = ({allAppoinments, status
 	}
 	return (
 		<section className={"appointment-doctor"}>
-			<section className={"appointment-doctor__header"}>
-				<h2 className={"text-2xl text-color-primary"}>Reservas pendientes</h2>
-				<p className={"text-m text-color-dark-light"}>Estas son todas las citas pendientes</p>
-			</section>
+			<Hero title={"Reservas pendientes"}
+				subtitle={"Estas son todas las citas pendientes"} />
+
 			<section className={"appointment-doctor__search"}>
 				<InputComponent
 					id={"search"}

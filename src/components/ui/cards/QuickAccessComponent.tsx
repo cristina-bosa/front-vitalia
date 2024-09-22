@@ -1,22 +1,28 @@
 "use client";
 
-import {ArrowUpRight, ArrowUpRightIcon, Clock} from "lucide-react";
+import {ArrowUpRightIcon, Clock} from "lucide-react";
 import {useRouter} from "next/navigation";
 import {AppointmentStatus, typeUserURI} from "@/types/enum";
 import React, {useEffect, useState} from "react";
 import {fetchMedicalAppointmentByDate} from "@/actions/doctors/medical-appointment";
-import {getEndOfDay, getStartOfDay} from "@/utils/utils";
+import {getStartOfDay} from "@/utils/utils";
 
 const QuickAccessComponent = () => {
   const router = useRouter();
-  const [appointment, setAppointment] = useState<any>();
+  const [appointment, setAppointment] = useState<any[]>([]); // Define state as an array
+
   useEffect(() => {
     const loadAppointment = async () => {
-      const acceptAppointments = await fetchMedicalAppointmentByDate(AppointmentStatus.PENDING, {start_date: getStartOfDay(), end_date: getEndOfDay()})
-      setAppointment(acceptAppointments?.data);
-    }
+      const acceptAppointments = await fetchMedicalAppointmentByDate(AppointmentStatus.CONFIRMED, {
+        start_date: getStartOfDay(),
+      });
+      setAppointment(acceptAppointments?.data || []);
+    };
     loadAppointment();
-  }, [])
+  }, []);
+
+  console.log(appointment);
+
   return (
     <section className="dashboard__quick__access">
       <section>
@@ -44,26 +50,30 @@ const QuickAccessComponent = () => {
         <article className="card card__quick-access">
           <header className="card__header">
             <h6 className="font-semibold text-color-secondary">Tu próxima cita</h6>
-            {appointment?.length === 0 && (<p>No tienes citas pendientes</p>)}
-            {appointment && (
-            <article className="card__appointment" key={appointment.id}>
-              <section className={"card__appointment__header"}>
-                <header className={"card__appointment__header--bg"}>
-                  <Clock/>
-                  <time>{appointment.patient_appointment}</time>
-                </header>
-                <section className={"card__appointment__body"}>
-                  <h6 className={"text-color-dark"}>{appointment.patient_name} {appointment.patient_last_name}</h6>
-                </section>
-              </section>
-              <section className={"card__appointment__footer"}>
-                <ArrowUpRight/>
-              </section>
-            </article>
-            )}
           </header>
+          {appointment.length === 0 ? (
+            <p>No tienes citas pendientes</p>
+          ) : (
+            appointment.slice(0, 4).map((appointmentItem: any) => (
+              <article className="card__appointment" key={appointmentItem.id}>
+                <section className={"card__appointment__header"}>
+                  <header className={"card__appointment__header--bg"}>
+                    <Clock />
+                    <time>{appointmentItem.patient_appointment}</time>
+                  </header>
+                  <section className={"card__appointment__body"}>
+                    <h6 className={"text-color-dark"}>
+                      {appointmentItem.doctor.first_name} {appointmentItem.doctor.last_name}
+                    </h6>
+                  </section>
+                </section>
+                <section className={"card__appointment__footer"}>
+                  <ArrowUpRightIcon />
+                </section>
+              </article>
+            ))
+          )}
         </article>
-
 
       </section>
     </section>

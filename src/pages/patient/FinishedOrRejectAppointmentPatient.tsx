@@ -19,7 +19,7 @@ const FinishedRejectedAppointmentPatient: React.FC <FinishedRejectedAppointmentP
 	const [appointment, setAppointment] = useState(finishedRejectedAppointment)
 	const [review, setReview] = useState("")
 	const [rating, setRating] = useState(0);
-	console.log(appointment)
+
 	const handleRating = (rate: number) => {
 		setRating(rate)
 	}
