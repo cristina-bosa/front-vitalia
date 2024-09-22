@@ -9,7 +9,7 @@ import {getEndOfDay, getStartOfDay} from "@/utils/utils";
 
 const QuickAccessComponent = () => {
   const router = useRouter();
-  const [appointment, setAppointment] = useState<[]>();
+  const [appointment, setAppointment] = useState<any>();
   useEffect(() => {
     const loadAppointment = async () => {
       const acceptAppointments = await fetchMedicalAppointmentByDate(AppointmentStatus.PENDING, {start_date: getStartOfDay(), end_date: getEndOfDay()})
@@ -17,7 +17,6 @@ const QuickAccessComponent = () => {
     }
     loadAppointment();
   }, [])
-  console.log(appointment)
   return (
     <section className="dashboard__quick__access">
       <section>
@@ -47,14 +46,14 @@ const QuickAccessComponent = () => {
             <h6 className="font-semibold text-color-secondary">Tu próxima cita</h6>
             {appointment?.length === 0 && (<p>No tienes citas pendientes</p>)}
             {appointment && (
-            <article className="card__appointment" key={appointment[0].id}>
+            <article className="card__appointment" key={appointment.id}>
               <section className={"card__appointment__header"}>
                 <header className={"card__appointment__header--bg"}>
                   <Clock/>
-                  <time>{appointment[0].patient_appointment}</time>
+                  <time>{appointment.patient_appointment}</time>
                 </header>
                 <section className={"card__appointment__body"}>
-                  <h6 className={"text-color-dark"}>{appointment[0].patient_name} {appointment[0].patient_last_name}</h6>
+                  <h6 className={"text-color-dark"}>{appointment.patient_name} {appointment.patient_last_name}</h6>
                 </section>
               </section>
               <section className={"card__appointment__footer"}>
