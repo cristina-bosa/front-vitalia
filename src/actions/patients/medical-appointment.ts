@@ -9,10 +9,10 @@
 
 
 import {fetchDataToken, fetchDataTokenPost} from "../fetch";
-import { PostCreateAppointmentPatient} from "@/types";
+import {PostCreateAppointmentPatient} from "@/types";
 
 export const fetchMedicalHistory = async () => {
-  return fetchDataToken(`doctors/medical-appointment`);
+  return fetchDataToken(`doctors/history`);
 };
 
 export const fetchCreateAppointment = async (data: PostCreateAppointmentPatient) => {

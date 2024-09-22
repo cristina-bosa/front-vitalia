@@ -3,11 +3,11 @@
  * @description Constants used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/19
+ * @updated 2024/09/21
  * @version 1.0
  */
 
-import { Roles } from "@/types/enum";
+import {Roles, typeUserURI} from "@/types/enum";
 
 /**
  * Base URL for the API
@@ -75,7 +75,7 @@ export const routes = [
   },
   {
     label: "Solicitar cita médica",
-    path: "/appointments",
+    path: `/appointments/${typeUserURI.PATIENT}/all`,
     icon: "/assets/svg/nav-appointment.svg",
     roles: [Roles.PATIENT],
   },
@@ -89,6 +89,12 @@ export const routes = [
     label: "Mi agenda",
     path: "/schedule",
     icon: "/assets/svg/nav-schedule.svg",
+    roles: [Roles.DOCTOR],
+  },
+  {
+    label: "Mis reseñas",
+    path: "/reviews",
+    icon: "/assets/svg/nav-reviews.svg",
     roles: [Roles.DOCTOR],
   },
   {

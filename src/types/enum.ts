@@ -3,7 +3,7 @@
  * @description Enumerations used in the application
  * @author Cristina Bosa
  * @created 2024/09/03
- * @updated 2024/09/19
+ * @updated 2024/09/21
  * @version 1.0
  */
 
@@ -60,8 +60,10 @@ export const enum HTTPStatus {
   UNAUTHORIZED = 401,
   FORBIDDEN = 403,
   NOT_FOUND = 404,
+  NO_CONTENT = 204,
   NOT_ACCEPTABLE = 406,
   INTERNAL_SERVER_ERROR = 500,
+  ACCEPTED = 202,
 }
 
 /**

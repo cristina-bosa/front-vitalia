@@ -2,7 +2,7 @@
 import React, {useState} from "react";
 import InputComponent from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import { AppointmentStatusSpanish, typeUserURI} from "@/types/enum";
+import {AppointmentStatusSpanish, typeUserURI} from "@/types/enum";
 import {BadgeStatus} from "@/constants";
 import {useRouter} from "next/navigation";
 import Hero from "@/components/ui/Hero";

@@ -22,8 +22,9 @@
     position: absolute;
     background-color: var.$light;
     top: 0;
+    height: 100%;
     right: -100%;
-    @include mixins.flex-position(column, _, _, .5em);
+    @include mixins.flex-position(column, space-evenly, normal, .5em);
     border-top-left-radius: 1.5em;
     border-bottom-left-radius: 1.5em;
     &__header{
@@ -41,20 +42,22 @@
         }
         &__hours{
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
           gap: 1.5em;
 
         }
       }
     }
     &__body{
-      @include mixins.flex-position(column, center, _, 1.5em);
-      margin-top: 1.5em;
-      @include mixins.card()
-
+      @include mixins.flex-position(column, center, normal, 1.5em);
+      @include mixins.card();
+      form{
+        gap: 1em;
+      }
     }
     &--open{
       right: 0;
+      width: 50%;
       transition: right .5s ease-in-out;
     }
     &--close{

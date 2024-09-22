@@ -17,6 +17,7 @@
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
     "react-select": "^5.8.0",
+    "react-simple-star-rating": "^5.1.7",
     "react-toastify": "^10.0.5",
     "react-tooltip": "^5.28.0",
     "zod": "^3.23.8",

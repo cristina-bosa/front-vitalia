@@ -1,5 +1,5 @@
 import React, {FormEvent, useEffect, useState} from "react";
-import { Star, XIcon } from "lucide-react";
+import {Star, XIcon} from "lucide-react";
 
 import toast from 'react-hot-toast';
 
@@ -52,6 +52,8 @@ const ModalProfileDoctor :React.FC<ModalProfileDoctorProps> = ({ doctorData, isO
         }
       }catch(error){
         console.error(error)
+      }finally {
+        setError('')
       }
     }
     const handleCreateAppointment = async (event: FormEvent<HTMLFormElement>) =>{
@@ -66,6 +68,14 @@ const ModalProfileDoctor :React.FC<ModalProfileDoctorProps> = ({ doctorData, isO
           switch (response.status) {
             case HTTPStatus.CREATED:
               toast.success('Se ha reservado la cita correctamente');
+              setAvailableHours([]);
+              setSelectedHour(null);
+              setFormData({
+                patient_appointment: '',
+                day_appointment: '',
+                reason_consultation: '',
+                doctor_id: 0
+              })
               handleCloseModal();
               break;
             case HTTPStatus.NOT_ACCEPTABLE:
@@ -79,6 +89,8 @@ const ModalProfileDoctor :React.FC<ModalProfileDoctorProps> = ({ doctorData, isO
       }catch(error){
         console.error(error)
       }finally {
+        setAvailableHours([]);
+        setSelectedHour(null);
         setFormData({
           patient_appointment: '',
           day_appointment: '',
@@ -87,6 +99,7 @@ const ModalProfileDoctor :React.FC<ModalProfileDoctorProps> = ({ doctorData, isO
         })
       }
     }
+    console.log(doctorData)
     const stars = Array.from({ length: doctorData?.stars }, (_, index) => index);
       return (
           <section className={`modal ${isOpen ? 'modal--overlay' : ''}`}>

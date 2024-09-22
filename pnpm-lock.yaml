@@ -29,6 +29,9 @@ dependencies:
   react-select:
     specifier: ^5.8.0
     version: 5.8.0(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
+  react-simple-star-rating:
+    specifier: ^5.1.7
+    version: 5.1.7(react-dom@18.3.1)(react@18.3.1)
   react-toastify:
     specifier: ^10.0.5
     version: 10.0.5(react-dom@18.3.1)(react@18.3.1)
@@ -2660,6 +2663,17 @@ packages:
     transitivePeerDependencies:
       - '@types/react'
       - supports-color
+    dev: false
+
+  /react-simple-star-rating@5.1.7(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-NTFkW8W3uwvI82Fv7JW5i7gmDjEZKxJmj+Z9vn+BjYIXT6ILdnU9qnSUP2cWrWN/WAUlue81f9SgM4CQcenltQ==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     dev: false
 
   /react-toastify@10.0.5(react-dom@18.3.1)(react@18.3.1):

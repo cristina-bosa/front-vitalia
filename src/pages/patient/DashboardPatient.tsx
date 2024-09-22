@@ -5,7 +5,6 @@ import React, {useState} from "react";
 import CardDoctor from "@/components/ui/cards/CardDoctor";
 import ModalProfileDoctor from "@/components/ui/modals/ModalProfileDoctor";
 import WelcomeComponent from "@/components/ui/cards/WelcomeComponent";
-import NotificationComponent from "@/components/ui/cards/NotificationComponent";
 import QuickAccessComponent from "@/components/ui/cards/QuickAccessComponent";
 import {fetchOneDoctor} from "@/actions/patients/doctors";
 
@@ -39,10 +38,10 @@ const DashboardPatient: React.FC<DashboardPatientProps> = ({doctorsData}) => {
       </section>
       <section className="dashboard__body">
         <QuickAccessComponent />
-        <NotificationComponent />
       </section>
-      <section>
+      <section className={"dashboard--patient"}>
       <span className="text-color-dark-light">Médicos cercanos</span>
+        {doctors.length === 0 && (<p className={"text-color-dark"}>No tenemos disponibles médicos en su zona, lamentamos las molestias</p>)}
           <section className="list-doctors">
           {doctors?.map((doctor:any) => (
             <CardDoctor
