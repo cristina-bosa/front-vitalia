@@ -1,0 +1,24 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mixins;
+
+.input {
+  background-color: #f8f6f6;
+  &--error {
+    background-color: var.$error-lightest;
+    border-color: var.$error-darker;
+    color: var.$error-darker;
+  }
+}
+
+.select {
+  background-color: #f8f6f6;
+
+  &--error {
+    border-color: var.$error-darker;
+    color: var.$error-darker;
+  }
+  &--full {
+    max-width: 100%;
+    width: 100%;
+  }
+}

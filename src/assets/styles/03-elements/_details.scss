@@ -1,0 +1,30 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mixin;
+details{
+    background-color: var.$light;
+    @include mixin.padding();
+    @include mixin.border-radius();
+    summary{
+        color: var.$secondary;
+        cursor: pointer;
+        outline: none;
+    }
+
+    ul{
+        list-style: none;
+        padding: 0;
+        background-color: #fff;
+        @include mixin.border-radius();
+        li{
+          @include mixin.padding();
+        }
+    }
+
+    summary::-webkit-details-marker{
+        display: none;
+    }
+
+    details[open] summary{
+        color: var.$primary-darker;
+    }
+}

@@ -1,0 +1,45 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mixin;
+
+.auth{
+    @include mixin.flex-position(column, center, flex-end, 1.5em);
+    background-image: url("/assets/images/background.png");
+    height: 100vh;
+    background-attachment: fixed;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+    &__content{
+        @include mixin.padding(1.5em, 1.5em, 1.5em, 1.5em);
+        @include mixin.border-radius(0.5em);
+        margin-right: 5em;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 1);
+    }
+    &__form{
+        margin-top: 1.5em;
+        @include mixin.flex-position(column, space-between, flex-start, 1.5em)
+    }
+}
+
+.auth-register{
+    @include mixin.flex-position(column, left, _, .5em);
+    &__header{
+        margin-bottom: .5em;
+    }
+    &__content{
+        @include mixin.flex-position(column, _, _, 1.5em);
+        margin-top: 1.5em;
+    }
+    &__bottom{
+        @include mixin.flex-position(row, space-between, _, 1.5em);
+    }
+    &__end{
+        @include mixin.flex-position(column, center, center, 1.5em);
+        @include mixin.padding()
+    }
+}

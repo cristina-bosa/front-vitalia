@@ -1,0 +1,10 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mixins;
+
+a{
+  text-decoration: none;
+  color: var.$dark;
+    &:hover{
+        color: var.$secondary;
+    }
+}

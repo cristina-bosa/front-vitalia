@@ -1,0 +1,19 @@
+@use '../01-tools/mixins' as mixins;
+.layout {
+  display: grid;
+  grid-template-areas: "aside main";
+  grid-template-columns: 300px 1fr;
+  height: 100vh;
+}
+
+.container{
+  grid-area: main;
+  max-width: 1536px;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 1.5em;
+}
+
+.list{
+  @include mixins.grid(4);
+}

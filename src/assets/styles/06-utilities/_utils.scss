@@ -1,0 +1,12 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mixins;
+
+.flex{
+  &--space-between{
+  @include mixins.flex-position(row, space-between, center);
+  &:hover{
+    background-color: var.$primary-lightest;
+    cursor: pointer;
+  }
+  }
+}

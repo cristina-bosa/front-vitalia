@@ -1,0 +1,66 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mix;
+
+.dashboard{
+  &__header{
+    @include mix.flex-position(row, space-between, left);
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  &__body{
+    @include mix.flex-position(row, space-between, left);
+  }
+  &__quick__access{
+    @include mix.flex-position(column, space-between, left);
+    margin-top: 1.5rem;
+  }
+  &--admin{
+    @include mix.flex-position(column, space-between, left);
+    &__header{
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    &__body{
+      @include mix.flex-position(row, space-between, _, 1.5em);
+      &__patient{
+        @include mix.card(var.$light);
+        width: 100%;
+        h3{
+          margin-bottom: 1.5rem;
+        }
+
+      }
+      &__doctors{
+        @include mix.card(var.$light);
+        width: 100%;
+        h3{
+          margin-bottom: 1.5rem;
+        }
+      }
+    }
+
+  }
+  &--doctor{
+    &___header{
+      @include mix.flex-position(row, space-between, left);
+      width: 100%;
+      margin-bottom: 1.5em;
+    }
+    &__body{
+      @include mix.flex-position(row, space-between, left);
+      margin-top: 1.5em;
+    }
+  }
+  &--patient{
+    margin-top: 1.5em;
+  }
+}
+.list{
+  @include mix.flex-position(row, space-between, left);
+}
+.list-doctors{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5em;
+  margin-top: 1.5em;
+}

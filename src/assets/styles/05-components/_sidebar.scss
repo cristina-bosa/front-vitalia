@@ -1,0 +1,49 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mix;
+
+.sidebar {
+  @include mix.flex-position(column, space-between);
+  grid-area: aside;
+  background-color: var.$primary-darker;
+  border-radius: 0 3em 3em 0;
+  height: 100%;
+  &__content{
+    @include mix.padding(1.5em, 1.5em, 1.5em, 1.5em);
+    @include mix.flex-position(column, space-between, left, 1.5em);
+    height: 100%;
+  }
+  &__top {
+    @include mix.flex-position(column, center, left, 1.5em);
+
+    &-nav {
+      @include mix.flex-position(column, center, left, 1.5em);
+    }
+  }
+
+  &__bottom {
+    @include mix.flex-position(column, center, left, .5em);
+
+    &-link {
+      color: var.$light;
+
+    }
+  }
+
+  &__link {
+    color: var.$light;
+    text-decoration: none;
+    @include mix.padding();
+    @include mix.border-radius(.5em);
+    @include mix.flex-position(row, left, center, 1em);    
+
+    &:hover {
+      background-color: var.$primary;
+      color: var.$light;
+    }
+
+    &--active {
+      background-color: var.$primary;
+      color: var.$light;
+    }
+  }
+}

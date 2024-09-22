@@ -1,0 +1,130 @@
+@use '../00-settings/variables' as variables;
+@use '../01-tools/mixins' as mixins;
+
+.card {
+  @include mixins.flex-position(column, left, left, .5em);
+  @include mixins.card(variables.$light);
+  &__header {
+    @include mixins.flex-position(column, left, left, 1.5em);
+  }
+  &__body {
+    @include mixins.flex-position(column, left, left, 1em);
+  }
+  &__footer {
+    @include mixins.flex-position(_, space-between, center, 1.5em);
+  }
+  &__notifications {
+    @include mixins.flex-position(row, left, left, 1em);
+
+  }
+  &__notification {
+    @include mixins.flex-position(column, left, left, 1em);
+
+    &[data-status="success"] {
+      @include mixins.card(variables.$success-lightest);
+    }
+
+    &[data-status="info"] {
+      @include mixins.card(variables.$info-lightest);
+    }
+
+    &[data-status="warning"] {
+      @include mixins.card(variables.$warning-lightest);
+    }
+    &[data-status="error"] {
+      @include mixins.card(variables.$error-lightest);
+    }
+  }
+  &__quick-access{
+    &:hover{
+      cursor: pointer;
+    }
+  }
+  &__doctor{
+    @include mixins.flex-position(row, _ , left, .5em);
+    &__header{
+      &__image{
+        @include mixins.border-radius();
+        width: 50%;
+        height: auto;
+      }
+    }
+    &__body{
+      @include mixins.flex-position(column, left, left, .5em);
+      width: 100%;
+      &--stars{
+        @include mixins.flex-position(row, left, center, .5em);
+      }
+      &--schedule{
+        @include mixins.flex-position(column, left, left, .5em);
+      }
+    }
+    &__footer{
+      @include mixins.flex-position(row, space-between, center, 1.5em);
+      span:nth-child(2){
+        &:hover{
+          cursor: pointer;
+      }
+      }
+    }
+  }
+  &__appointment{
+    @include mixins.flex-position(row, space-between , center, .5em);
+    @include mixins.padding(.5em, .5em, .5em, .5em);
+    @include mixins.border-radius();
+    background-color: #fff;
+    &:hover{
+        cursor: pointer;
+      background-color: variables.$primary-lightest;
+    }
+    &__header{
+      @include mixins.flex-position(row, left, center, .5em);
+      &--bg{
+        @include mixins.flex-position(row, left, center, .5em);
+        @include mixins.padding(.5em, .5em, .5em, .5em);
+        @include mixins.border-radius();
+        background-color: variables.$secondary-lightest;
+        max-width: max-content;
+      }
+    }
+    &__body{
+        @include mixins.flex-position(column, left, left, 1em);
+    }
+    &__footer{
+      @include mixins.flex-position(row, space-between, center, 1.5em);
+      background-color: variables.$primary-lightest;
+      @include mixins.padding(.5em, .5em, .5em, .5em);
+      @include mixins.border-radius();
+      max-width: max-content;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+
+  }
+  &__today-apointment{
+    width: 100%;
+  }
+  &__today-reserded{
+    width: 100%;
+  }
+  &__profile{
+    @include mixins.flex-position(column, flex-start, flex-start, 1.5em);
+    flex: 1;
+    &--info{
+        @include mixins.flex-position(column, flex-start4, normal, 1em);
+    }
+  }
+  &__review{
+    @include mixins.flex-position(column, flex-start, normal, 1.5em);
+    &__header{
+        @include mixins.flex-position(row, space-between, normal, 1em);
+    }
+    &__body{
+        @include mixins.flex-position(column, flex-start, flex-start, 1.5em);
+      &--stars{
+        @include mixins.flex-position(row, left, center, .5em);
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mixins;
+
+.appointment{
+  @include mixins.flex-position(column, left, left, 1.5em);
+  &__search{
+    @include mixins.flex-position(row, flex-start, center, .5rem);
+    &__body{
+        @include mixins.flex-position(row, left, left, 1.5em);
+    }
+  }
+  &__opts{
+    @include mixins.flex-position(row, center, center, 1.5em);
+    &__buttons{
+        @include mixins.flex-position(row, center, center, 1.5em);
+    }
+  }
+  &__reviews{
+    margin-top: 1.5em;
+    @include mixins.padding();
+    h3{
+        margin-bottom: 1.5em;
+    }
+  }
+}

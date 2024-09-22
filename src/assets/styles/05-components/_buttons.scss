@@ -1,0 +1,134 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mixins;
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include mixins.padding();
+  border-radius: .5em;
+  max-width: fit-content;
+  max-height: 56px;
+  gap: .5em;
+  background-color: var.$primary;
+
+  &:hover {
+    background-color: var.$primary-darker;
+    transition: background-color .3s ease-in-out;
+    cursor: pointer;
+  }
+
+  &--secondary {
+    background-color: var.$secondary;
+
+    &:hover {
+      background-color: var.$secondary-darker;
+    }
+  }
+
+  &--primary {
+    background-color: var.$primary;
+
+    &--soft {
+      color: var.$primary-darker;
+      background-color: var.$primary-light;
+
+      &:hover {
+        background-color: darken(var.$primary-light, 10%);
+      }
+    }
+
+    &--small {
+      padding: .5em 1em;
+    }
+
+    &:hover {
+      background-color: var.$primary-darker;
+    }
+  }
+
+  &--outline {
+    background-color: transparent;
+    border: .12em solid var.$primary;
+    color: var.$primary;
+
+    &:hover {
+      background-color: var.$primary;
+      color: var.$light;
+    }
+
+    &--error {
+      background: transparent;
+      border: .12em solid var.$error;
+      color: var.$error;
+
+      &:hover {
+        background-color: var.$error-lightest;
+        border: .12em solid var.$error-lightest;
+        color: var.$error-darker;
+      }
+
+    }
+  }
+
+  &--error {
+    background-color: var.$error;
+
+    &--soft {
+      color: var.$error-darker;
+      background-color: var.$error-lightest;
+
+      &:hover {
+        background-color: darken(var.$error-lightest, 10%);
+      }
+    }
+
+    &--small {
+      padding: .5em 1em;
+    }
+
+    &:hover {
+      background-color: var.$error-lightest;
+      border: .12em solid var.$error-lightest;
+      color: var.$error-darker;
+    }
+  }
+
+  &--warning {
+    background: var.$warning-primary;
+
+    &--soft {
+      color: var.$warning-lightest;
+      background-color: var.$warning-lightest;
+
+      &:hover {
+        background-color: darken(var.$warning-lightest, 10%);
+      }
+    }
+
+    &:hover {
+      background-color: var.$warning-lightest;
+      border: .12em solid var.$warning-lightest;
+      color: var.$warning-dark;
+    }
+  }
+
+  &--success {
+    background: var.$success-primary;
+
+    &--soft {
+      color: var.$success-darker;
+      background-color: var.$success-lightest;
+
+      &:hover {
+        background-color: darken(var.$success-lightest, 10%);
+      }
+    }
+
+    &:hover {
+      background-color: var.$success-lightest;
+      border: .12em solid var.$success-lightest;
+      color: var.$success-darker;
+    }
+  }
+}

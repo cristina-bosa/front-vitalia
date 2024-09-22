@@ -1,0 +1,21 @@
+@use '../00-settings/variables' as var;
+@use '../01-tools/mixins' as mix;
+
+
+.historical-clinic{
+    @include mix.flex-position(row, space-between, flex-start, 1.5em);
+    //@include mix.card(#F2F5F6);
+  &__profile{
+    @include mix.flex-position(column, flex-start, flex-start, 1.5em);
+    flex: 1;
+  }
+  &__list__medical{
+    @include mix.flex-position(column, _, _, 1.5em);
+    flex: 1;
+    margin-top: 1.5em;
+  }
+  &__appointment-information-item{
+    @include mix.flex-position(column, flex-start, flex-start, .5em);
+
+  }
+}

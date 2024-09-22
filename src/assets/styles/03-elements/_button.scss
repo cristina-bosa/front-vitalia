@@ -1,0 +1,7 @@
+@use '../00-settings/variables' as var;
+
+button{
+  background-color: var.$primary;
+  color: var.$light;
+  border: none;
+}
